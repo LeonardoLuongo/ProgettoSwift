@@ -54,6 +54,7 @@
 		1F01953D2C41638E001E15B1 /* RecordBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordBar.swift; sourceTree = "<group>"; };
 		1F01953F2C4163A9001E15B1 /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
 		1F0195412C4163F2001E15B1 /* Stopwatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stopwatch.swift; sourceTree = "<group>"; };
+		1F65A5F72C4525A80085A7ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +105,7 @@
 		1F01950E2C4162A4001E15B1 /* RecordingPages */ = {
 			isa = PBXGroup;
 			children = (
+				1F65A5F72C4525A80085A7ED /* Info.plist */,
 				1F01950F2C4162A4001E15B1 /* RecordingPagesApp.swift */,
 				1F0195112C4162A4001E15B1 /* ContentView.swift */,
 				1F0195132C4162A5001E15B1 /* Assets.xcassets */,
@@ -445,12 +447,15 @@
 				DEVELOPMENT_TEAM = 8ZJ59GR2V8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RecordingPages/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone to record and obtain speech to text";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "to obtain the transcription of the audio recorded by the user";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -475,12 +480,15 @@
 				DEVELOPMENT_TEAM = 8ZJ59GR2V8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RecordingPages/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone to record and obtain speech to text";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "to obtain the transcription of the audio recorded by the user";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

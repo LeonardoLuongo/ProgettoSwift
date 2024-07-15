@@ -8,27 +8,31 @@
 import SwiftUI
 import Combine
 import AVFoundation
+import Speech
 
 class RecordingManager: ObservableObject {
     let dateFormatter: DateFormatter
     let date: Date
-    @Published var recordName: String
-    @Published final var defaultRecordName: String
-    @Published var isRecording: Bool = false
-    @Published var showAlert: Bool = false
-    @Published var showErrorAlert: Bool = false
-    @Published var errorMessage: String = ""
-    @Published var recorded: Bool = false
-    @Published var textLoaded: Bool = false
-    @Published var docName: String = ""
+    
+    @Published var recordName: String   //  Name chosen by the user in the Textfield
+    @Published final var defaultRecordName: String  // Name visualized outside of the page if the textfield is empty
+    @Published var isRecording: Bool = false    //  true - an audio is being recorded
+    @Published var showAlert: Bool = false  //  The alert for save the record must be visualized
+    @Published var showErrorAlert: Bool = false //  The error alert must be visualized
+    @Published var errorMessage: String = ""    //  The message visualized in the error alert
+    @Published var recorded: Bool = false   //  An audio has been recorded
+    @Published var recLoaded: Bool = false  //  An audio has been loaded
+    @Published var textLoaded: Bool = false //  A document has been loaded
+    @Published var docFilename: String = "" //  Document name
+    @Published var recordFilename: String = ""  //  Record name
     
     private var audioRecorder: AVAudioRecorder?
     private var recordingSession1: AVAudioSession?
     private var recordingSession2: AVAudioApplication?
-    var recordFilename: String
-    var audioPath: URL?
-    var docPath: URL?
-    var duration = Duration(hours: 0, minutes: 0, seconds: 0)
+    var audioPath: URL? //  Complete audio path
+    var docPath: URL?   // Complete document path
+    var duration = Duration(hours: 0, minutes: 0, seconds: 0)   // Duration of the record
+    var transcription: String = ""  // Output of the speech to text
     
     init() {
         dateFormatter = DateFormatter()
@@ -43,19 +47,25 @@ class RecordingManager: ObservableObject {
     }
 
     private func setupRecordingSession() {
-        if #available(iOS 17, *) {
-            recordingSession2 = AVAudioApplication.shared
-            
-            AVAudioApplication.requestRecordPermission { allowed in
-                DispatchQueue.main.async {
-                    if allowed {
-                        print("Permission granted")
-                    } else {
-                        print("Permission denied")
-                    }
-                }
-            }
-        } else {
+//        if #available(iOS 17, *) {
+//            recordingSession2 = AVAudioApplication.shared
+//            recordingSession1 = AVAudioSession.sharedInstance()
+//            do{
+//                try recordingSession1?.setCategory(.playback)
+//                try recordingSession1?.setActive(true)
+//            } catch {
+//                print("error")
+//            }
+//            AVAudioApplication.requestRecordPermission { allowed in
+//                DispatchQueue.main.async {
+//                    if allowed {
+//                        print("Permission granted")
+//                    } else {
+//                        print("Permission denied")
+//                    }
+//                }
+//            }
+//        } else {
             recordingSession1 = AVAudioSession.sharedInstance()
 
             do {
@@ -66,14 +76,13 @@ class RecordingManager: ObservableObject {
                         if allowed {
                             print("Permission granted")
                         } else {
-                            print("Permission denied")
-                        }
+                            print("Permission denied")                        }
                     }
                 }
             } catch {
                 print("Failed to set up recording session")
             }
-        }
+        //}
     }
 
 
@@ -133,7 +142,9 @@ class RecordingManager: ObservableObject {
         } else {
             if let audioPath = self.audioPath {
                 recorded = true
-                print("Filename: \(audioPath)")
+                print("FilePath: \(audioPath)")
+                requestTranscribePermissions()
+                transcribeAudio(url: audioPath)
             }
         }
     }
@@ -152,6 +163,48 @@ class RecordingManager: ObservableObject {
             print("Failed to delete recorded audio file:", error.localizedDescription)
         }
     }
+    
+    func requestTranscribePermissions() {
+        SFSpeechRecognizer.requestAuthorization { authStatus in
+            DispatchQueue.main.async {
+                if authStatus == .authorized {
+                    print("Good to go!")
+                } else {
+                    print("Transcription permission was declined.")
+                }
+            }
+        }
+    }
+    
+    func transcribeAudio(url: URL) {
+        guard let myRecognizerIT = SFSpeechRecognizer(locale: Locale(identifier: "it_IT")) else {
+            print("The recognizer is not supported for the current locale")
+            return
+        }
+        
+        if !myRecognizerIT.isAvailable {
+            print("The recognizer is not available right now")
+            return
+        }
+        
+        let path_to_audio = url
+        print(path_to_audio)
+        let request = SFSpeechURLRecognitionRequest(url: path_to_audio)
+        print("About to create recognition task...")
+        
+        myRecognizerIT.recognitionTask(with: request) { (result, error) in
+            guard let result = result else {
+                print("Recognition failed, please check the printed error message")
+                print(error!)
+                return
+            }
+            if result.isFinal {
+                print(result.bestTranscription.formattedString)
+                self.transcription = result.bestTranscription.formattedString
+            }
+        }
+    }
+    
 }
 
 struct Duration {
@@ -159,3 +212,4 @@ struct Duration {
     var minutes: Int
     var seconds: Int
 }
+

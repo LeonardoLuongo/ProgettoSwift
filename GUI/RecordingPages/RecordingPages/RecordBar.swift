@@ -14,14 +14,17 @@ struct RecordBar: View {
         VStack {
             Spacer()
             VStack {
+                /*  If an audio is being recorded here will be visualized the duration of the record */
                 if recordingManager.isRecording {
                     Stopwatch(startTime: 0, recordingManager: recordingManager)
                         .foregroundColor(Color(hue: 0.58, saturation: 0.63, brightness: 0.96))
                 }
+                /*  If an audio has already been recorded the bottom bar will display the evaluate button*/
                 if recordingManager.recorded {
                     Button(action: {
                         // Aggiungi azione per "Evaluate"
                     }) {
+                        /*  The evalueate button will be usable (and colorful) only if bopth the doc and the red have been loaded */
                         if recordingManager.textLoaded && recordingManager.recorded {
                             VStack {
                                 Text("Evaluate")
@@ -48,6 +51,7 @@ struct RecordBar: View {
                     }
                     .disabled(!(recordingManager.textLoaded && recordingManager.recorded))
                 } else {
+                    /* If there is no audio yet, the bottom bar will display the record button... */
                     Button(action: {
                         if recordingManager.isRecording {
                             recordingManager.finishRecordingHandler()
@@ -55,6 +59,7 @@ struct RecordBar: View {
                             recordingManager.startRecording()
                         }
                     }) {
+                        /*  ... to finish recording... */
                         if recordingManager.isRecording {
                             RoundedRectangle(cornerRadius: 5)
                                 .fill(Color.red)
@@ -63,6 +68,7 @@ struct RecordBar: View {
                                 .overlay(
                                     Circle().stroke(Color.black, lineWidth: 3)
                                 )
+                        /*  ... or to start recording */
                         } else {
                             Circle()
                                 .fill(Color.red)
@@ -73,6 +79,7 @@ struct RecordBar: View {
                                 )
                         }
                     }
+                    /*  This alert allows to save or discard an audio recorded on the moment*/
                     .alert(isPresented: $recordingManager.showAlert) {
                         Alert(
                             title: Text("Save or cancel the record"),
