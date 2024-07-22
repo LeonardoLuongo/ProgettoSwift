@@ -29,13 +29,32 @@ struct Sections: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach($sections, id: \.id) { $section in
-                    if searchText.isEmpty || section.name.lowercased().starts(with: searchText.lowercased()) {
-                        NavigationLink(destination: Subject(section: $section, sections: $sections, expositions: $expositions)) {
-                            SectionRow(section: $section)
+                SwiftUI.Section(header: Text("General sections")) {
+                    ForEach($sections.filter { $0.secCode.wrappedValue == 0 || $0.secCode.wrappedValue == 1 || $0.secCode.wrappedValue == 2 }) { $section in
+                        if searchText.isEmpty || section.name.lowercased().starts(with: searchText.lowercased()) {
+                            NavigationLink(destination: Subject(section: $section, sections: $sections, expositions: $expositions)) {
+                                SectionRow(section: $section)
+                            }
                         }
-                        .contextMenu {
-                            if section.secCode != 0 && section.secCode != 1 && section.secCode != 2 {
+                    }
+                }
+                SwiftUI.Section(header: Text("Your sections")) {
+                    ForEach($sections.filter { $0.secCode.wrappedValue > 2 }) { $section in
+                        if searchText.isEmpty || section.name.lowercased().starts(with: searchText.lowercased()) {
+                            NavigationLink(destination: Subject(section: $section, sections: $sections, expositions: $expositions)) {
+                                SectionRow(section: $section)
+                                    .swipeActions {
+                                        Button(action: {
+                                            if let index = sections.firstIndex(where: { $0.id == section.id }) {
+                                                deleteSection(at: IndexSet(integer: index))
+                                            }
+                                        }) {
+                                            Label("Delete", systemImage: "trash")
+                                        }
+                                        .tint(.red)
+                                    }
+                            }
+                            .contextMenu {
                                 renameButton(section: section)
                                 changeIconButton(section: section)
                                 changeImageButton(section: section)

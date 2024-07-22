@@ -22,6 +22,7 @@
 		1F3711302C4E60F1008ABFA6 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F37112F2C4E60F1008ABFA6 /* Player.swift */; };
 		1F3818042C4D2FAF00F7B659 /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3818032C4D2FAF00F7B659 /* IconView.swift */; };
 		1F3818232C4E465500F7B659 /* DocumentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3818222C4E465500F7B659 /* DocumentManager.swift */; };
+		1F38182E2C4E962C00F7B659 /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F38182D2C4E962C00F7B659 /* Evaluator.swift */; };
 		1F3E3F0B2C4C23620098432E /* ExpositionStyleSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F0A2C4C23620098432E /* ExpositionStyleSubject.swift */; };
 		1F3E3F0D2C4C23900098432E /* ExpositionStyleSpecialSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F0C2C4C23900098432E /* ExpositionStyleSpecialSubject.swift */; };
 		1F3E3F0F2C4C23F30098432E /* ExpositionRowSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F0E2C4C23F30098432E /* ExpositionRowSubject.swift */; };
@@ -72,6 +73,7 @@
 		1F37112F2C4E60F1008ABFA6 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		1F3818032C4D2FAF00F7B659 /* IconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconView.swift; sourceTree = "<group>"; };
 		1F3818222C4E465500F7B659 /* DocumentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentManager.swift; sourceTree = "<group>"; };
+		1F38182D2C4E962C00F7B659 /* Evaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Evaluator.swift; sourceTree = "<group>"; };
 		1F3E3F0A2C4C23620098432E /* ExpositionStyleSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpositionStyleSubject.swift; sourceTree = "<group>"; };
 		1F3E3F0C2C4C23900098432E /* ExpositionStyleSpecialSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpositionStyleSpecialSubject.swift; sourceTree = "<group>"; };
 		1F3E3F0E2C4C23F30098432E /* ExpositionRowSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpositionRowSubject.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				1F3E3F122C4C244E0098432E /* Subjects */,
 				1F6C0F912C46D85B007D03A0 /* Sections */,
 				1F01950E2C4162A4001E15B1 /* RecordingPages */,
+				1F38182C2C4E960D00F7B659 /* Evaluation */,
 				1F3818212C4E463500F7B659 /* Documents */,
 				1F01950D2C4162A4001E15B1 /* Products */,
 			);
@@ -185,6 +188,14 @@
 				1F3818222C4E465500F7B659 /* DocumentManager.swift */,
 			);
 			path = Documents;
+			sourceTree = "<group>";
+		};
+		1F38182C2C4E960D00F7B659 /* Evaluation */ = {
+			isa = PBXGroup;
+			children = (
+				1F38182D2C4E962C00F7B659 /* Evaluator.swift */,
+			);
+			path = Evaluation;
 			sourceTree = "<group>";
 		};
 		1F3E3F122C4C244E0098432E /* Subjects */ = {
@@ -362,6 +373,7 @@
 				1F3E3F0B2C4C23620098432E /* ExpositionStyleSubject.swift in Sources */,
 				1F3818232C4E465500F7B659 /* DocumentManager.swift in Sources */,
 				1F6C0F992C46D89D007D03A0 /* CreateIconView.swift in Sources */,
+				1F38182E2C4E962C00F7B659 /* Evaluator.swift in Sources */,
 				1F3818042C4D2FAF00F7B659 /* IconView.swift in Sources */,
 				1F6C0F972C46D88C007D03A0 /* CreateSectionView.swift in Sources */,
 				1F3E3F172C4C29B30098432E /* Section.swift in Sources */,
