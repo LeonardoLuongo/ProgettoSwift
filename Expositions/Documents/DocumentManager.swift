@@ -11,10 +11,19 @@ import PDFKit
 class DocumentManager {
     
     static func extractTextFromPDF(url: URL) -> String? {
-        guard let pdfDocument = PDFDocument(url: url) else {
+        if let pdf = PDFDocument(url: url) {
+            let pageCount = pdf.pageCount
+            let documentContent = NSMutableAttributedString()
+
+            for i in 0 ..< pageCount {
+                guard let page = pdf.page(at: i) else { continue }
+                guard let pageContent = page.attributedString else { continue }
+                documentContent.append(pageContent)
+            }
+            return documentContent.string
+        } else {
             return nil
         }
-        return pdfDocument.string
     }
     
     static func isPDF(url: URL) -> Bool {

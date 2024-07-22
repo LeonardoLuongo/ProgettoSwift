@@ -11,6 +11,9 @@ struct RecordBar: View {
     @ObservedObject var recordingManager: RecordingManager
     
     @Binding var expositions: [Int:[Exposition]]
+    @Binding var exposition: Exposition
+    
+    @State var evaluationError = false
 
     var body: some View {
         VStack {
@@ -25,6 +28,8 @@ struct RecordBar: View {
                 if recordingManager.recorded {
                     Button(action: {
                         // Aggiungi azione per "Evaluate"
+                        var evaluator = Evaluator(exposition: $exposition, expositions: $expositions, evaluationError: $evaluationError)
+                        evaluator.evaluate()
                     }) {
                         /*  The evalueate button will be usable (and colorful) only if bopth the doc and the red have been loaded */
                         if recordingManager.textLoaded && recordingManager.recorded {
@@ -109,5 +114,5 @@ struct RecordBar: View {
 }
 
 #Preview {
-    RecordBar(recordingManager: RecordingManager(), expositions: .constant([3:[Exposition(date: "07-20-2024", grade: "10", secCode: 3)]]))
+    RecordBar(recordingManager: RecordingManager(), expositions: .constant([3:[Exposition(date: "07-20-2024", grade: "10", secCode: 3)]]), exposition: .constant(Exposition(date: "07-20-2024", grade: "10", secCode: 3)))
 }

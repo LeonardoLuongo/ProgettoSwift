@@ -5,6 +5,7 @@ struct RecordPage: View {
     @State private var isLoadingFile: Bool = false
     @State private var isLoadingAudio: Bool = false
     @Binding var expositions: [Int:[Exposition]]
+    @Binding var exposition: Exposition
     
     var body: some View {
         GeometryReader { metrics in     //used to obtain the dimensions of the container
@@ -116,30 +117,29 @@ struct RecordPage: View {
                             .background(Color(hue: 0, saturation: 0, brightness: 0.95))
                             .cornerRadius(15)
                             .fileImporter(isPresented: $isLoadingAudio, allowedContentTypes: [.audio, .mp3, .wav, .mpeg4Audio], allowsMultipleSelection: false, onCompletion: { results in
-                                
-                                switch results {
-                                case .success(let fileurl):
-                                    if fileurl[0].startAccessingSecurityScopedResource() {
-                                        var paths = "\(fileurl[0])".split(separator: "/")
-                                        paths.reverse()
-                                        paths[0] = "\(paths[0].replacingOccurrences(of: "%20", with: " ").lowercased())"
-                                        recordingManager.recordFilename = String(paths[0])
-                                        recordingManager.audioPath =  fileurl[0]
-                                        if let audioPath = recordingManager.audioPath {
-                                            print("FilePath: \(audioPath)")
-                                            recordingManager.requestTranscribePermissions()
-                                            recordingManager.transcribeAudio(url: audioPath)
+                                    switch results {
+                                    case .success(let fileurl):
+                                        if fileurl[0].startAccessingSecurityScopedResource() {
+                                            defer { fileurl[0].stopAccessingSecurityScopedResource() }
+                                            var paths = "\(fileurl[0])".split(separator: "/")
+                                            paths.reverse()
+                                            paths[0] = "\(paths[0].replacingOccurrences(of: "%20", with: " ").lowercased())"
+                                            recordingManager.recordFilename = String(paths[0])
+                                            recordingManager.audioPath =  fileurl[0]
+                                            if let audioPath = recordingManager.audioPath {
+                                                print("FilePath: \(audioPath)")
+                                                recordingManager.requestTranscribePermissions()
+                                                recordingManager.transcribeAudio(url: audioPath)
+                                            }
+                                            recordingManager.recorded = true
+                                            recordingManager.recLoaded = true
+                                            fileurl[0].stopAccessingSecurityScopedResource()
                                         }
-                                        recordingManager.recorded = true
-                                        recordingManager.recLoaded = true
-                                        fileurl[0].stopAccessingSecurityScopedResource()
-                                        Exposition.saveDictionary(expositions: expositions)
+                                    case .failure(let error):
+                                        print(error)
                                     }
-                                case .failure(let error):
-                                    print(error)
-                                }
-                            isLoadingAudio = false
-                            })
+                                isLoadingAudio = false
+                                })
                         }
                     }
                     /*  The button is disabled if the user is recording or if an audio has already been recorded/loaded */
@@ -163,12 +163,12 @@ struct RecordPage: View {
                 }
                 
                 /*  The bottom recording bar */
-                RecordBar(recordingManager: recordingManager, expositions: $expositions)
+                RecordBar(recordingManager: recordingManager, expositions: $expositions, exposition: $exposition)
             }
         }
     }
 }
 
 #Preview {
-    RecordPage(expositions: .constant([3:[Exposition(date: "07-20-2024", grade: "10", secCode: 3)]]))
+    RecordPage(expositions: .constant([3:[Exposition(date: "07-20-2024", grade: "10", secCode: 3)]]), exposition: .constant(Exposition(date: "07-20-2024", grade: "10", secCode: 3)))
 }

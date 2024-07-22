@@ -556,7 +556,12 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RecordingPages/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSDesktopFolderUsageDescription = "Allow access to Desktop Folder";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "Allow access to Documents Folder";
+				INFOPLIST_KEY_NSDownloadsFolderUsageDescription = "Allow access to Downloads Folder";
+				INFOPLIST_KEY_NSFileProviderDomainUsageDescription = "To gain access to the file";
 				INFOPLIST_KEY_NSFileProviderPresenceUsageDescription = "";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone to record and obtain speech to text";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "to obtain the transcription of the audio recorded by the user";
@@ -591,7 +596,12 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RecordingPages/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSDesktopFolderUsageDescription = "Allow access to Desktop Folder";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "Allow access to Documents Folder";
+				INFOPLIST_KEY_NSDownloadsFolderUsageDescription = "Allow access to Downloads Folder";
+				INFOPLIST_KEY_NSFileProviderDomainUsageDescription = "To gain access to the file";
 				INFOPLIST_KEY_NSFileProviderPresenceUsageDescription = "";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone to record and obtain speech to text";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "to obtain the transcription of the audio recorded by the user";

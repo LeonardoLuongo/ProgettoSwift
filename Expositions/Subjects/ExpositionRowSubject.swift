@@ -25,7 +25,7 @@ struct ExpositionRowSubject: View {
     
     var body: some View {
         let i = subjectExp.firstIndex(where: { $0.id == exposition.id }) ?? 0
-        NavigationLink(destination: RecordPage(recordingManager: exposition.recordingManager, expositions: $expositions)) {
+        NavigationLink(destination: RecordPage(recordingManager: exposition.recordingManager, expositions: $expositions, exposition: $exposition)) {
             if section.secCode != 0 && section.secCode != 1 && section.secCode != 2 {
                 ExpositionStyleSubject(exposition: $exposition)
             } else {

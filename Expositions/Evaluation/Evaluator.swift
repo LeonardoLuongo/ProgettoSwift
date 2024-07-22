@@ -8,8 +8,8 @@
 import SwiftUI
 
 class Evaluator {
-    var exposition: Exposition
-    var expositions: [Int:[Exposition]]
+    @Binding var exposition: Exposition
+    @Binding var expositions: [Int:[Exposition]]
     var audioPath: URL
     var transcription: String
     var docPath: URL
@@ -18,12 +18,12 @@ class Evaluator {
     
     var documentText: String?
     
-    init(exposition: Exposition, expositions: [Int : [Exposition]], audioPath: URL, transcription: String, docPath: URL, evaluationError: Binding<Bool>) {
-        self.exposition = exposition
-        self.expositions = expositions
-        self.audioPath = audioPath
-        self.transcription = transcription
-        self.docPath = docPath
+    init(exposition: Binding<Exposition>, expositions: Binding<[Int : [Exposition]]>, evaluationError: Binding<Bool>) {
+        self._exposition = exposition
+        self._expositions = expositions
+        self.audioPath = exposition.recordingManager.audioPath.wrappedValue!
+        self.transcription = exposition.recordingManager.transcription.wrappedValue
+        self.docPath = exposition.recordingManager.docPath.wrappedValue!
         self._evaluationError = evaluationError
     }
     
@@ -45,6 +45,7 @@ class Evaluator {
             
         } else {
             evaluationError.toggle()
+            print("Errore")
         }
     }
     

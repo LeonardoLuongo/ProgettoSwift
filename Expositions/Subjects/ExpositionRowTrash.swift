@@ -18,7 +18,7 @@ struct ExpositionRowTrash: View {
     
     var body: some View {
         let i = subjectExp.firstIndex(where: { $0.id == exposition.id }) ?? 0
-        NavigationLink(destination: RecordPage(recordingManager: exposition.recordingManager, expositions: $expositions)) {
+        NavigationLink(destination: RecordPage(recordingManager: exposition.recordingManager, expositions: $expositions, exposition: $exposition)) {
             ExpositionStyleSpecialSubject(exposition: $exposition, expositions: $expositions, sections: $sections)
         }
         .listRowBackground(ExpositionRowTrash.backgroundColor[i % ExpositionRowTrash.backgroundColor.count])
