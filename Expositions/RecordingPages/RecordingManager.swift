@@ -120,16 +120,25 @@ class RecordingManager: ObservableObject, Codable {
             }
         //}
     }
-
+    
+    
+    
+    func getAudioPath(recordFilename: String) -> URL? {
+        let resourcePaths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let resourchPath = resourcePaths[0]//.appendingPathComponent("Expositions")
+        audioPath = resourchPath.appendingPathComponent(recordFilename)
+        return audioPath
+    }
+    
 
 
     func startRecording() {
         isRecording = true
         
-        guard let resourcePath = Bundle.main.resourcePath else { return }
-        audioPath = URL(fileURLWithPath: "\(resourcePath)/\(recordFilename)")
+        audioPath = getAudioPath(recordFilename: recordFilename)
 
         if let audioPath = audioPath {
+    
             if FileManager.default.fileExists(atPath: audioPath.path) {
                 errorMessage = "Something went wrong. Please delete this page and create a new one."
                 showErrorAlert = true
@@ -159,8 +168,7 @@ class RecordingManager: ObservableObject, Codable {
     }
 
     func finishRecordingHandler() {
-        guard let resourcePath = Bundle.main.resourcePath else { return }
-        audioPath = URL(fileURLWithPath: "\(resourcePath)/\(recordFilename)")
+        audioPath = getAudioPath(recordFilename: recordFilename)
         audioRecorder?.stop()
         audioRecorder = nil
         

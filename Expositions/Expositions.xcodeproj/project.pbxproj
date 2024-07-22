@@ -544,6 +544,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RecordingPages/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSFileProviderPresenceUsageDescription = "";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone to record and obtain speech to text";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "to obtain the transcription of the audio recorded by the user";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -577,6 +579,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RecordingPages/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSFileProviderPresenceUsageDescription = "";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone to record and obtain speech to text";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "to obtain the transcription of the audio recorded by the user";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
