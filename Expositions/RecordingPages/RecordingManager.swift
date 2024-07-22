@@ -125,7 +125,7 @@ class RecordingManager: ObservableObject, Codable {
     
     func getAudioPath(recordFilename: String) -> URL? {
         let resourcePaths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let resourchPath = resourcePaths[0]//.appendingPathComponent("Expositions")
+        let resourchPath = resourcePaths[0]
         audioPath = resourchPath.appendingPathComponent(recordFilename)
         return audioPath
     }
