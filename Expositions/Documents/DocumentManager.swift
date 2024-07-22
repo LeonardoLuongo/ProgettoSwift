@@ -7,7 +7,6 @@
 
 import Foundation
 import PDFKit
-import OfficeFileReader
 
 class DocumentManager {
     

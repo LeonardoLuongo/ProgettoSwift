@@ -1,17 +1,9 @@
-//
-//  RecordPage.swift
-//  RecordingPages
-//
-//  Created by Studente on 12/07/24.
-//
-
 import SwiftUI
 
 struct RecordPage: View {
     @StateObject var recordingManager = RecordingManager()
     @State private var isLoadingFile: Bool = false
     @State private var isLoadingAudio: Bool = false
-    
     @Binding var expositions: [Int:[Exposition]]
     
     var body: some View {
@@ -96,9 +88,10 @@ struct RecordPage: View {
                             if recordingManager.recLoaded {
                                 VStack {
                                     Text(recordingManager.recordFilename)
-                                        .frame(height: 125)
+                                        //.frame(height: 125)
                                         .font(.system(size: metrics.size.height*0.03))
                                         .foregroundColor(Color(hue: 0.58, saturation: 0.63, brightness: 0.96))
+                                    Player(recordingManager: recordingManager)
                                 }
                                 .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
                                 .background(Color(hue: 0, saturation: 0, brightness: 0.95))
@@ -106,9 +99,7 @@ struct RecordPage: View {
                             /*  If the audio has been recorded the button will display the duration...  */
                             } else {
                                 VStack {
-                                    StopwatchFinal(recordingManager: recordingManager)
-                                        .frame(height: metrics.size.height*0.1)
-                                        .foregroundColor(Color(hue: 0.58, saturation: 0.63, brightness: 0.96))
+                                    Player(recordingManager: recordingManager)
                                 }
                                 .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
                                 .background(Color(hue: 0, saturation: 0, brightness: 0.95))
@@ -124,35 +115,35 @@ struct RecordPage: View {
                             .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
                             .background(Color(hue: 0, saturation: 0, brightness: 0.95))
                             .cornerRadius(15)
+                            .fileImporter(isPresented: $isLoadingAudio, allowedContentTypes: [.audio, .mp3, .wav, .mpeg4Audio], allowsMultipleSelection: false, onCompletion: { results in
+                                
+                                switch results {
+                                case .success(let fileurl):
+                                    if fileurl[0].startAccessingSecurityScopedResource() {
+                                        var paths = "\(fileurl[0])".split(separator: "/")
+                                        paths.reverse()
+                                        paths[0] = "\(paths[0].replacingOccurrences(of: "%20", with: " ").lowercased())"
+                                        recordingManager.recordFilename = String(paths[0])
+                                        recordingManager.audioPath =  fileurl[0]
+                                        if let audioPath = recordingManager.audioPath {
+                                            print("FilePath: \(audioPath)")
+                                            recordingManager.requestTranscribePermissions()
+                                            recordingManager.transcribeAudio(url: audioPath)
+                                        }
+                                        recordingManager.recorded = true
+                                        recordingManager.recLoaded = true
+                                        fileurl[0].stopAccessingSecurityScopedResource()
+                                        Exposition.saveDictionary(expositions: expositions)
+                                    }
+                                case .failure(let error):
+                                    print(error)
+                                }
+                            isLoadingAudio = false
+                            })
                         }
                     }
                     /*  The button is disabled if the user is recording or if an audio has already been recorded/loaded */
-                    .disabled(recordingManager.isRecording || recordingManager.recorded)
-                    .fileImporter(isPresented: $isLoadingAudio, allowedContentTypes: [.audio, .mp3, .wav, .mpeg4Audio], allowsMultipleSelection: false, onCompletion: { results in
-                        
-                        switch results {
-                        case .success(let fileurl):
-                            if fileurl[0].startAccessingSecurityScopedResource() {
-                                var paths = "\(fileurl[0])".split(separator: "/")
-                                paths.reverse()
-                                paths[0] = "\(paths[0].replacingOccurrences(of: "%20", with: " ").lowercased())"
-                                recordingManager.recordFilename = String(paths[0])
-                                recordingManager.audioPath =  fileurl[0]
-                                if let audioPath = recordingManager.audioPath {
-                                    print("FilePath: \(audioPath)")
-                                    recordingManager.requestTranscribePermissions()
-                                    recordingManager.transcribeAudio(url: audioPath)
-                                }
-                                recordingManager.recorded = true
-                                recordingManager.recLoaded = true
-                                fileurl[0].stopAccessingSecurityScopedResource()
-                                Exposition.saveDictionary(expositions: expositions)
-                            }
-                        case .failure(let error):
-                            print(error)
-                        }
-                    isLoadingAudio = false
-                    })
+                    .disabled(recordingManager.isRecording)
                     
                     Spacer()
                     Spacer()

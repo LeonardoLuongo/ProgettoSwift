@@ -19,9 +19,9 @@
 		1F01953E2C41638E001E15B1 /* RecordBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F01953D2C41638E001E15B1 /* RecordBar.swift */; };
 		1F0195402C4163A9001E15B1 /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F01953F2C4163A9001E15B1 /* RecordingManager.swift */; };
 		1F0195422C4163F2001E15B1 /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0195412C4163F2001E15B1 /* Stopwatch.swift */; };
+		1F3711302C4E60F1008ABFA6 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F37112F2C4E60F1008ABFA6 /* Player.swift */; };
 		1F3818042C4D2FAF00F7B659 /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3818032C4D2FAF00F7B659 /* IconView.swift */; };
 		1F3818232C4E465500F7B659 /* DocumentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3818222C4E465500F7B659 /* DocumentManager.swift */; };
-		1F3818262C4E490C00F7B659 /* OfficeFileReader in Frameworks */ = {isa = PBXBuildFile; productRef = 1F3818252C4E490C00F7B659 /* OfficeFileReader */; };
 		1F3E3F0B2C4C23620098432E /* ExpositionStyleSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F0A2C4C23620098432E /* ExpositionStyleSubject.swift */; };
 		1F3E3F0D2C4C23900098432E /* ExpositionStyleSpecialSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F0C2C4C23900098432E /* ExpositionStyleSpecialSubject.swift */; };
 		1F3E3F0F2C4C23F30098432E /* ExpositionRowSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F0E2C4C23F30098432E /* ExpositionRowSubject.swift */; };
@@ -69,6 +69,7 @@
 		1F01953D2C41638E001E15B1 /* RecordBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordBar.swift; sourceTree = "<group>"; };
 		1F01953F2C4163A9001E15B1 /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
 		1F0195412C4163F2001E15B1 /* Stopwatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stopwatch.swift; sourceTree = "<group>"; };
+		1F37112F2C4E60F1008ABFA6 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		1F3818032C4D2FAF00F7B659 /* IconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconView.swift; sourceTree = "<group>"; };
 		1F3818222C4E465500F7B659 /* DocumentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentManager.swift; sourceTree = "<group>"; };
 		1F3E3F0A2C4C23620098432E /* ExpositionStyleSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpositionStyleSubject.swift; sourceTree = "<group>"; };
@@ -91,7 +92,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F3818262C4E490C00F7B659 /* OfficeFileReader in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +149,7 @@
 				1F01953D2C41638E001E15B1 /* RecordBar.swift */,
 				1F01953F2C4163A9001E15B1 /* RecordingManager.swift */,
 				1F0195412C4163F2001E15B1 /* Stopwatch.swift */,
+				1F37112F2C4E60F1008ABFA6 /* Player.swift */,
 			);
 			path = RecordingPages;
 			sourceTree = "<group>";
@@ -237,7 +238,6 @@
 			);
 			name = Expositions;
 			packageProductDependencies = (
-				1F3818252C4E490C00F7B659 /* OfficeFileReader */,
 			);
 			productName = RecordingPages;
 			productReference = 1F01950C2C4162A4001E15B1 /* Expositions.app */;
@@ -357,6 +357,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F3711302C4E60F1008ABFA6 /* Player.swift in Sources */,
 				1F3E3F0D2C4C23900098432E /* ExpositionStyleSpecialSubject.swift in Sources */,
 				1FE219932C49610400A9A159 /* SectionListView.swift in Sources */,
 				1F01953A2C416332001E15B1 /* TestView.swift in Sources */,
@@ -541,7 +542,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RecordingPages/Preview Content\"";
-				DEVELOPMENT_TEAM = RZHZCQW6K3;
+				DEVELOPMENT_TEAM = 8ZJ59GR2V8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RecordingPages/Info.plist;
@@ -558,7 +559,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = it.carminematarazzo.Expositions;
+				PRODUCT_BUNDLE_IDENTIFIER = it.giovannidauria;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -574,7 +575,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RecordingPages/Preview Content\"";
-				DEVELOPMENT_TEAM = RZHZCQW6K3;
+				DEVELOPMENT_TEAM = 8ZJ59GR2V8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RecordingPages/Info.plist;
@@ -591,7 +592,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = it.carminematarazzo.Expositions;
+				PRODUCT_BUNDLE_IDENTIFIER = it.giovannidauria;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -734,14 +735,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		1F3818252C4E490C00F7B659 /* OfficeFileReader */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1F3818242C4E48B900F7B659 /* XCRemoteSwiftPackageReference "OfficeFileReader" */;
-			productName = OfficeFileReader;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1F0195042C4162A4001E15B1 /* Project object */;
 }

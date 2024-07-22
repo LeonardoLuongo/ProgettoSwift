@@ -1,10 +1,3 @@
-//
-//  RecordingManager.swift
-//  RecordingPages
-//
-//  Created by Studente on 12/07/24.
-//
-
 import SwiftUI
 import Combine
 import AVFoundation
@@ -32,6 +25,13 @@ class RecordingManager: ObservableObject, Codable {
     var audioPath: URL? //  Complete audio path
     var docPath: URL?   // Complete document path
     var duration = Duration(hours: 0, minutes: 0, seconds: 0)   // Duration of the record
+    
+    /*  Speech to text vars */
+    let audioEngine = AVAudioEngine()
+    let speechReconizer : SFSpeechRecognizer? = SFSpeechRecognizer()
+    let request = SFSpeechAudioBufferRecognitionRequest()
+    var task : SFSpeechRecognitionTask!
+    var isStart : Bool = false
     var transcription: String = ""  // Output of the speech to text
     
     init() {
@@ -159,16 +159,16 @@ class RecordingManager: ObservableObject, Codable {
     }
 
     func finishRecordingHandler() {
-        isRecording = false
-        showAlert = true
-    }
-    
-    func finishRecording(success: Bool) {
         guard let resourcePath = Bundle.main.resourcePath else { return }
         audioPath = URL(fileURLWithPath: "\(resourcePath)/\(recordFilename)")
         audioRecorder?.stop()
         audioRecorder = nil
         
+        isRecording = false
+        showAlert = true
+    }
+    
+    func finishRecording(success: Bool) {
         showAlert = false
 
         if !success {
@@ -213,33 +213,42 @@ class RecordingManager: ObservableObject, Codable {
     }
     
     func transcribeAudio(url: URL) {
-        guard let myRecognizerIT = SFSpeechRecognizer(locale: Locale(identifier: "it_IT")) else {
+        guard let myRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "it_IT")) else {
             print("The recognizer is not supported for the current locale")
             return
         }
         
-        if !myRecognizerIT.isAvailable {
+        if !myRecognizer.isAvailable {
             print("The recognizer is not available right now")
             return
         }
         
-        let path_to_audio = url
-        print(path_to_audio)
-        let request = SFSpeechURLRecognitionRequest(url: path_to_audio)
-        print("About to create recognition task...")
+        let request = SFSpeechURLRecognitionRequest(url: url)
         
-        myRecognizerIT.recognitionTask(with: request) { (result, error) in
+        myRecognizer.recognitionTask(with: request) { (result, error) in
             guard let result = result else {
                 print("Recognition failed, please check the printed error message")
-                print(error!)
+                if let error = error {
+                    print(error)
+                }
                 return
             }
+            
             if result.isFinal {
-                print(result.bestTranscription.formattedString)
                 self.transcription = result.bestTranscription.formattedString
+                print(self.transcription ?? "No transcription available")
+                
+                // Iterate through each segment to get word and timestamp
+                for segment in result.bestTranscription.segments {
+                    let word = segment.substring
+                    let timestamp = segment.timestamp
+                    print("\(word):\t\(timestamp) seconds")
+                }
             }
         }
     }
+    
+    
     
 }
 
@@ -248,4 +257,3 @@ struct Duration: Codable {
     var minutes: Int
     var seconds: Int
 }
-

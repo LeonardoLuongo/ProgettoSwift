@@ -6,6 +6,7 @@
 //
 
 import XCTest
+
 // @testable import RecordingPages
 
 final class RecordingPagesTests: XCTestCase {
