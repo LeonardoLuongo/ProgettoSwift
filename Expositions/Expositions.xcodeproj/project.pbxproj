@@ -312,8 +312,6 @@
 			);
 			mainGroup = 1F0195032C4162A4001E15B1;
 			packageReferences = (
-				1F3818242C4E48B900F7B659 /* XCRemoteSwiftPackageReference "OfficeFileReader" */,
-				1F3818272C4E51A000F7B659 /* XCRemoteSwiftPackageReference "core" */,
 			);
 			productRefGroup = 1F01950D2C4162A4001E15B1 /* Products */;
 			projectDirPath = "";
@@ -716,25 +714,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		1F3818242C4E48B900F7B659 /* XCRemoteSwiftPackageReference "OfficeFileReader" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/hughbe/OfficeFileReader";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-		1F3818272C4E51A000F7B659 /* XCRemoteSwiftPackageReference "core" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/LibreOffice/core";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 1F0195042C4162A4001E15B1 /* Project object */;
 }
