@@ -51,14 +51,17 @@ struct Player: View {
         .padding()
         .onAppear {
             if let audioPath = recordingManager.audioPath {
-                self.playerItem = AVPlayerItem(url: audioPath)
-                self.player = AVPlayer(playerItem: playerItem)
-                
-                self.playerObserver = player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 600), queue: .main) { time in
-                    self.currentTime = time.seconds
+                if audioPath.startAccessingSecurityScopedResource() {
+                    defer { audioPath.stopAccessingSecurityScopedResource() }
+                    self.playerItem = AVPlayerItem(url: audioPath)
+                    self.player = AVPlayer(playerItem: playerItem)
+                    
+                    self.playerObserver = player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 600), queue: .main) { time in
+                        self.currentTime = time.seconds
+                    }
+                    
+                    self.duration = playerItem?.asset.duration.seconds ?? 0
                 }
-                
-                self.duration = playerItem?.asset.duration.seconds ?? 0
             }
         }
         .onDisappear {

@@ -58,6 +58,7 @@ struct RecordPage: View {
                         switch results {
                         case .success(let fileurl):
                             if fileurl[0].startAccessingSecurityScopedResource() {
+                                defer { fileurl[0].stopAccessingSecurityScopedResource() }
                                 var paths = "\(fileurl[0])".split(separator: "/")
                                 paths.reverse()
                                 paths[0] = "\(paths[0].replacingOccurrences(of: "%20", with: " ").lowercased())"
@@ -67,7 +68,6 @@ struct RecordPage: View {
                                     print("FilePath: \(docPath)")
                                 }
                                 recordingManager.textLoaded = true
-                                fileurl[0].stopAccessingSecurityScopedResource()
                                 Exposition.saveDictionary(expositions: expositions)
                             }
                         case .failure(let error):
@@ -133,7 +133,6 @@ struct RecordPage: View {
                                             }
                                             recordingManager.recorded = true
                                             recordingManager.recLoaded = true
-                                            fileurl[0].stopAccessingSecurityScopedResource()
                                         }
                                     case .failure(let error):
                                         print(error)
