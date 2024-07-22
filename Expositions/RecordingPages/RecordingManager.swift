@@ -10,7 +10,7 @@ import Combine
 import AVFoundation
 import Speech
 
-class RecordingManager: ObservableObject {
+class RecordingManager: ObservableObject, Codable {
     let dateFormatter: DateFormatter
     let date: Date
     
@@ -44,6 +44,42 @@ class RecordingManager: ObservableObject {
         recordFilename = "record\(dateFormatter.string(from: date)).m4a"
         recordFilename = "\(recordFilename.replacingOccurrences(of: " ", with: "").lowercased())"
         setupRecordingSession()
+    }
+    
+    enum CodingKeys: CodingKey {
+        case nameKey, dateKey, recordNameKey, audioPathKey, docPathKey, durationKey, transcriptionKey, recordedKey, recLoadedKey, textLoadedKey, docFileNameKey
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(recordName, forKey: .nameKey)
+        try container.encode(date, forKey: .dateKey)
+        try container.encode(recordFilename, forKey: .recordNameKey)
+        try container.encodeIfPresent(audioPath, forKey: .audioPathKey)
+        try container.encodeIfPresent(docPath, forKey: .docPathKey)
+        try container.encode(duration, forKey: .durationKey)
+        try container.encode(transcription, forKey: .transcriptionKey)
+        try container.encode(recorded, forKey: .recordedKey)
+        try container.encode(recLoaded, forKey: .recLoadedKey)
+        try container.encode(textLoaded, forKey: .textLoadedKey)
+        try container.encode(docFilename, forKey: .docFileNameKey)
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        date = try container.decode(Date.self, forKey: .dateKey)
+        dateFormatter = DateFormatter()
+        defaultRecordName = "Record \(dateFormatter.string(from: date))"
+        recordName = try container.decode(String.self, forKey: .nameKey)
+        recordFilename = try container.decode(String.self, forKey: .recordNameKey)
+        audioPath = try container.decodeIfPresent(URL.self, forKey: .audioPathKey)
+        docPath = try container.decodeIfPresent(URL.self, forKey: .docPathKey)
+        duration = try container.decode(Duration.self, forKey: .durationKey)
+        transcription = try container.decode(String.self, forKey: .transcriptionKey)
+        recorded = try container.decode(Bool.self, forKey: .recordedKey)
+        recLoaded = try container.decode(Bool.self, forKey: .recLoadedKey)
+        textLoaded = try container.decode(Bool.self, forKey: .textLoadedKey)
+        docFilename = try container.decode(String.self, forKey: .docFileNameKey)
     }
 
     private func setupRecordingSession() {
@@ -207,7 +243,7 @@ class RecordingManager: ObservableObject {
     
 }
 
-struct Duration {
+struct Duration: Codable {
     var hours: Int
     var minutes: Int
     var seconds: Int

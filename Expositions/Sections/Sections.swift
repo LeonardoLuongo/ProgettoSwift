@@ -10,12 +10,17 @@ import PhotosUI
 
 struct Sections: View {
     @Binding var sections: [Section]
+    @Binding var expositions: [Int:[Exposition]]
+    
     @State private var searchText = ""
+    
     @State private var showNewWindow = false
     @State private var showIconView = false
     @State private var showAlertIcon = false
     @State private var showRenameWindow = false
     @State private var showPhotosPicker = false
+    @State private var showPhotoAlert = false
+    
     @State private var selectedItem: PhotosPickerItem?
     @State private var selectedImage: UIImage?
     @State private var text: String = ""
@@ -26,7 +31,7 @@ struct Sections: View {
             List {
                 ForEach($sections, id: \.id) { $section in
                     if searchText.isEmpty || section.name.lowercased().starts(with: searchText.lowercased()) {
-                        NavigationLink(destination: Subject(section: $section, sections: $sections)) {
+                        NavigationLink(destination: Subject(section: $section, sections: $sections, expositions: $expositions)) {
                             SectionRow(section: $section)
                         }
                         .contextMenu {
@@ -49,7 +54,7 @@ struct Sections: View {
                         NewButton()
                     }
                     .sheet(isPresented: self.$showNewWindow) {
-                        ModalAdd(sections: $sections, color: Color.gray.opacity(0.8), symbol: "")
+                        CreateSectionView(sections: $sections, expositions: $expositions, color: Color.gray.opacity(0.8), symbol: "")
                             .presentationDetents([.medium, .large])
                             .presentationCompactAdaptation(.none)
                     }
@@ -67,13 +72,12 @@ struct Sections: View {
             Text("Rename section"),
             isPresented: $showRenameWindow
         ) {
-            Button("Cancel", role: .cancel) {}
-            Button("Confirm") {
-                renameSection()
-                text = ""
-            }
-            .disabled(text == "")
-            .opacity(text == "" ? 0.5 : 1)
+            Button("Cancel", role: .cancel) {text = ""}
+            Button("Confirm", action: {
+                if text != "" {
+                    renameSection()
+                }
+            })
             TextField("Insert new name...", text: $text)
         }
         .photosPicker(isPresented: $showPhotosPicker, selection: $selectedItem, matching: .images).onChange(of: selectedItem) {
@@ -84,9 +88,12 @@ struct Sections: View {
                         changeImage(image: image)
                     }
                 } else {
-                    // gestire l'errore
+                    showPhotoAlert.toggle()
                 }
             }
+        }
+        .alert("Photo selection failed. Try again.", isPresented: $showPhotoAlert) {
+            Button("Ok", role: .cancel) {}
         }
     }
     
@@ -239,6 +246,6 @@ struct NewButton: View {
 }
 
 #Preview {
-    Sections(sections: .constant([Section(name: "Science", image: nil, symbol: "atom", color: Color(red: 0.6941176470588235, green: 0.8666666666666667, blue: 0.5450980392156862)),Section(name: "History", image: nil, symbol: "fossil.shell.fill", color: Color(red: 0.996078431372549, green: 0.7058823529411765, blue: 0.24705882352941178)),Section(name: "Literature", image: UIImage(named: "shakespeare"), symbol: nil, color: nil)]))
+    Sections(sections: .constant([Section(name: "Science", image: nil, symbol: "atom", color: Color(red: 0.6941176470588235, green: 0.8666666666666667, blue: 0.5450980392156862)),Section(name: "History", image: nil, symbol: "fossil.shell.fill", color: Color(red: 0.996078431372549, green: 0.7058823529411765, blue: 0.24705882352941178)),Section(name: "Literature", image: UIImage(named: "shakespeare"), symbol: nil, color: nil)]),expositions: .constant([3:[Exposition(date: "03-12-2024", grade: "10",secCode:3)]]))
 }
 

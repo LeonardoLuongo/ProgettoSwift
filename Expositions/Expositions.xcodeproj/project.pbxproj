@@ -19,11 +19,21 @@
 		1F01953E2C41638E001E15B1 /* RecordBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F01953D2C41638E001E15B1 /* RecordBar.swift */; };
 		1F0195402C4163A9001E15B1 /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F01953F2C4163A9001E15B1 /* RecordingManager.swift */; };
 		1F0195422C4163F2001E15B1 /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0195412C4163F2001E15B1 /* Stopwatch.swift */; };
+		1F3818042C4D2FAF00F7B659 /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3818032C4D2FAF00F7B659 /* IconView.swift */; };
+		1F3818232C4E465500F7B659 /* DocumentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3818222C4E465500F7B659 /* DocumentManager.swift */; };
+		1F3818262C4E490C00F7B659 /* OfficeFileReader in Frameworks */ = {isa = PBXBuildFile; productRef = 1F3818252C4E490C00F7B659 /* OfficeFileReader */; };
+		1F3E3F0B2C4C23620098432E /* ExpositionStyleSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F0A2C4C23620098432E /* ExpositionStyleSubject.swift */; };
+		1F3E3F0D2C4C23900098432E /* ExpositionStyleSpecialSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F0C2C4C23900098432E /* ExpositionStyleSpecialSubject.swift */; };
+		1F3E3F0F2C4C23F30098432E /* ExpositionRowSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F0E2C4C23F30098432E /* ExpositionRowSubject.swift */; };
+		1F3E3F112C4C24050098432E /* ExpositionRowTrash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F102C4C24050098432E /* ExpositionRowTrash.swift */; };
+		1F3E3F152C4C28EB0098432E /* Exposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F142C4C28EB0098432E /* Exposition.swift */; };
+		1F3E3F172C4C29B30098432E /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F162C4C29B30098432E /* Section.swift */; };
 		1F6C0F932C46D86D007D03A0 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F922C46D86D007D03A0 /* Sections.swift */; };
 		1F6C0F952C46D877007D03A0 /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F942C46D877007D03A0 /* Subject.swift */; };
-		1F6C0F972C46D88C007D03A0 /* ModalAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F962C46D88C007D03A0 /* ModalAdd.swift */; };
+		1F6C0F972C46D88C007D03A0 /* CreateSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F962C46D88C007D03A0 /* CreateSectionView.swift */; };
 		1F6C0F992C46D89D007D03A0 /* CreateIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F982C46D89D007D03A0 /* CreateIconView.swift */; };
 		1FAF4BE62C47FFFB00A18150 /* IconEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAF4BE52C47FFFB00A18150 /* IconEditor.swift */; };
+		1FE219932C49610400A9A159 /* SectionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE219922C49610400A9A159 /* SectionListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,12 +69,21 @@
 		1F01953D2C41638E001E15B1 /* RecordBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordBar.swift; sourceTree = "<group>"; };
 		1F01953F2C4163A9001E15B1 /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
 		1F0195412C4163F2001E15B1 /* Stopwatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stopwatch.swift; sourceTree = "<group>"; };
+		1F3818032C4D2FAF00F7B659 /* IconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconView.swift; sourceTree = "<group>"; };
+		1F3818222C4E465500F7B659 /* DocumentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentManager.swift; sourceTree = "<group>"; };
+		1F3E3F0A2C4C23620098432E /* ExpositionStyleSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpositionStyleSubject.swift; sourceTree = "<group>"; };
+		1F3E3F0C2C4C23900098432E /* ExpositionStyleSpecialSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpositionStyleSpecialSubject.swift; sourceTree = "<group>"; };
+		1F3E3F0E2C4C23F30098432E /* ExpositionRowSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpositionRowSubject.swift; sourceTree = "<group>"; };
+		1F3E3F102C4C24050098432E /* ExpositionRowTrash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpositionRowTrash.swift; sourceTree = "<group>"; };
+		1F3E3F142C4C28EB0098432E /* Exposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exposition.swift; sourceTree = "<group>"; };
+		1F3E3F162C4C29B30098432E /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		1F65A5F72C4525A80085A7ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1F6C0F922C46D86D007D03A0 /* Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sections.swift; sourceTree = "<group>"; };
 		1F6C0F942C46D877007D03A0 /* Subject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subject.swift; sourceTree = "<group>"; };
-		1F6C0F962C46D88C007D03A0 /* ModalAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalAdd.swift; sourceTree = "<group>"; };
+		1F6C0F962C46D88C007D03A0 /* CreateSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSectionView.swift; sourceTree = "<group>"; };
 		1F6C0F982C46D89D007D03A0 /* CreateIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateIconView.swift; sourceTree = "<group>"; };
 		1FAF4BE52C47FFFB00A18150 /* IconEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconEditor.swift; sourceTree = "<group>"; };
+		1FE219922C49610400A9A159 /* SectionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F3818262C4E490C00F7B659 /* OfficeFileReader in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,10 +118,11 @@
 				1F01950F2C4162A4001E15B1 /* Expositions.swift */,
 				1F0195112C4162A4001E15B1 /* ContentView.swift */,
 				1F0195132C4162A5001E15B1 /* Assets.xcassets */,
+				1F3E3F132C4C28DE0098432E /* Classes & Structs */,
+				1F3E3F122C4C244E0098432E /* Subjects */,
 				1F6C0F912C46D85B007D03A0 /* Sections */,
 				1F01950E2C4162A4001E15B1 /* RecordingPages */,
-				1F01951F2C4162A5001E15B1 /* RecordingPagesTests */,
-				1F0195292C4162A5001E15B1 /* RecordingPagesUITests */,
+				1F3818212C4E463500F7B659 /* Documents */,
 				1F01950D2C4162A4001E15B1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -119,8 +140,10 @@
 		1F01950E2C4162A4001E15B1 /* RecordingPages */ = {
 			isa = PBXGroup;
 			children = (
-				1F65A5F72C4525A80085A7ED /* Info.plist */,
 				1F0195152C4162A5001E15B1 /* Preview Content */,
+				1F01951F2C4162A5001E15B1 /* RecordingPagesTests */,
+				1F0195292C4162A5001E15B1 /* RecordingPagesUITests */,
+				1F65A5F72C4525A80085A7ED /* Info.plist */,
 				1F0195392C416332001E15B1 /* TestView.swift */,
 				1F01953B2C41636B001E15B1 /* RecordPage.swift */,
 				1F01953D2C41638E001E15B1 /* RecordBar.swift */,
@@ -155,14 +178,44 @@
 			path = RecordingPagesUITests;
 			sourceTree = "<group>";
 		};
+		1F3818212C4E463500F7B659 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				1F3818222C4E465500F7B659 /* DocumentManager.swift */,
+			);
+			path = Documents;
+			sourceTree = "<group>";
+		};
+		1F3E3F122C4C244E0098432E /* Subjects */ = {
+			isa = PBXGroup;
+			children = (
+				1F6C0F942C46D877007D03A0 /* Subject.swift */,
+				1F3E3F102C4C24050098432E /* ExpositionRowTrash.swift */,
+				1F3E3F0E2C4C23F30098432E /* ExpositionRowSubject.swift */,
+				1F3E3F0C2C4C23900098432E /* ExpositionStyleSpecialSubject.swift */,
+				1F3E3F0A2C4C23620098432E /* ExpositionStyleSubject.swift */,
+			);
+			path = Subjects;
+			sourceTree = "<group>";
+		};
+		1F3E3F132C4C28DE0098432E /* Classes & Structs */ = {
+			isa = PBXGroup;
+			children = (
+				1F3E3F142C4C28EB0098432E /* Exposition.swift */,
+				1F3E3F162C4C29B30098432E /* Section.swift */,
+			);
+			path = "Classes & Structs";
+			sourceTree = "<group>";
+		};
 		1F6C0F912C46D85B007D03A0 /* Sections */ = {
 			isa = PBXGroup;
 			children = (
 				1F6C0F922C46D86D007D03A0 /* Sections.swift */,
+				1FE219922C49610400A9A159 /* SectionListView.swift */,
 				1FAF4BE52C47FFFB00A18150 /* IconEditor.swift */,
-				1F6C0F942C46D877007D03A0 /* Subject.swift */,
-				1F6C0F962C46D88C007D03A0 /* ModalAdd.swift */,
+				1F6C0F962C46D88C007D03A0 /* CreateSectionView.swift */,
 				1F6C0F982C46D89D007D03A0 /* CreateIconView.swift */,
+				1F3818032C4D2FAF00F7B659 /* IconView.swift */,
 			);
 			path = Sections;
 			sourceTree = "<group>";
@@ -183,6 +236,9 @@
 			dependencies = (
 			);
 			name = Expositions;
+			packageProductDependencies = (
+				1F3818252C4E490C00F7B659 /* OfficeFileReader */,
+			);
 			productName = RecordingPages;
 			productReference = 1F01950C2C4162A4001E15B1 /* Expositions.app */;
 			productType = "com.apple.product-type.application";
@@ -255,6 +311,10 @@
 				Base,
 			);
 			mainGroup = 1F0195032C4162A4001E15B1;
+			packageReferences = (
+				1F3818242C4E48B900F7B659 /* XCRemoteSwiftPackageReference "OfficeFileReader" */,
+				1F3818272C4E51A000F7B659 /* XCRemoteSwiftPackageReference "core" */,
+			);
 			productRefGroup = 1F01950D2C4162A4001E15B1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -297,10 +357,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F3E3F0D2C4C23900098432E /* ExpositionStyleSpecialSubject.swift in Sources */,
+				1FE219932C49610400A9A159 /* SectionListView.swift in Sources */,
 				1F01953A2C416332001E15B1 /* TestView.swift in Sources */,
+				1F3E3F0B2C4C23620098432E /* ExpositionStyleSubject.swift in Sources */,
+				1F3818232C4E465500F7B659 /* DocumentManager.swift in Sources */,
 				1F6C0F992C46D89D007D03A0 /* CreateIconView.swift in Sources */,
-				1F6C0F972C46D88C007D03A0 /* ModalAdd.swift in Sources */,
+				1F3818042C4D2FAF00F7B659 /* IconView.swift in Sources */,
+				1F6C0F972C46D88C007D03A0 /* CreateSectionView.swift in Sources */,
+				1F3E3F172C4C29B30098432E /* Section.swift in Sources */,
 				1FAF4BE62C47FFFB00A18150 /* IconEditor.swift in Sources */,
+				1F3E3F112C4C24050098432E /* ExpositionRowTrash.swift in Sources */,
 				1F6C0F932C46D86D007D03A0 /* Sections.swift in Sources */,
 				1F0195402C4163A9001E15B1 /* RecordingManager.swift in Sources */,
 				1F0195122C4162A4001E15B1 /* ContentView.swift in Sources */,
@@ -308,7 +375,9 @@
 				1F01953E2C41638E001E15B1 /* RecordBar.swift in Sources */,
 				1F0195422C4163F2001E15B1 /* Stopwatch.swift in Sources */,
 				1F6C0F952C46D877007D03A0 /* Subject.swift in Sources */,
+				1F3E3F152C4C28EB0098432E /* Exposition.swift in Sources */,
 				1F01953C2C41636B001E15B1 /* RecordPage.swift in Sources */,
+				1F3E3F0F2C4C23F30098432E /* ExpositionRowSubject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -646,6 +715,33 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1F3818242C4E48B900F7B659 /* XCRemoteSwiftPackageReference "OfficeFileReader" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hughbe/OfficeFileReader";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		1F3818272C4E51A000F7B659 /* XCRemoteSwiftPackageReference "core" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LibreOffice/core";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1F3818252C4E490C00F7B659 /* OfficeFileReader */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1F3818242C4E48B900F7B659 /* XCRemoteSwiftPackageReference "OfficeFileReader" */;
+			productName = OfficeFileReader;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1F0195042C4162A4001E15B1 /* Project object */;
 }

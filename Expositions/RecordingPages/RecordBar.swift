@@ -9,6 +9,8 @@ import SwiftUI
 
 struct RecordBar: View {
     @ObservedObject var recordingManager: RecordingManager
+    
+    @Binding var expositions: [Int:[Exposition]]
 
     var body: some View {
         VStack {
@@ -86,6 +88,10 @@ struct RecordBar: View {
                             message: Text("The operation is irreversible."),
                             primaryButton: .default(Text("Save")) {
                                 recordingManager.finishRecording(success: true)
+                                print(recordingManager.duration)
+                                print(recordingManager.audioPath)
+                                print(recordingManager.recorded)
+                                Exposition.saveDictionary(expositions: expositions)
                             },
                             secondaryButton: .cancel(Text("Cancel")) {
                                 recordingManager.finishRecording(success: false)
@@ -103,5 +109,5 @@ struct RecordBar: View {
 }
 
 #Preview {
-    RecordBar(recordingManager: RecordingManager())
+    RecordBar(recordingManager: RecordingManager(), expositions: .constant([3:[Exposition(date: "07-20-2024", grade: "10", secCode: 3)]]))
 }

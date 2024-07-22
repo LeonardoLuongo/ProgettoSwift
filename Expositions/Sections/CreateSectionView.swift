@@ -8,10 +8,11 @@
 import SwiftUI
 import PhotosUI
 
-struct ModalAdd: View {
+struct CreateSectionView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @Binding var sections: [Section]
+    @Binding var expositions: [Int:[Exposition]]
     
     @State private var sectionName: String = ""
     
@@ -143,14 +144,20 @@ struct ModalAdd: View {
             CreateIconView(selectedSymbol: $symbol, selectedColor: $color)
         }
         Button(action: {
+            var section: Section? = nil
             if let image = selectedImage {
-                sections.append(Section(name: sectionName, image: image, symbol: nil, color: nil))
+                section = Section(name: sectionName, image: image, symbol: nil, color: nil)
             } else if symbol != "" {
-                sections.append(Section(name: sectionName, image: nil, symbol: symbol, color: color))
+                section = Section(name: sectionName, image: nil, symbol: symbol, color: color)
             } else {
-                sections.append(Section(name: sectionName, image: nil, symbol: nil, color: color))
+                section = Section(name: sectionName, image: nil, symbol: nil, color: color)
             }
-            Section.save(sections: sections)
+            if let section = section {
+                sections.append(section)
+                Section.save(sections: sections)
+                expositions[section.secCode] = []
+                Exposition.saveDictionary(expositions: expositions)
+            }
             presentationMode.wrappedValue.dismiss()
         }) {
             Text("Done")
@@ -168,5 +175,5 @@ struct ModalAdd: View {
 }
 
 #Preview {
-    ModalAdd(sections: .constant([Section(name: "Science", image: nil, symbol: "atom", color: Color(red: 0.6941176470588235, green: 0.8666666666666667, blue: 0.5450980392156862)),Section(name: "History", image: nil, symbol: "fossil.shell.fill", color: Color(red: 0.996078431372549, green: 0.7058823529411765, blue: 0.24705882352941178)),Section(name: "Literature", image: UIImage(contentsOfFile: "shakespeare"), symbol: nil, color: nil)]), color: Color(red: 0.8274509803921568, green: 0.8274509803921568, blue: 0.8274509803921568), symbol: "book.fill")
+    CreateSectionView(sections: .constant([Section(name: "Science", image: nil, symbol: "atom", color: Color(red: 0.6941176470588235, green: 0.8666666666666667, blue: 0.5450980392156862)),Section(name: "History", image: nil, symbol: "fossil.shell.fill", color: Color(red: 0.996078431372549, green: 0.7058823529411765, blue: 0.24705882352941178)),Section(name: "Literature", image: UIImage(contentsOfFile: "shakespeare"), symbol: nil, color: nil)]), expositions: .constant([:]), color: Color(red: 0.8274509803921568, green: 0.8274509803921568, blue: 0.8274509803921568), symbol: "book.fill")
 }

@@ -12,6 +12,8 @@ struct RecordPage: View {
     @State private var isLoadingFile: Bool = false
     @State private var isLoadingAudio: Bool = false
     
+    @Binding var expositions: [Int:[Exposition]]
+    
     var body: some View {
         GeometryReader { metrics in     //used to obtain the dimensions of the container
             ZStack {
@@ -73,6 +75,7 @@ struct RecordPage: View {
                                 }
                                 recordingManager.textLoaded = true
                                 fileurl[0].stopAccessingSecurityScopedResource()
+                                Exposition.saveDictionary(expositions: expositions)
                             }
                         case .failure(let error):
                             print(error)
@@ -143,6 +146,7 @@ struct RecordPage: View {
                                 recordingManager.recorded = true
                                 recordingManager.recLoaded = true
                                 fileurl[0].stopAccessingSecurityScopedResource()
+                                Exposition.saveDictionary(expositions: expositions)
                             }
                         case .failure(let error):
                             print(error)
@@ -168,12 +172,12 @@ struct RecordPage: View {
                 }
                 
                 /*  The bottom recording bar */
-                RecordBar(recordingManager: recordingManager)
+                RecordBar(recordingManager: recordingManager, expositions: $expositions)
             }
         }
     }
 }
 
 #Preview {
-    RecordPage()
+    RecordPage(expositions: .constant([3:[Exposition(date: "07-20-2024", grade: "10", secCode: 3)]]))
 }
