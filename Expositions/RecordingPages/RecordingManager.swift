@@ -7,32 +7,30 @@ class RecordingManager: ObservableObject, Codable {
     let dateFormatter: DateFormatter
     let date: Date
     
-    @Published var recordName: String   //  Name chosen by the user in the Textfield
-    @Published final var defaultRecordName: String  // Name visualized outside of the page if the textfield is empty
-    @Published var isRecording: Bool = false    //  true - an audio is being recorded
-    @Published var showAlert: Bool = false  //  The alert for save the record must be visualized
-    @Published var showErrorAlert: Bool = false //  The error alert must be visualized
-    @Published var errorMessage: String = ""    //  The message visualized in the error alert
-    @Published var recorded: Bool = false   //  An audio has been recorded
-    @Published var recLoaded: Bool = false  //  An audio has been loaded
-    @Published var textLoaded: Bool = false //  A document has been loaded
-    @Published var docFilename: String = "" //  Document name
-    @Published var recordFilename: String = ""  //  Record name
+    @Published var recordName: String
+    @Published final var defaultRecordName: String
+    @Published var isRecording: Bool = false
+    @Published var showAlert: Bool = false
+    @Published var showErrorAlert: Bool = false
+    @Published var errorMessage: String = ""
+    @Published var recorded: Bool = false
+    @Published var recLoaded: Bool = false
+    @Published var textLoaded: Bool = false
+    @Published var docFilename: String = ""
+    @Published var recordFilename: String = ""
     
     private var audioRecorder: AVAudioRecorder?
-    private var recordingSession1: AVAudioSession?
-    private var recordingSession2: AVAudioApplication?
-    var audioPath: URL? //  Complete audio path
-    var docPath: URL?   // Complete document path
-    var duration = Duration(hours: 0, minutes: 0, seconds: 0)   // Duration of the record
+    private var recordingSession: AVAudioSession?
+    var audioPath: URL?
+    var docPath: URL?
+    var duration = Duration(hours: 0, minutes: 0, seconds: 0)
     
-    /*  Speech to text vars */
     let audioEngine = AVAudioEngine()
-    let speechReconizer : SFSpeechRecognizer? = SFSpeechRecognizer()
+    let speechRecognizer: SFSpeechRecognizer? = SFSpeechRecognizer(locale: Locale(identifier: "it-IT"))
     let request = SFSpeechAudioBufferRecognitionRequest()
-    var task : SFSpeechRecognitionTask!
-    var isStart : Bool = false
-    var transcription: String = ""  // Output of the speech to text
+    var task: SFSpeechRecognitionTask?
+    var isStart: Bool = false
+    var transcription: String = ""
     
     init() {
         dateFormatter = DateFormatter()
@@ -81,64 +79,40 @@ class RecordingManager: ObservableObject, Codable {
         textLoaded = try container.decode(Bool.self, forKey: .textLoadedKey)
         docFilename = try container.decode(String.self, forKey: .docFileNameKey)
     }
-
+    
     private func setupRecordingSession() {
-//        if #available(iOS 17, *) {
-//            recordingSession2 = AVAudioApplication.shared
-//            recordingSession1 = AVAudioSession.sharedInstance()
-//            do{
-//                try recordingSession1?.setCategory(.playback)
-//                try recordingSession1?.setActive(true)
-//            } catch {
-//                print("error")
-//            }
-//            AVAudioApplication.requestRecordPermission { allowed in
-//                DispatchQueue.main.async {
-//                    if allowed {
-//                        print("Permission granted")
-//                    } else {
-//                        print("Permission denied")
-//                    }
-//                }
-//            }
-//        } else {
-            recordingSession1 = AVAudioSession.sharedInstance()
-
-            do {
-                try recordingSession1?.setCategory(.playAndRecord, mode: .default)
-                try recordingSession1?.setActive(true)
-                recordingSession1?.requestRecordPermission { allowed in
-                    DispatchQueue.main.async {
-                        if allowed {
-                            print("Permission granted")
-                        } else {
-                            print("Permission denied")                        }
+        recordingSession = AVAudioSession.sharedInstance()
+        
+        do {
+            try recordingSession?.setCategory(.playAndRecord, mode: .default)
+            try recordingSession?.setActive(true)
+            recordingSession?.requestRecordPermission { allowed in
+                DispatchQueue.main.async {
+                    if allowed {
+                        print("Permission granted")
+                    } else {
+                        print("Permission denied")
                     }
                 }
-            } catch {
-                print("Failed to set up recording session")
             }
-        //}
+        } catch {
+            print("Failed to set up recording session: \(error.localizedDescription)")
+        }
     }
-    
-    
     
     func getAudioPath(recordFilename: String) -> URL? {
         let resourcePaths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let resourchPath = resourcePaths[0]
-        audioPath = resourchPath.appendingPathComponent(recordFilename)
+        let resourcePath = resourcePaths[0]
+        audioPath = resourcePath.appendingPathComponent(recordFilename)
         return audioPath
     }
     
-
-
     func startRecording() {
         isRecording = true
         
         audioPath = getAudioPath(recordFilename: recordFilename)
-
+        
         if let audioPath = audioPath {
-    
             if FileManager.default.fileExists(atPath: audioPath.path) {
                 errorMessage = "Something went wrong. Please delete this page and create a new one."
                 showErrorAlert = true
@@ -155,7 +129,7 @@ class RecordingManager: ObservableObject, Codable {
             AVNumberOfChannelsKey: 1,
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
         ]
-
+        
         do {
             if let audioPath = audioPath {
                 audioRecorder = try AVAudioRecorder(url: audioPath, settings: settings)
@@ -166,7 +140,7 @@ class RecordingManager: ObservableObject, Codable {
             finishRecordingHandler()
         }
     }
-
+    
     func finishRecordingHandler() {
         audioPath = getAudioPath(recordFilename: recordFilename)
         audioRecorder?.stop()
@@ -178,9 +152,8 @@ class RecordingManager: ObservableObject, Codable {
     
     func finishRecording(success: Bool) {
         showAlert = false
-
+        
         if !success {
-            // Handle recording failure
             recorded = false
             print("Recording failed")
         } else {
@@ -188,7 +161,7 @@ class RecordingManager: ObservableObject, Codable {
                 recorded = true
                 print("FilePath: \(audioPath)")
                 requestTranscribePermissions()
-                transcribeAudio(url: audioPath)
+                processAudioFile(url: audioPath)
             }
         }
     }
@@ -198,7 +171,16 @@ class RecordingManager: ObservableObject, Codable {
             print("No recorded audio file found.")
             return
         }
-
+        
+        guard audioPath.startAccessingSecurityScopedResource() else {
+            print("Permission denied to access the file at \(audioPath)")
+            return
+        }
+        
+        defer {
+            audioPath.stopAccessingSecurityScopedResource()
+        }
+        
         do {
             try FileManager.default.removeItem(at: audioPath)
             print("Recorded audio file deleted successfully.")
@@ -220,7 +202,67 @@ class RecordingManager: ObservableObject, Codable {
         }
     }
     
-    func transcribeAudio(url: URL) {
+    func segmentAudio(url: URL, segmentDuration: TimeInterval) -> [URL] {
+        guard url.startAccessingSecurityScopedResource() else {
+            print("Permission denied to access the file at \(url)")
+            return []
+        }
+        
+        defer {
+            url.stopAccessingSecurityScopedResource()
+        }
+        
+        let asset = AVAsset(url: url)
+        let duration = CMTimeGetSeconds(asset.duration)
+        var segments: [URL] = []
+        
+        var currentStartTime: TimeInterval = 0
+        while currentStartTime < duration {
+            let endTime = min(currentStartTime + segmentDuration, duration)
+            let timeRange = CMTimeRange(start: CMTime(seconds: currentStartTime, preferredTimescale: 600), end: CMTime(seconds: endTime, preferredTimescale: 600))
+            
+            if let outputURL = createTemporaryURL() {
+                let success = exportSegment(asset: asset, timeRange: timeRange, outputURL: outputURL)
+                if success {
+                    segments.append(outputURL)
+                }
+            }
+            currentStartTime += segmentDuration
+        }
+        return segments
+    }
+    
+    private func createTemporaryURL() -> URL? {
+        let tempDirectory = NSTemporaryDirectory()
+        let tempFile = UUID().uuidString + ".m4a"
+        return URL(fileURLWithPath: tempDirectory).appendingPathComponent(tempFile)
+    }
+    
+    private func exportSegment(asset: AVAsset, timeRange: CMTimeRange, outputURL: URL) -> Bool {
+        let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
+        exportSession?.outputURL = outputURL
+        exportSession?.outputFileType = .m4a
+        exportSession?.timeRange = timeRange
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        var success = false
+        exportSession?.exportAsynchronously {
+            if exportSession?.status == .completed {
+                success = true
+            } else {
+                print("Export failed: \(String(describing: exportSession?.error))")
+            }
+            semaphore.signal()
+        }
+        
+        semaphore.wait()
+        return success
+    }
+    
+    func processAudioSegment(segmentURL: URL, completion: @escaping (String?) -> Void) {
+        guard verifyAudioFile(url: segmentURL) else { return }
+        
         guard let myRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "it_IT")) else {
             print("The recognizer is not supported for the current locale")
             return
@@ -231,18 +273,13 @@ class RecordingManager: ObservableObject, Codable {
             return
         }
         
-        let request = SFSpeechURLRecognitionRequest(url: url)
+        let request = SFSpeechURLRecognitionRequest(url: segmentURL)
         
         myRecognizer.recognitionTask(with: request) { (result, error) in
-            guard let result = result else {
-                print("Recognition failed, please check the printed error message")
-                if let error = error {
-                    print(error)
-                }
-                return
-            }
-            
-            if result.isFinal {
+            if let error = error {
+                print("Recognition error: \(error.localizedDescription)")
+                completion(nil)
+            } else if let result = result, result.isFinal {
                 self.transcription = result.bestTranscription.formattedString
                 print(self.transcription ?? "No transcription available")
                 
@@ -252,12 +289,72 @@ class RecordingManager: ObservableObject, Codable {
                     let timestamp = segment.timestamp
                     print("\(word):\t\(timestamp) seconds")
                 }
+                completion(self.transcription)
             }
         }
     }
-    
-    
-    
+
+    func processAudioFile(url: URL) {
+        guard url.startAccessingSecurityScopedResource() else {
+            print("Permission denied to access the file at \(url)")
+            return
+        }
+        
+        defer {
+            url.stopAccessingSecurityScopedResource()
+        }
+        
+        let segments = segmentAudio(url: url, segmentDuration: 100) // Segmenti di 100 secondi
+        var recognizedText = ""
+        
+        let queue = DispatchQueue(label: "com.example.mySerialQueue")
+        let semaphore = DispatchSemaphore(value: 1) // Limit the number of concurrent tasks
+        for segmentURL in segments {
+            queue.async {
+                semaphore.wait() // Wait for a signal before starting a new task
+                self.processAudioSegment(segmentURL: segmentURL) { text in
+                    DispatchQueue.main.async {
+                        if let text = text {
+                            recognizedText += text + " "
+                        }
+                        semaphore.signal() // Signal the semaphore when this task is done
+                    }
+                }
+            }
+        }
+        
+        queue.async {
+            self.transcription = recognizedText
+            print("Transcription: \(recognizedText)")
+        }
+    }
+
+
+    func verifyAudioFile(url: URL) -> Bool {
+        
+        var audioPlayer: AVAudioPlayer?
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+        } catch {
+            print("Non è possibile riprodurre l'audio: \(error)")
+            return false
+        }
+        
+        guard let player = audioPlayer else {
+            print("Non è stato possibile creare il lettore audio")
+            return false
+        }
+        
+        player.prepareToPlay()
+        if player.duration > 0 {
+            print("L'audio è valido, durata: \(player.duration) secondi")
+            return true
+        } else {
+            print("L'audio non è valido")
+            return false
+        }
+    }
+
 }
 
 struct Duration: Codable {

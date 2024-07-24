@@ -129,7 +129,7 @@ struct RecordPage: View {
                                             if let audioPath = recordingManager.audioPath {
                                                 print("FilePath: \(audioPath)")
                                                 recordingManager.requestTranscribePermissions()
-                                                recordingManager.transcribeAudio(url: audioPath)
+                                                recordingManager.processAudioFile(url: audioPath)
                                             }
                                             recordingManager.recorded = true
                                             recordingManager.recLoaded = true
