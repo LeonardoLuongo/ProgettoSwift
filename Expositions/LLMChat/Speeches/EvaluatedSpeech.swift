@@ -31,6 +31,7 @@ class EvaluatedSpeech
         
     }
     
+    /*
     init(punctualizedText: PunctualizedSpeech) throws
     {
         var evaluatedText: Response
@@ -48,6 +49,7 @@ class EvaluatedSpeech
         
         
     }
+    */
 
 }
 
