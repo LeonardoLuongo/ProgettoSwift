@@ -207,15 +207,6 @@ class RecordingManager: ObservableObject, Codable {
             return
         }
         
-        guard audioPath.startAccessingSecurityScopedResource() else {
-            print("Permission denied to access the file at \(audioPath)")
-            return
-        }
-        
-        defer {
-            audioPath.stopAccessingSecurityScopedResource()
-        }
-        
         do {
             try FileManager.default.removeItem(at: audioPath)
             print("Recorded audio file deleted successfully.")
@@ -237,15 +228,9 @@ class RecordingManager: ObservableObject, Codable {
         }
     }
     
-    func segmentAudio(url: URL, segmentDuration: TimeInterval) -> [URL] {
-        guard url.startAccessingSecurityScopedResource() else {
-            print("Permission denied to access the file at \(url)")
-            return []
-        }
-        
-        defer {
-            url.stopAccessingSecurityScopedResource()
-        }
+    func segmentAudio(fileName: String, segmentDuration: TimeInterval) -> [URL] {
+        let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let url = appDirectory.appendingPathComponent(fileName)
         
         let asset = AVAsset(url: url)
         let duration = CMTimeGetSeconds(asset.duration)
@@ -329,19 +314,10 @@ class RecordingManager: ObservableObject, Codable {
         }
     }
 
-    func processAudioFile(url: URL, evaluator: Evaluator, completion: @escaping (Bool) -> Void) {
-        guard url.startAccessingSecurityScopedResource() else {
-            print("Permission denied to access the file at \(url)")
-            return
-        }
-        
-        defer {
-            url.stopAccessingSecurityScopedResource()
-        }
-        
+    func processAudioFile(fileName: String, evaluator: Evaluator, completion: @escaping (Bool) -> Void) {
         evaluator.progress = 0
         
-        let segments = segmentAudio(url: url, segmentDuration: self.segmentDuration) // Segmenti di 500 secondi
+        let segments = segmentAudio(fileName: fileName, segmentDuration: self.segmentDuration) // Segmenti di 500 secondi
         var recognizedText = ""
         
         let queue = DispatchQueue(label: "com.example.mySerialQueue")

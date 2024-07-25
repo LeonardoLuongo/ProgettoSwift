@@ -31,7 +31,7 @@ class Exposition: ObservableObject, Identifiable, Codable {
     var documentText: String?
     
     enum CodingKeys: CodingKey {
-        case id, favorite, trash, date, grade, secCode, trashDate, recordingManager
+        case id, favorite, trash, evalueted, date, grade, secCode, trashDate, recordingManager
     }
     
     // Initializer
@@ -112,6 +112,7 @@ class Exposition: ObservableObject, Identifiable, Codable {
         id = try container.decode(UUID.self, forKey: .id)
         favorite = try container.decode(Bool.self, forKey: .favorite)
         trash = try container.decode(Bool.self, forKey: .trash)
+        evaluated = try container.decode(Bool.self, forKey: .evalueted)
         date = try container.decode(Date.self, forKey: .date)
         grade = try container.decode(String.self, forKey: .grade)
         secCode = try container.decode(Int.self, forKey: .secCode)
@@ -124,6 +125,7 @@ class Exposition: ObservableObject, Identifiable, Codable {
         try container.encode(id, forKey: .id)
         try container.encode(favorite, forKey: .favorite)
         try container.encode(trash, forKey: .trash)
+        try container.encode(evaluated, forKey: .evalueted)
         try container.encode(date, forKey: .date)
         try container.encode(grade, forKey: .grade)
         try container.encode(secCode, forKey: .secCode)

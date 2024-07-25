@@ -13,7 +13,6 @@ class Evaluator: ObservableObject {
     @Binding var expositions: [Int:[Exposition]]
     
     @Binding var evaluationError: Bool
-    @Published var completed: Bool = false
     
     @Published var progress: Float = -1
     
@@ -30,12 +29,12 @@ class Evaluator: ObservableObject {
         self.progress = 0
         
         DispatchQueue.main.async { [self] in
-            self.documentText = DocumentManager.extractTextFromPDF(url: self.exposition.recordingManager.docPath!)
+            self.documentText = DocumentManager.extractTextFromPDF(fileName: self.exposition.recordingManager.docFilename)
             if let text = self.documentText {
                 exposition.documentText = text
                 exposition.recordingManager.requestTranscribePermissions()
                 
-                exposition.recordingManager.processAudioFile(url: exposition.recordingManager.audioPath!, evaluator: self) { success in
+                exposition.recordingManager.processAudioFile(fileName: exposition.recordingManager.recordFilename, evaluator: self) { success in
                     if success {
                         // GEMINI CALL: elaborate transcription (punctuation, correction, etc.)
                         // GEMINI CALL: compare document text to transcription
@@ -58,7 +57,6 @@ class Evaluator: ObservableObject {
     func taskCompleted() {
         DispatchQueue.main.async { [self] in
             exposition.evaluated = true
-            self.completed = true
             Exposition.saveDictionary(expositions: expositions)
         }
     }

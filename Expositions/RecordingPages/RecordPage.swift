@@ -23,7 +23,7 @@ struct RecordPage: View {
     }
     
     var body: some View {
-        if !exposition.evaluated || !evaluator.completed {
+        if !exposition.evaluated {
             GeometryReader { metrics in     //used to obtain the dimensions of the container
                 ZStack {
                     VStack {
@@ -79,7 +79,17 @@ struct RecordPage: View {
                                     paths.reverse()
                                     paths[0] = "\(paths[0].replacingOccurrences(of: "%20", with: " ").lowercased())"
                                     recordingManager.docFilename = String(paths[0])
-                                    recordingManager.docPath =  fileurl[0]
+                                    
+                                    // Copia il file nella directory dell'app
+                                    let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                                    let destinationURL = appDirectory.appendingPathComponent(recordingManager.docFilename)
+                                    do {
+                                        try FileManager.default.copyItem(at: fileurl[0], to: destinationURL)
+                                    } catch {
+                                        print("Errore nella copia del file: \(error)")
+                                    }
+                                    
+                                    recordingManager.docPath = destinationURL
                                     if let docPath = recordingManager.docPath {
                                         print("FilePath: \(docPath)")
                                     }
@@ -90,7 +100,6 @@ struct RecordPage: View {
                                 print(error)
                             }
                             isLoadingFile = false
-                            
                         })
                         
                         Spacer()

@@ -13,11 +13,12 @@ struct TestFinalPage: View {
     
     var body: some View {
         VStack {
+            /*
             Text("Document text:")
                 .font(.title)
             ScrollView {
                 Text(exposition.documentText!)
-            }
+            } */
             Text("Your exposition:")
                 .font(.title)
             ScrollView {
