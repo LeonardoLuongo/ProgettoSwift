@@ -32,6 +32,9 @@ class RecordingManager: ObservableObject, Codable {
     var isStart: Bool = false
     var transcription: String = ""
     
+    private var curSegStartTime = 0.0
+    private var segmentDuration = 200.0
+    
     init() {
         dateFormatter = DateFormatter()
         date = Date()
@@ -160,8 +163,6 @@ class RecordingManager: ObservableObject, Codable {
             if let audioPath = self.audioPath {
                 recorded = true
                 print("FilePath: \(audioPath)")
-                requestTranscribePermissions()
-                processAudioFile(url: audioPath)
             }
         }
     }
@@ -280,13 +281,13 @@ class RecordingManager: ObservableObject, Codable {
                 print("Recognition error: \(error.localizedDescription)")
                 completion(nil)
             } else if let result = result, result.isFinal {
-                self.transcription = result.bestTranscription.formattedString
+                self.transcription += result.bestTranscription.formattedString
                 print(self.transcription ?? "No transcription available")
                 
                 // Iterate through each segment to get word and timestamp
                 for segment in result.bestTranscription.segments {
                     let word = segment.substring
-                    let timestamp = segment.timestamp
+                    let timestamp = segment.timestamp + self.curSegStartTime
                     print("\(word):\t\(timestamp) seconds")
                 }
                 completion(self.transcription)
@@ -294,7 +295,7 @@ class RecordingManager: ObservableObject, Codable {
         }
     }
 
-    func processAudioFile(url: URL) {
+    func processAudioFile(url: URL, evaluator: Evaluator, completion: @escaping (Bool) -> Void) {
         guard url.startAccessingSecurityScopedResource() else {
             print("Permission denied to access the file at \(url)")
             return
@@ -304,11 +305,17 @@ class RecordingManager: ObservableObject, Codable {
             url.stopAccessingSecurityScopedResource()
         }
         
-        let segments = segmentAudio(url: url, segmentDuration: 100) // Segmenti di 100 secondi
+        evaluator.progress = 0
+        
+        let segments = segmentAudio(url: url, segmentDuration: self.segmentDuration) // Segmenti di 500 secondi
         var recognizedText = ""
         
         let queue = DispatchQueue(label: "com.example.mySerialQueue")
         let semaphore = DispatchSemaphore(value: 1) // Limit the number of concurrent tasks
+        
+        let segmentCount = segments.count
+        var i = 0
+        
         for segmentURL in segments {
             queue.async {
                 semaphore.wait() // Wait for a signal before starting a new task
@@ -317,15 +324,21 @@ class RecordingManager: ObservableObject, Codable {
                         if let text = text {
                             recognizedText += text + " "
                         }
+                        self.curSegStartTime += self.getSegDuration(segmentURL: segmentURL)
+                        i += 1
+                        evaluator.progress = Float(i) / Float(segmentCount)
                         semaphore.signal() // Signal the semaphore when this task is done
+                        
+                        if i == segmentCount {
+                            self.transcription = recognizedText
+                            print("Transcription: \(recognizedText)")
+                            completion(true)
+                        } else {
+                            completion(false)
+                        }
                     }
                 }
             }
-        }
-        
-        queue.async {
-            self.transcription = recognizedText
-            print("Transcription: \(recognizedText)")
         }
     }
 
@@ -353,6 +366,17 @@ class RecordingManager: ObservableObject, Codable {
             print("L'audio non è valido")
             return false
         }
+    }
+    
+    func getSegDuration(segmentURL: URL) -> Double {
+        var duration: Double = 0.0
+        do {
+            let audioPlayer = try AVAudioPlayer(contentsOf: segmentURL)
+            duration = audioPlayer.duration
+        } catch {
+            print("Errore nel caricamento del file audio: \(error)")
+        }
+        return duration
     }
 
 }

@@ -44,6 +44,7 @@
 		1F6C0F992C46D89D007D03A0 /* CreateIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F982C46D89D007D03A0 /* CreateIconView.swift */; };
 		1FAF4BE62C47FFFB00A18150 /* IconEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAF4BE52C47FFFB00A18150 /* IconEditor.swift */; };
 		1FE219932C49610400A9A159 /* SectionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE219922C49610400A9A159 /* SectionListView.swift */; };
+		1FE504F22C516091000FFA53 /* TestFinalPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE504F12C516091000FFA53 /* TestFinalPage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,7 @@
 		1F6C0F982C46D89D007D03A0 /* CreateIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateIconView.swift; sourceTree = "<group>"; };
 		1FAF4BE52C47FFFB00A18150 /* IconEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconEditor.swift; sourceTree = "<group>"; };
 		1FE219922C49610400A9A159 /* SectionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionListView.swift; sourceTree = "<group>"; };
+		1FE504F12C516091000FFA53 /* TestFinalPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFinalPage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				1F38182D2C4E962C00F7B659 /* Evaluator.swift */,
+				1FE504F12C516091000FFA53 /* TestFinalPage.swift */,
 			);
 			path = Evaluation;
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 				1F0195402C4163A9001E15B1 /* RecordingManager.swift in Sources */,
 				1F0195122C4162A4001E15B1 /* ContentView.swift in Sources */,
 				1F0195102C4162A4001E15B1 /* Expositions.swift in Sources */,
+				1FE504F22C516091000FFA53 /* TestFinalPage.swift in Sources */,
 				1F56067D2C5143790079EF4A /* PunctualizedSpeech.swift in Sources */,
 				1F01953E2C41638E001E15B1 /* RecordBar.swift in Sources */,
 				1F0195422C4163F2001E15B1 /* Stopwatch.swift in Sources */,

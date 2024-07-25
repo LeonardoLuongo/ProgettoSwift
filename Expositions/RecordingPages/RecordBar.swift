@@ -9,12 +9,11 @@ import SwiftUI
 
 struct RecordBar: View {
     @ObservedObject var recordingManager: RecordingManager
+    @ObservedObject var evaluator: Evaluator
     
     @Binding var expositions: [Int:[Exposition]]
     @Binding var exposition: Exposition
     
-    @State var evaluationError = false
-
     var body: some View {
         VStack {
             Spacer()
@@ -25,13 +24,12 @@ struct RecordBar: View {
                         .foregroundColor(Color(hue: 0.58, saturation: 0.63, brightness: 0.96))
                 }
                 /*  If an audio has already been recorded the bottom bar will display the evaluate button*/
-                if recordingManager.recorded {
+                if recordingManager.recorded && evaluator.progress < 0 {
                     Button(action: {
                         // Aggiungi azione per "Evaluate"
-                        var evaluator = Evaluator(exposition: $exposition, expositions: $expositions, evaluationError: $evaluationError)
                         evaluator.evaluate()
                     }) {
-                        /*  The evalueate button will be usable (and colorful) only if bopth the doc and the red have been loaded */
+                        /*  The evalueate button will be usable (and colorful) only if both the doc and the rec have been loaded */
                         if recordingManager.textLoaded && recordingManager.recorded {
                             VStack {
                                 Text("Evaluate")
@@ -56,8 +54,8 @@ struct RecordBar: View {
                             .padding(.top, 10)
                         }
                     }
-                    .disabled(!(recordingManager.textLoaded && recordingManager.recorded))
-                } else {
+                    .disabled(!(recordingManager.textLoaded && recordingManager.recorded && evaluator.progress < 0))
+                } else if evaluator.progress < 0 {
                     /* If there is no audio yet, the bottom bar will display the record button... */
                     Button(action: {
                         if recordingManager.isRecording {
@@ -104,6 +102,17 @@ struct RecordBar: View {
                             }
                         )
                     }
+                } else {
+                    // Mostra la ProgressView quando il bottone viene premuto
+                    VStack {
+                        Text("Evaluating...")
+                            .foregroundStyle(.black)
+                        ProgressView(value: evaluator.progress)
+                            .progressViewStyle(CustomLinearProgressViewStyle(trackColor: .gray, progressColor: Color(hue: 0.58, saturation: 0.63, brightness: 0.96)))
+                        Text(evaluator.progress.formatted(.percent.precision(.fractionLength(0))))
+                            .foregroundStyle(.black)
+                    }
+                    .padding([.bottom, .leading, .trailing])
                 }
             }
             .padding(.top, 10)
@@ -113,6 +122,26 @@ struct RecordBar: View {
     }
 }
 
+struct CustomLinearProgressViewStyle: ProgressViewStyle {
+    var trackColor: Color
+    var progressColor: Color
+
+    func makeBody(configuration: Configuration) -> some View {
+        GeometryReader { geometry in
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .foregroundColor(trackColor)
+                    .opacity(0.5)
+                Rectangle()
+                    .foregroundColor(progressColor)
+                    .frame(width: geometry.size.width * CGFloat(configuration.fractionCompleted ?? 0))
+            }
+            .cornerRadius(10.0)
+        }
+        .frame(height: 10)
+    }
+}
+
 #Preview {
-    RecordBar(recordingManager: RecordingManager(), expositions: .constant([3:[Exposition(date: "07-20-2024", grade: "10", secCode: 3)]]), exposition: .constant(Exposition(date: "07-20-2024", grade: "10", secCode: 3)))
+    RecordBar(recordingManager: RecordingManager(), evaluator: Evaluator(exposition: .constant(Exposition(date: "07-20-2024", grade: "10", secCode: 3)), expositions: .constant([3:[Exposition(date: "07-20-2024", grade: "10", secCode: 3)]]), evaluationError: .constant(false)), expositions: .constant([3:[Exposition(date: "07-20-2024", grade: "10", secCode: 3)]]), exposition: .constant(Exposition(date: "07-20-2024", grade: "10", secCode: 3)))
 }

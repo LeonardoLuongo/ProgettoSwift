@@ -20,6 +20,7 @@ class Exposition: ObservableObject, Identifiable, Codable {
             }
         }
     }
+    @Published var evaluated: Bool = false
     
     // Not-public proprieties, but necessary for Codable
     var date: Date
@@ -27,6 +28,7 @@ class Exposition: ObservableObject, Identifiable, Codable {
     var grade: String = "..."
     var secCode: Int
     var trashDate: Date?
+    var documentText: String?
     
     enum CodingKeys: CodingKey {
         case id, favorite, trash, date, grade, secCode, trashDate, recordingManager
