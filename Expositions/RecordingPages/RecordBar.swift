@@ -55,7 +55,7 @@ struct RecordBar: View {
                             .padding(.top, 10)
                         }
                     }
-                    .disabled(!(recordingManager.textLoaded && recordingManager.recorded && evaluator.progress < 0))
+                    .disabled(!(recordingManager.textLoaded && recordingManager.recorded))
                 } else if evaluator.progress < 0 {
                     /* If there is no audio yet, the bottom bar will display the record button... */
                     Button(action: {
@@ -117,6 +117,20 @@ struct RecordBar: View {
                             .progressViewStyle(CustomLinearProgressViewStyle(trackColor: .gray, progressColor: Color(hue: 0.58, saturation: 0.63, brightness: 0.96)))
                         Text(evaluator.progress.formatted(.percent.precision(.fractionLength(0))))
                             .foregroundStyle(.black)
+                        Button(action: {
+                            evaluator.stopTask()
+                        }) {
+                            VStack {
+                                Text("Stop")
+                                    .font(.system(size: 25))
+                                    .foregroundColor(.white)
+                            }
+                            .frame(width: 125, height: 50)
+                            .background(.red)
+                            .cornerRadius(15)
+                            .padding(.bottom, 15)
+                            .padding(.top, 10)
+                        }
                     }
                     .padding([.bottom, .leading, .trailing])
                 }

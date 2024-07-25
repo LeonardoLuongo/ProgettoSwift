@@ -316,42 +316,79 @@ class RecordingManager: ObservableObject, Codable {
 
     func processAudioFile(fileName: String, evaluator: Evaluator, completion: @escaping (Bool) -> Void) {
         evaluator.progress = 0
-        
-        let segments = segmentAudio(fileName: fileName, segmentDuration: self.segmentDuration) // Segmenti di 500 secondi
+
+        let segments = segmentAudio(fileName: fileName, segmentDuration: self.segmentDuration)
         var recognizedText = ""
-        
+
         let queue = DispatchQueue(label: "com.example.mySerialQueue")
-        let semaphore = DispatchSemaphore(value: 1) // Limit the number of concurrent tasks
-        
+        let semaphore = DispatchSemaphore(value: 1)
+
         let segmentCount = segments.count
         var i = 0
-        
+
         for segmentURL in segments {
-            queue.async {
-                semaphore.wait() // Wait for a signal before starting a new task
-                self.processAudioSegment(segmentURL: segmentURL) { text in
+            var workItem: DispatchWorkItem?
+
+            workItem = DispatchWorkItem { [weak self] in
+                guard let self = self else { return }
+
+                semaphore.wait()
+
+                if workItem?.isCancelled ?? false {
+                    semaphore.signal()
+                    return
+                }
+
+                let targetValue: Float = 1 / Float(segmentCount) * Float(i + 1)
+                let duration: TimeInterval = 0.09 * self.getSegDuration(segmentURL: segments[i].absoluteURL)
+                let increment: Float = targetValue / (Float(duration) * 10)
+
+                let timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
                     DispatchQueue.main.async {
-                        if let text = text {
-                            recognizedText += text + " "
+                        evaluator.progress += increment
+
+                        if evaluator.progress >= targetValue || evaluator.progress >= 1.0 {
+                            evaluator.progress = min(evaluator.progress, 1.0)
+                            timer.invalidate()
                         }
-                        self.curSegStartTime += self.getSegDuration(segmentURL: segmentURL)
-                        i += 1
-                        evaluator.progress = Float(i) / Float(segmentCount)
-                        semaphore.signal() // Signal the semaphore when this task is done
-                        
-                        if i == segmentCount {
-                            self.transcription = recognizedText
-                            print("Transcription: \(recognizedText)")
-                            completion(true)
-                        } else {
-                            completion(false)
+
+                        if workItem?.isCancelled ?? false {
+                            timer.invalidate()
                         }
                     }
                 }
+                RunLoop.current.run(until: Date().addingTimeInterval(duration + 1))
+
+                if evaluator.progress >= 1.0 {
+                    timer.invalidate()
+                }
+
+                self.processAudioSegment(segmentURL: segmentURL) { text in
+                    if let text = text {
+                        recognizedText += text + " "
+                    }
+                    self.curSegStartTime += self.getSegDuration(segmentURL: segmentURL)
+                    i += 1
+                    semaphore.signal()
+
+                    if i == segmentCount {
+                        self.transcription = recognizedText
+                        print("Transcription: \(recognizedText)")
+                        completion(true)
+                    } else if workItem?.isCancelled ?? false {
+                        completion(false)
+                    } else {
+                        completion(false)
+                    }
+                }
+            }
+
+            if let workItem = workItem {
+                evaluator.addWorkItem(workItem)
+                queue.async(execute: workItem)
             }
         }
     }
-
 
     func verifyAudioFile(url: URL) -> Bool {
         

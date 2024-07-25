@@ -13,11 +13,15 @@ class Evaluator: ObservableObject {
     @Binding var expositions: [Int:[Exposition]]
     
     @Binding var evaluationError: Bool
+    var cancellationToken: AnyCancellable?
+    var operationQueue = OperationQueue()
     
     @Published var progress: Float = -1
+    @Published var completed: Bool = false
     
     var documentText: String?
-    
+    var workItems: [DispatchWorkItem] = []
+
     init(exposition: Binding<Exposition>, expositions: Binding<[Int : [Exposition]]>, evaluationError: Binding<Bool>) {
         self._exposition = exposition
         self._expositions = expositions
@@ -25,39 +29,56 @@ class Evaluator: ObservableObject {
     }
     
     func evaluate() {
-        // Reset progress
         self.progress = 0
-        
-        DispatchQueue.main.async { [self] in
-            self.documentText = DocumentManager.extractTextFromPDF(fileName: self.exposition.recordingManager.docFilename)
-            if let text = self.documentText {
-                exposition.documentText = text
-                exposition.recordingManager.requestTranscribePermissions()
-                
-                exposition.recordingManager.processAudioFile(fileName: exposition.recordingManager.recordFilename, evaluator: self) { success in
-                    if success {
-                        // GEMINI CALL: elaborate transcription (punctuation, correction, etc.)
-                        // GEMINI CALL: compare document text to transcription
-                        // Elaborate response from Gemini
-                        // Update exposition (grade, evaluated) and expositions
-                        // Result view with errors and grade
-                        self.taskCompleted()
-                    } else {
-                        self.evaluationError.toggle()
-                        return
+
+        operationQueue = OperationQueue()
+        operationQueue.maxConcurrentOperationCount = 1
+
+        let operation = BlockOperation { [weak self] in
+            DispatchQueue.main.async {
+                self?.documentText = DocumentManager.extractTextFromPDF(fileName: (self?.exposition.recordingManager.docFilename)!)
+                if let text = self?.documentText {
+                    self?.exposition.documentText = text
+                    self?.exposition.recordingManager.requestTranscribePermissions()
+
+                    self?.exposition.recordingManager.processAudioFile(fileName: (self?.exposition.recordingManager.recordFilename)!, evaluator: self!) { success in
+                        if success {
+                            self?.taskCompleted()
+                        } else {
+                            self?.evaluationError.toggle()
+                            return
+                        }
                     }
+                } else {
+                    self?.evaluationError.toggle()
+                    return
                 }
-            } else {
-                self.evaluationError.toggle()
-                return
             }
         }
+
+        operationQueue.addOperation(operation)
+    }
+
+    func stopTask() {
+        operationQueue.cancelAllOperations()
+        for workItem in workItems {
+            workItem.cancel()
+        }
+        workItems.removeAll()
+        exposition.recordingManager.transcription = ""
+        exposition.evaluated = false
+        self.progress = -1
     }
     
     func taskCompleted() {
         DispatchQueue.main.async { [self] in
             exposition.evaluated = true
+            self.completed = true
             Exposition.saveDictionary(expositions: expositions)
         }
+    }
+
+    func addWorkItem(_ workItem: DispatchWorkItem) {
+        self.workItems.append(workItem)
     }
 }
