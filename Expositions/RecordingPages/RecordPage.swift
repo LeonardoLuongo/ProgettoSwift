@@ -1,14 +1,15 @@
 import SwiftUI
 
 struct RecordPage: View {
-    @ObservedObject var recordingManager = RecordingManager()
+    @ObservedObject var recordingManager: RecordingManager
     @State private var isLoadingFile: Bool = false
     @State private var isLoadingAudio: Bool = false
     @Binding var expositions: [Int:[Exposition]]
     @Binding var exposition: Exposition
     @ObservedObject var evaluator: Evaluator
     
-    init(expositions: Binding<[Int:[Exposition]]>, exposition: Binding<Exposition>) {
+    init(exposition: Binding<Exposition>, expositions: Binding<[Int:[Exposition]]>) {
+        self._recordingManager = ObservedObject(wrappedValue: exposition.wrappedValue.recordingManager)
         self._expositions = expositions
         self._exposition = exposition
         self.evaluator = Evaluator(exposition: exposition, expositions: expositions, evaluationError: .constant(false))
@@ -140,12 +141,23 @@ struct RecordPage: View {
                                             paths.reverse()
                                             paths[0] = "\(paths[0].replacingOccurrences(of: "%20", with: " ").lowercased())"
                                             recordingManager.recordFilename = String(paths[0])
-                                            recordingManager.audioPath =  fileurl[0]
+                                            
+                                            // Copia il file nella directory dell'app
+                                            let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                                            let destinationURL = appDirectory.appendingPathComponent(recordingManager.recordFilename)
+                                            do {
+                                                try FileManager.default.copyItem(at: fileurl[0], to: destinationURL)
+                                            } catch {
+                                                print("Errore nella copia del file: \(error)")
+                                            }
+                                            
+                                            recordingManager.audioPath = destinationURL
                                             if let audioPath = recordingManager.audioPath {
                                                 print("FilePath: \(audioPath)")
                                             }
                                             recordingManager.recorded = true
                                             recordingManager.recLoaded = true
+                                            Exposition.saveDictionary(expositions: expositions)
                                         }
                                     case .failure(let error):
                                         print(error)
@@ -185,5 +197,5 @@ struct RecordPage: View {
 }
 
 #Preview {
-    RecordPage(expositions: .constant([3:[Exposition(date: "07-20-2024", grade: "10", secCode: 3)]]), exposition: .constant(Exposition(date: "07-20-2024", grade: "10", secCode: 3)))
+    RecordPage(exposition: .constant(Exposition(date: "07-20-2024", grade: "10", secCode: 3)), expositions: .constant([3:[Exposition(date: "07-20-2024", grade: "10", secCode: 3)]]))
 }

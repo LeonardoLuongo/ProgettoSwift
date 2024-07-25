@@ -50,18 +50,25 @@ struct Player: View {
         }
         .padding()
         .onAppear {
+            print(recordingManager.audioPath)
             if let audioPath = recordingManager.audioPath {
-                if audioPath.startAccessingSecurityScopedResource() {
-                    defer { audioPath.stopAccessingSecurityScopedResource() }
-                    self.playerItem = AVPlayerItem(url: audioPath)
-                    self.player = AVPlayer(playerItem: playerItem)
-                    
-                    self.playerObserver = player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 600), queue: .main) { time in
-                        self.currentTime = time.seconds
+                let _ = audioPath.startAccessingSecurityScopedResource()
+                let fileManager = FileManager.default
+                if let audioPath = recordingManager.audioPath {
+                    if fileManager.fileExists(atPath: audioPath.path) {
+                        print("Il file esiste")
+                    } else {
+                        print("Il file non esiste")
                     }
-                    
-                    self.duration = playerItem?.asset.duration.seconds ?? 0
                 }
+                self.playerItem = AVPlayerItem(url: audioPath)
+                self.player = AVPlayer(playerItem: playerItem)
+                
+                self.playerObserver = player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 600), queue: .main) { time in
+                    self.currentTime = time.seconds
+                }
+                
+                self.duration = playerItem?.asset.duration.seconds ?? 0
             }
         }
         .onDisappear {
@@ -71,6 +78,7 @@ struct Player: View {
             player?.pause()
             player = nil
             playerItem = nil
+            recordingManager.audioPath?.stopAccessingSecurityScopedResource()
         }
     }
     
