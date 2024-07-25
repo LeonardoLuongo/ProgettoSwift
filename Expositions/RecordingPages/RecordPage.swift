@@ -20,7 +20,7 @@ struct RecordPage: View {
         self._exposition = exposition
         self.evaluator = Evaluator(exposition: exposition, expositions: expositions, evaluationError: .constant(false))
     }
-
+    
     var body: some View {
         if !exposition.evaluated || !evaluator.completed {
             GeometryReader { metrics in     //used to obtain the dimensions of the container
@@ -146,6 +146,7 @@ struct RecordPage: View {
                                             }
                                             recordingManager.recorded = true
                                             recordingManager.recLoaded = true
+                                            Exposition.saveDictionary(expositions: expositions)
                                         }
                                     case .failure(let error):
                                         print(error)
@@ -177,8 +178,13 @@ struct RecordPage: View {
                     /*  The bottom recording bar */
                     RecordBar(recordingManager: recordingManager, evaluator: evaluator, expositions: $expositions, exposition: $exposition)
                 }
+            }.onAppear {
+                if !recordingManager.recordPermissionGranted {
+                    recordingManager.requestRecordPermission()
+                }
             }
-        } else {
+        }
+        else {
             TestFinalPage(exposition: $exposition)
         }
     }

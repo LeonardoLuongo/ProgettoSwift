@@ -14,6 +14,7 @@ struct RecordBar: View {
     @Binding var expositions: [Int:[Exposition]]
     @Binding var exposition: Exposition
     
+    
     var body: some View {
         VStack {
             Spacer()
@@ -58,6 +59,11 @@ struct RecordBar: View {
                 } else if evaluator.progress < 0 {
                     /* If there is no audio yet, the bottom bar will display the record button... */
                     Button(action: {
+                        if !recordingManager.recordPermissionGranted {
+                            recordingManager.errorMessage = "Record permission denied! Grant permission in settings."
+                            recordingManager.showErrorAlert = true
+                            return
+                        }
                         if recordingManager.isRecording {
                             recordingManager.finishRecordingHandler()
                         } else {

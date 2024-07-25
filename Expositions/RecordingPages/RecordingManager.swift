@@ -7,24 +7,27 @@ class RecordingManager: ObservableObject, Codable {
     let dateFormatter: DateFormatter
     let date: Date
     
-    @Published var recordName: String
-    @Published final var defaultRecordName: String
-    @Published var isRecording: Bool = false
-    @Published var showAlert: Bool = false
-    @Published var showErrorAlert: Bool = false
-    @Published var errorMessage: String = ""
-    @Published var recorded: Bool = false
-    @Published var recLoaded: Bool = false
-    @Published var textLoaded: Bool = false
-    @Published var docFilename: String = ""
-    @Published var recordFilename: String = ""
+    @Published var recordName: String   //  Name chosen by the user in the Textfield
+    @Published final var defaultRecordName: String  // Name visualized outside of the page if the textfield is empty
+    @Published var isRecording: Bool = false    //  true - an audio is being recorded
+    @Published var showAlert: Bool = false  //  The alert for save the record must be visualized
+    @Published var showErrorAlert: Bool = false //  The error alert must be visualized
+    @Published var recordPermissionGranted: Bool = false    //  Record permission
+    @Published var errorMessage: String = ""    //  The message visualized in the error alert
+    @Published var recorded: Bool = false   //  An audio has been recorded
+    @Published var recLoaded: Bool = false  //  An audio has been loaded
+    @Published var textLoaded: Bool = false //  A document has been loaded
+    @Published var docFilename: String = "" //  Document name
+    @Published var recordFilename: String = ""  //  Record name
     
     private var audioRecorder: AVAudioRecorder?
-    private var recordingSession: AVAudioSession?
-    var audioPath: URL?
-    var docPath: URL?
-    var duration = Duration(hours: 0, minutes: 0, seconds: 0)
+    private var recordingSession1: AVAudioSession?
+    private var recordingSession2: AVAudioApplication?
+    var audioPath: URL? //  Complete audio path
+    var docPath: URL?   // Complete document path
+    var duration = Duration(hours: 0, minutes: 0, seconds: 0)   // Duration of the record
     
+    /*  Speech to text vars */
     let audioEngine = AVAudioEngine()
     let speechRecognizer: SFSpeechRecognizer? = SFSpeechRecognizer(locale: Locale(identifier: "it-IT"))
     let request = SFSpeechAudioBufferRecognitionRequest()
@@ -84,24 +87,54 @@ class RecordingManager: ObservableObject, Codable {
     }
     
     private func setupRecordingSession() {
-        recordingSession = AVAudioSession.sharedInstance()
-        
-        do {
-            try recordingSession?.setCategory(.playAndRecord, mode: .default)
-            try recordingSession?.setActive(true)
-            recordingSession?.requestRecordPermission { allowed in
+        if #available(iOS 17, *) {
+            recordingSession2 = AVAudioApplication.shared
+            recordingSession1 = AVAudioSession.sharedInstance()
+            AVAudioApplication.requestRecordPermission {
+                isPermissionGranted in
+                print(isPermissionGranted)
+                if !isPermissionGranted {
+                    self.recordPermissionGranted = false
+                    print("Permission denied")
+                    return
+                }
+                print("Permission granted")
+                self.recordPermissionGranted = true
+                do{
+                    try self.recordingSession1?.setCategory(.playAndRecord, mode: .default)
+                    try self.recordingSession1?.setActive(true)
+                } catch {
+                    print("error")
+                }
+            }
+        } else {
+            recordingSession1 = AVAudioSession.sharedInstance()
+
+            do {
+                try recordingSession1?.setCategory(.playAndRecord, mode: .default)
+                try recordingSession1?.setActive(true)
+                recordingSession1?.requestRecordPermission { allowed in
                 DispatchQueue.main.async {
                     if allowed {
                         print("Permission granted")
+                            self.recordPermissionGranted = true
                     } else {
                         print("Permission denied")
-                    }
+                            self.recordPermissionGranted = false
+                        }
                 }
             }
         } catch {
-            print("Failed to set up recording session: \(error.localizedDescription)")
+                print("Failed to set up recording session")
+            }
         }
     }
+    
+    func requestRecordPermission() {
+        setupRecordingSession()
+        }
+    
+    
     
     func getAudioPath(recordFilename: String) -> URL? {
         let resourcePaths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -157,6 +190,7 @@ class RecordingManager: ObservableObject, Codable {
         showAlert = false
         
         if !success {
+            // Handle recording failure
             recorded = false
             print("Recording failed")
         } else {
