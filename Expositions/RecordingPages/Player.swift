@@ -8,6 +8,7 @@ struct Player: View {
     @State private var playerObserver: Any?
     @State private var duration: Double = 0.0
     @State private var currentTime: Double = 0.0
+    @State private var endObserver: Any?
     
     var body: some View {
         VStack {
@@ -50,30 +51,33 @@ struct Player: View {
         }
         .padding()
         .onAppear {
-            print(recordingManager.audioPath)
             if let audioPath = recordingManager.audioPath {
-                let _ = audioPath.startAccessingSecurityScopedResource()
-                let fileManager = FileManager.default
-                if let audioPath = recordingManager.audioPath {
-                    if fileManager.fileExists(atPath: audioPath.path) {
-                        print("Il file esiste")
-                    } else {
-                        print("Il file non esiste")
+                if audioPath.startAccessingSecurityScopedResource() {
+                    defer { audioPath.stopAccessingSecurityScopedResource() }
+                    self.playerItem = AVPlayerItem(url: audioPath)
+                    self.player = AVPlayer(playerItem: playerItem)
+                    
+                    self.playerObserver = player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 600), queue: .main) { time in
+                        self.currentTime = time.seconds
+                    }
+                    
+                    self.duration = playerItem?.asset.duration.seconds ?? 0
+                    
+                    // Add observer for end of playback
+                    self.endObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.playerItem, queue: .main) { _ in
+                        self.player?.seek(to: CMTime(seconds: 0, preferredTimescale: 600))
+                        self.player?.pause()
+                        self.currentTime = 0
                     }
                 }
-                self.playerItem = AVPlayerItem(url: audioPath)
-                self.player = AVPlayer(playerItem: playerItem)
-                
-                self.playerObserver = player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 600), queue: .main) { time in
-                    self.currentTime = time.seconds
-                }
-                
-                self.duration = playerItem?.asset.duration.seconds ?? 0
             }
         }
         .onDisappear {
             if let playerObserver = playerObserver {
                 player?.removeTimeObserver(playerObserver)
+            }
+            if let endObserver = endObserver {
+                NotificationCenter.default.removeObserver(endObserver)
             }
             player?.pause()
             player = nil
