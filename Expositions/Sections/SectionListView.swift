@@ -48,9 +48,9 @@ struct SectionListView: View {
                                             .frame(width: 40, height: 40)
                                             .foregroundColor(icon.color)
                                         if let symbol = icon.symbol {
-                                            Image(systemName: symbol)
+                                            Image(uiImage: UIImage(named: symbol)!)
                                                 .imageScale(.large)
-                                                .frame(width: 15, height: 15)
+                                                .frame(width: 30, height: 30)
                                                 .foregroundColor(.white)
                                         }
                                     }

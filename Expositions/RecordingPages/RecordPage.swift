@@ -54,6 +54,18 @@ struct RecordPage: View {
                                     .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
                                     .background(Color(hue: 0, saturation: 0, brightness: 0.95))
                                     .cornerRadius(15)
+                                    .contextMenu(ContextMenu(menuItems: {
+                                        Button(action: {
+                                            recordingManager.docFilename = ""
+                                            recordingManager.textLoaded = false
+                                            Exposition.saveDictionary(expositions: expositions)
+                                        }, label: {
+                                            HStack {
+                                                Image(systemName: "trash.fill")
+                                                Text("Delete")
+                                            }
+                                        })
+                                    }))
                                     /*  ... otherwise it will display an icon   */
                                 } else {
                                     VStack {
@@ -66,7 +78,7 @@ struct RecordPage: View {
                                     .cornerRadius(15)
                                 }
                             }
-                            .disabled(recordingManager.isRecording) // The button is disabled if the user is recording
+                            .disabled(recordingManager.isRecording || evaluator.progress >= 0) // The button is disabled if the user is recording
                             .fileImporter(isPresented: $isLoadingFile, allowedContentTypes: [.pdf], allowsMultipleSelection: false, onCompletion: { results in
                                 /*  The doc name is obtained from the end of the path returned by the file importer */
                                 switch results {
@@ -76,7 +88,7 @@ struct RecordPage: View {
                                         var paths = "\(fileurl[0])".split(separator: "/")
                                         paths.reverse()
                                         paths[0] = "\(paths[0].replacingOccurrences(of: "%20", with: " ").lowercased())"
-                                        recordingManager.docFilename = String(paths[0])
+                                        recordingManager.docFilename = String(paths[0]) + recordingManager.dateFormatter.string(from: recordingManager.date)
                                         
                                         // Copia il file nella directory dell'app
                                         let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -120,6 +132,19 @@ struct RecordPage: View {
                                         .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
                                         .background(Color(hue: 0, saturation: 0, brightness: 0.95))
                                         .cornerRadius(15)
+                                        .contextMenu(ContextMenu(menuItems: {
+                                            Button(action: {
+                                                recordingManager.recordFilename = ""
+                                                recordingManager.recorded = false
+                                                recordingManager.recLoaded = false
+                                                Exposition.saveDictionary(expositions: expositions)
+                                            }, label: {
+                                                HStack {
+                                                    Image(systemName: "trash.fill")
+                                                    Text("Delete")
+                                                }
+                                            })
+                                        }))
                                         /*  If the audio has been recorded the button will display the duration...  */
                                     } else {
                                         VStack {
@@ -128,6 +153,19 @@ struct RecordPage: View {
                                         .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
                                         .background(Color(hue: 0, saturation: 0, brightness: 0.95))
                                         .cornerRadius(15)
+                                        .contextMenu(ContextMenu(menuItems: {
+                                            Button(action: {
+                                                recordingManager.recordFilename = ""
+                                                recordingManager.recorded = false
+                                                recordingManager.recLoaded = false
+                                                Exposition.saveDictionary(expositions: expositions)
+                                            }, label: {
+                                                HStack {
+                                                    Image(systemName: "trash.fill")
+                                                    Text("Delete")
+                                                }
+                                            })
+                                        }))
                                     }
                                     /*  ... otherwise it will display an icon   */
                                 } else {
@@ -139,42 +177,42 @@ struct RecordPage: View {
                                     .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
                                     .background(Color(hue: 0, saturation: 0, brightness: 0.95))
                                     .cornerRadius(15)
-                                    .fileImporter(isPresented: $isLoadingAudio, allowedContentTypes: [.audio, .mp3, .wav, .mpeg4Audio], allowsMultipleSelection: false, onCompletion: { results in
-                                        switch results {
-                                        case .success(let fileurl):
-                                            if fileurl[0].startAccessingSecurityScopedResource() {
-                                                defer { fileurl[0].stopAccessingSecurityScopedResource() }
-                                                var paths = "\(fileurl[0])".split(separator: "/")
-                                                paths.reverse()
-                                                paths[0] = "\(paths[0].replacingOccurrences(of: "%20", with: " ").lowercased())"
-                                                recordingManager.recordFilename = String(paths[0])
-                                                
-                                                // Copia il file nella directory dell'app
-                                                let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-                                                let destinationURL = appDirectory.appendingPathComponent(recordingManager.recordFilename)
-                                                do {
-                                                    try FileManager.default.copyItem(at: fileurl[0], to: destinationURL)
-                                                } catch {
-                                                    print("Errore nella copia del file: \(error)")
-                                                }
-                                                
-                                                recordingManager.audioPath = destinationURL
-                                                if let audioPath = recordingManager.audioPath {
-                                                    print("FilePath: \(audioPath)")
-                                                }
-                                                recordingManager.recorded = true
-                                                recordingManager.recLoaded = true
-                                                Exposition.saveDictionary(expositions: expositions)
-                                            }
-                                        case .failure(let error):
-                                            print(error)
-                                        }
-                                        isLoadingAudio = false
-                                    })
                                 }
                             }
                             /*  The button is disabled if the user is recording or if an audio has already been recorded/loaded */
-                            .disabled(recordingManager.isRecording)
+                            .disabled(recordingManager.isRecording || evaluator.progress >= 0)
+                            .fileImporter(isPresented: $isLoadingAudio, allowedContentTypes: [.audio, .mp3, .wav, .mpeg4Audio], allowsMultipleSelection: false, onCompletion: { results in
+                                switch results {
+                                case .success(let fileurl):
+                                    if fileurl[0].startAccessingSecurityScopedResource() {
+                                        defer { fileurl[0].stopAccessingSecurityScopedResource() }
+                                        var paths = "\(fileurl[0])".split(separator: "/")
+                                        paths.reverse()
+                                        paths[0] = "\(paths[0].replacingOccurrences(of: "%20", with: " ").lowercased())"
+                                        recordingManager.recordFilename = String(paths[0]) + recordingManager.dateFormatter.string(from: recordingManager.date)
+                                        
+                                        // Copia il file nella directory dell'app
+                                        let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                                        let destinationURL = appDirectory.appendingPathComponent(recordingManager.recordFilename)
+                                        do {
+                                            try FileManager.default.copyItem(at: fileurl[0], to: destinationURL)
+                                        } catch {
+                                            print("Errore nella copia del file: \(error)")
+                                        }
+                                        
+                                        recordingManager.audioPath = destinationURL
+                                        if let audioPath = recordingManager.audioPath {
+                                            print("FilePath: \(audioPath)")
+                                        }
+                                        recordingManager.recorded = true
+                                        recordingManager.recLoaded = true
+                                        Exposition.saveDictionary(expositions: expositions)
+                                    }
+                                case .failure(let error):
+                                    print(error)
+                                }
+                                isLoadingAudio = false
+                            })
                             
                             Spacer()
                             Spacer()

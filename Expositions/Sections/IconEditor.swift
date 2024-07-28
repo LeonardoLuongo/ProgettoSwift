@@ -12,7 +12,7 @@ struct IconEditor: View {
     
     @Binding var sectionIndex: Int
     @Binding var sections: [Section]
-    @State var symbol: String = "book.fill"
+    @State var symbol: String = "LETTERATURA ITALIANA"
     @State var color: Color = Color(red: 0.6784313725490196, green: 0.6784313725490196, blue: 0.6784313725490196)
     
     var body: some View {
@@ -69,5 +69,5 @@ struct IconEditor: View {
 }
 
 #Preview {
-    IconEditor(sectionIndex: .constant(0), sections: .constant([Section(name: "Science", image: nil, symbol: "atom", color: Color(red: 0.6941176470588235, green: 0.8666666666666667, blue: 0.5450980392156862))]))
+    IconEditor(sectionIndex: .constant(0), sections: .constant([Section(name: "Science", image: nil, symbol: "SCIENZE NATURALI", color: Color(red: 0.6941176470588235, green: 0.8666666666666667, blue: 0.5450980392156862))]))
 }

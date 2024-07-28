@@ -97,10 +97,10 @@ struct CreateSectionView: View {
                                 Circle()
                                     .frame(width: 120, height: 120)
                                     .foregroundColor(color)
-                                Image(systemName: symbol)
+                                Image(uiImage: UIImage(named: symbol)!)
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 50, height: 50)
+                                    .frame(width: 120, height: 120)
                                     .padding()
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
@@ -175,5 +175,5 @@ struct CreateSectionView: View {
 }
 
 #Preview {
-    CreateSectionView(sections: .constant([Section(name: "Science", image: nil, symbol: "atom", color: Color(red: 0.6941176470588235, green: 0.8666666666666667, blue: 0.5450980392156862)),Section(name: "History", image: nil, symbol: "fossil.shell.fill", color: Color(red: 0.996078431372549, green: 0.7058823529411765, blue: 0.24705882352941178)),Section(name: "Literature", image: UIImage(contentsOfFile: "shakespeare"), symbol: nil, color: nil)]), expositions: .constant([:]), color: Color(red: 0.8274509803921568, green: 0.8274509803921568, blue: 0.8274509803921568), symbol: "book.fill")
+    CreateSectionView(sections: .constant([Section(name: "Science", image: nil, symbol: "SCIENZE NATURALI", color: Color(red: 0.6941176470588235, green: 0.8666666666666667, blue: 0.5450980392156862)),Section(name: "History", image: nil, symbol: "STORIA", color: Color(red: 0.996078431372549, green: 0.7058823529411765, blue: 0.24705882352941178))]), expositions: .constant([:]), color: Color(red: 0.8274509803921568, green: 0.8274509803921568, blue: 0.8274509803921568), symbol: "LETTERATURA ITALIANA")
 }

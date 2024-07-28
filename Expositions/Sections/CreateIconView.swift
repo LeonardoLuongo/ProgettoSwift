@@ -44,5 +44,5 @@ struct CreateIconView: View {
 }
 
 #Preview {
-    CreateIconView(selectedSymbol: .constant("book.fill"), selectedColor: .constant(Color(red: 0.6784313725490196, green: 0.6784313725490196, blue: 0.6784313725490196)))
+    CreateIconView(selectedSymbol: .constant("LETTERATURA ITALIANA"), selectedColor: .constant(Color(red: 0.6784313725490196, green: 0.6784313725490196, blue: 0.6784313725490196)))
 }

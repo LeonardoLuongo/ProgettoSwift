@@ -21,6 +21,8 @@ struct Sections: View {
     @State private var showPhotosPicker = false
     @State private var showPhotoAlert = false
     
+    @State private var showDeleteAlert = false
+    
     @State private var selectedItem: PhotosPickerItem?
     @State private var selectedImage: UIImage?
     @State private var text: String = ""
@@ -33,7 +35,7 @@ struct Sections: View {
                     ForEach($sections.filter { $0.secCode.wrappedValue == 0 || $0.secCode.wrappedValue == 1 || $0.secCode.wrappedValue == 2 }) { $section in
                         if searchText.isEmpty || section.name.lowercased().starts(with: searchText.lowercased()) {
                             NavigationLink(destination: Subject(section: $section, sections: $sections, expositions: $expositions)) {
-                                SectionRow(section: $section)
+                                SectionSpecialRow(section: $section)
                             }
                         }
                     }
@@ -59,6 +61,20 @@ struct Sections: View {
                                 changeIconButton(section: section)
                                 changeImageButton(section: section)
                                 deleteButton(section: section)
+                            }
+                            .alert(
+                                Text("Selected section is not empty. Are you sure to continue?"),
+                                isPresented: $showDeleteAlert
+                            ) {
+                                Button("Cancel", role: .cancel) {}
+                                Button("Delete", action: {
+                                    if let index = sections.firstIndex(where: { $0.id == section.id }) {
+                                        expositions[section.secCode] = []
+                                        sections.remove(at: index)
+                                        Section.save(sections: sections)
+                                        Exposition.saveDictionary(expositions: expositions)
+                                    }
+                                })
                             }
                         }
                     }
@@ -122,9 +138,13 @@ struct Sections: View {
     }
     
     func deleteSection(section: Section) {
-        if let index = sections.firstIndex(where: { $0.id == section.id }) {
+        if !expositions[section.secCode]!.isEmpty {
+            showDeleteAlert.toggle()
+        } else if let index = sections.firstIndex(where: { $0.id == section.id }) {
+            expositions[section.secCode] = []
             sections.remove(at: index)
             Section.save(sections: sections)
+            Exposition.saveDictionary(expositions: expositions)
         }
     }
     
@@ -221,6 +241,41 @@ struct SectionRow: View {
                     Text(section.name)
                         .padding()
                 } else {
+                    ZStack(alignment: .center) {
+                        Circle()
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(icon.color)
+                        if let symbol = icon.symbol {
+                            Image(uiImage: UIImage(named: symbol)!)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 50, height: 50)
+                        }
+                    }
+                    Text(section.name)
+                        .padding()
+                }
+            }
+        }
+    }
+}
+
+struct SectionSpecialRow: View {
+    @Binding var section: Section
+    
+    var body: some View {
+        HStack {
+            if let icon = section.icon {
+                if let image = icon.image {
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 50, height: 50)
+                        .clipShape(Circle())
+                        .cornerRadius(10)
+                    Text(section.name)
+                        .padding()
+                } else {
                     ZStack(alignment: .bottomLeading) {
                         Circle()
                             .frame(width: 50, height: 50)
@@ -265,6 +320,6 @@ struct NewButton: View {
 }
 
 #Preview {
-    Sections(sections: .constant([Section(name: "Science", image: nil, symbol: "atom", color: Color(red: 0.6941176470588235, green: 0.8666666666666667, blue: 0.5450980392156862)),Section(name: "History", image: nil, symbol: "fossil.shell.fill", color: Color(red: 0.996078431372549, green: 0.7058823529411765, blue: 0.24705882352941178)),Section(name: "Literature", image: UIImage(named: "shakespeare"), symbol: nil, color: nil)]),expositions: .constant([3:[Exposition(date: "03-12-2024", grade: "10",secCode:3)]]))
+    Sections(sections: .constant([Section(name: "Science", image: nil, symbol: "SCIENZE NATURALI", color: Color(red: 0.6941176470588235, green: 0.8666666666666667, blue: 0.5450980392156862)),Section(name: "History", image: nil, symbol: "STORIA", color: Color(red: 0.996078431372549, green: 0.7058823529411765, blue: 0.24705882352941178))]),expositions: .constant([3:[Exposition(date: "03-12-2024", grade: "10",secCode:3)]]))
 }
 

@@ -12,7 +12,7 @@ struct IconView: View {
     @Binding var selectedSymbol: String
     @Binding var selectedColor: Color
     
-    let symbols = ["default", "book.fill", "pencil", "deskclock.fill", "graduationcap.fill", "highlighter", "laptopcomputer", "mic.fill", "paperclip", "paperplane.fill", "person.3.fill", "rectangle.stack.fill", "scribble", "square.and.pencil", "text.book.closed.fill", "trash.fill", "wrench.and.screwdriver.fill", "books.vertical.fill", "folder.fill", "globe", "headphones", "house.fill", "magnifyingglass", "map.fill", "newspaper.fill", "note.text", "pencil.and.outline", "person.fill.questionmark", "printer.fill", "questionmark.diamond.fill", "ruler.fill", "square.grid.2x2.fill", "tv.fill", "video.fill", "wifi", "xmark.bin.fill", "clock.fill", "doc.text.fill", "envelope.fill", "gear", "link", "lock.fill", "paintbrush.fill", "pencil.tip.crop.circle", "person.2.fill", "pin.fill", "plus.app.fill", "rectangle.and.pencil.and.ellipsis", "square.and.arrow.up.fill", "text.insert", "trash.slash.fill", "atom", "flame.fill", "leaf.arrow.triangle.circlepath", "lightbulb.fill", "moon.stars.fill", "pencil.tip", "scroll.fill", "shield.lefthalf.fill", "staroflife.fill", "thermometer.sun.fill", "timer", "tortoise.fill", "tray.full.fill", "wind", "wrench.fill", "globe.asia.australia.fill", "map", "paperplane.circle.fill", "pencil.and.ellipsis.rectangle", "person.2.square.stack.fill", "pin.circle.fill", "square.and.arrow.down.fill", "text.bubble.fill", "trash.circle.fill"];
+    let symbols = ["default","ALGEBRA","ARCHITETTURA","ARITMETICA","ASTRONOMIA","BIOLOGIA","CHIMICA","CINEMA","CINESE","DIRITTO","DISEGNO TECNICO","DIZIONE","ECONOMIA","EDUCAZIONE FISICA","FILOSOFIA","FISICA QUANTISTICA","FISICA","FOTOGRAFIA","GEOGRAFIA","GEOLOGIA","GEOMETRIA","GIAPPONESE","GIURISPRUDENZA","GRAMMATICA ITALIANA","GRECO","INFORMATICA","INGEGNERIA","LATINO","LETTERATURA GRECA","LETTERATURA INGLESE","LETTERATURA ITALIANA","LETTERATURA LATINA","LINGUA INGLESE","LINGUA SPAGNOLA","LINGUA STRANIERA A SCELTA","LINGUA TEDESCA","MECCANICA","MEDICINA","MUSICA","PARAFRASI","PROGETTAZIONE","PSICOLOGIA","RELIGIONE CATTOLICA","SCIENZE NATURALI","SCRITTURA","SOCIOLOGIA","STORIA DELL'ARTE","STORIA","TEATRO"];
 
 
     private let columns = [
@@ -22,13 +22,14 @@ struct IconView: View {
     var body: some View {
         Text("Your icon:")
         if selectedSymbol == "" {
-            Image(systemName: "book.fill")
+            Image(uiImage: UIImage(named: "SCRITTURA")!)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 20, height: 20)
+                .frame(width: 80, height: 80)
                 .padding()
                 .foregroundColor(.white)
                 .background(selectedColor)
+                .frame(width: 50, height: 50)
                 .cornerRadius(10)
         } else if selectedSymbol == "default" {
             Rectangle()
@@ -39,13 +40,14 @@ struct IconView: View {
                 .background(selectedColor)
                 .cornerRadius(10)
         } else {
-            Image(systemName: selectedSymbol)
+            Image(uiImage: UIImage(named: selectedSymbol)!)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 20, height: 20)
+                .frame(width: 80, height: 80)
                 .padding()
                 .foregroundColor(.white)
                 .background(selectedColor)
+                .frame(width: 50, height: 50)
                 .cornerRadius(10)
         }
         
@@ -67,17 +69,28 @@ struct IconView: View {
                         Button(action: {
                             selectedSymbol = symbol
                         }) {
-                            Image(systemName: symbol)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20, height: 20)
-                                .padding()
-                                .foregroundColor(.white)
-                                .background(selectedColor)
-                                .cornerRadius(10)
-                                .onTapGesture {
-                                    selectedSymbol = symbol
-                                }
+                            if symbol != "default" {
+                                Image(uiImage: UIImage(named: symbol)!)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 80, height: 80)
+                                    .padding()
+                                    .foregroundColor(.white)
+                                    .background(selectedColor)
+                                    .frame(width: 50, height: 50)
+                                    .cornerRadius(10)
+                                    .onTapGesture {
+                                        selectedSymbol = symbol
+                                    }
+                            } else {
+                                Rectangle()
+                                    .scaledToFit()
+                                    .foregroundColor(Color(red:0,green:0,blue:0,opacity: 0))
+                                    .frame(width: 20, height: 20)
+                                    .padding()
+                                    .background(selectedColor)
+                                    .cornerRadius(10)
+                            }
                         }
                     }
                 }
