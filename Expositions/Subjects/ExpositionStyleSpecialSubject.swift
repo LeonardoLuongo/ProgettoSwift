@@ -72,12 +72,12 @@ struct ExpositionStyleSpecialSubject: View {
                         .overlay(RoundedRectangle(cornerRadius: 25).stroke(strokeColor!, lineWidth: 1.5))
                     .padding(.leading)
                     if !exposition.trash {
-                        Text("Created on \(dateFormatter.string(from: exposition.date))")
+                        Text(NSLocalizedString("Created on", comment: "") + " \(dateFormatter.string(from: exposition.date))")
                             .padding(.bottom)
                             .font(.system(size: 13))
                             .foregroundColor(Color(red: 128/255, green: 128/255, blue: 128/255))
                     } else {
-                        Text("Deleted in " + timeRemaining(startDate: exposition.trashDate!) + " days.")
+                        Text(NSLocalizedString("Deleted in", comment: "") + " " + timeRemaining(startDate: exposition.trashDate!) + " " + NSLocalizedString("days", comment: ""))
                             .padding(.bottom)
                             .font(.system(size: 13))
                             .foregroundColor(.red)

@@ -19,6 +19,7 @@
 		1F01953E2C41638E001E15B1 /* RecordBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F01953D2C41638E001E15B1 /* RecordBar.swift */; };
 		1F0195402C4163A9001E15B1 /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F01953F2C4163A9001E15B1 /* RecordingManager.swift */; };
 		1F0195422C4163F2001E15B1 /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0195412C4163F2001E15B1 /* Stopwatch.swift */; };
+		1F01C8CE2C57B8DA00E18EF7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1F01C8CC2C57B8DA00E18EF7 /* Localizable.strings */; };
 		1F3711302C4E60F1008ABFA6 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F37112F2C4E60F1008ABFA6 /* Player.swift */; };
 		1F3818042C4D2FAF00F7B659 /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3818032C4D2FAF00F7B659 /* IconView.swift */; };
 		1F3818232C4E465500F7B659 /* DocumentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3818222C4E465500F7B659 /* DocumentManager.swift */; };
@@ -80,6 +81,8 @@
 		1F01953D2C41638E001E15B1 /* RecordBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordBar.swift; sourceTree = "<group>"; };
 		1F01953F2C4163A9001E15B1 /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
 		1F0195412C4163F2001E15B1 /* Stopwatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stopwatch.swift; sourceTree = "<group>"; };
+		1F01C8CD2C57B8DA00E18EF7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1F01C8CF2C57B8F300E18EF7 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1F37112F2C4E60F1008ABFA6 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		1F3818032C4D2FAF00F7B659 /* IconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconView.swift; sourceTree = "<group>"; };
 		1F3818222C4E465500F7B659 /* DocumentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentManager.swift; sourceTree = "<group>"; };
@@ -137,6 +140,7 @@
 		1F0195032C4162A4001E15B1 = {
 			isa = PBXGroup;
 			children = (
+				1F01C8CB2C57B8B100E18EF7 /* Language */,
 				1F01950F2C4162A4001E15B1 /* Expositions.swift */,
 				1F0195112C4162A4001E15B1 /* ContentView.swift */,
 				1F0195132C4162A5001E15B1 /* Assets.xcassets */,
@@ -201,6 +205,14 @@
 				1F01952C2C4162A5001E15B1 /* RecordingPagesUITestsLaunchTests.swift */,
 			);
 			path = RecordingPagesUITests;
+			sourceTree = "<group>";
+		};
+		1F01C8CB2C57B8B100E18EF7 /* Language */ = {
+			isa = PBXGroup;
+			children = (
+				1F01C8CC2C57B8DA00E18EF7 /* Localizable.strings */,
+			);
+			path = Language;
 			sourceTree = "<group>";
 		};
 		1F3818212C4E463500F7B659 /* Documents */ = {
@@ -375,6 +387,7 @@
 			knownRegions = (
 				en,
 				Base,
+				it,
 			);
 			mainGroup = 1F0195032C4162A4001E15B1;
 			packageReferences = (
@@ -397,6 +410,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F0195172C4162A5001E15B1 /* Preview Assets.xcassets in Resources */,
+				1F01C8CE2C57B8DA00E18EF7 /* Localizable.strings in Resources */,
 				1F0195142C4162A5001E15B1 /* Assets.xcassets in Resources */,
 				1F5606862C5145B30079EF4A /* GenerativeAI-Info.plist in Resources */,
 			);
@@ -493,6 +507,18 @@
 			productRef = 1F5606872C5146530079EF4A /* GoogleGenerativeAI */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		1F01C8CC2C57B8DA00E18EF7 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1F01C8CD2C57B8DA00E18EF7 /* en */,
+				1F01C8CF2C57B8F300E18EF7 /* it */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1F01952E2C4162A5001E15B1 /* Debug */ = {

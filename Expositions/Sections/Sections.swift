@@ -288,7 +288,7 @@ struct SectionSpecialRow: View {
                                 .foregroundColor(.white)
                         }
                     }
-                    Text(section.name)
+                    Text(LocalizedStringKey(section.name))
                         .padding()
                 }
             }
@@ -298,24 +298,19 @@ struct SectionSpecialRow: View {
 
 struct NewButton: View {
     var body: some View {
-        ZStack {
-            Rectangle()
-                .size(CGSize(width: 75, height: 33))
-                .padding(.trailing, 65)
-                .foregroundColor(Color(red: 0.3568627451, green: 0.662745098, blue: 0.9568627451))
-                .clipShape(RoundedRectangle(cornerRadius: 5))
-            HStack {
-                Image(systemName: "plus")
-                    .imageScale(.medium)
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(.white)
-                    .bold()
-                Text("New")
-                    .foregroundColor(.white)
-                    .bold()
-                    .offset(CGSize(width: -5, height: 0))
-            }
+        HStack {
+            Image(systemName: "plus")
+                .imageScale(.medium)
+                .frame(width: 30, height: 30)
+                .foregroundColor(.white)
+                .bold()
+            Text("New")
+                .foregroundColor(.white)
+                .bold()
+                .offset(CGSize(width: -5, height: 0))
         }
+        .background(Color(red: 0.3568627451, green: 0.662745098, blue: 0.9568627451))
+        .clipShape(RoundedRectangle(cornerRadius: 5))
     }
 }
 

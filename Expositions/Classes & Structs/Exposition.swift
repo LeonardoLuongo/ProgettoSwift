@@ -37,8 +37,14 @@ class Exposition: ObservableObject, Identifiable, Codable {
     // Initializer
     init(date: String, secCode: Int?) {
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "MM-dd-yyyy"
+        dateFormatter.locale = Locale.current
+
+        if dateFormatter.locale.language.languageCode!.identifier == "it" {
+            dateFormatter.dateFormat = "dd.MM.yyyy"
+        } else {
+            dateFormatter.dateFormat = "MM.dd.yyyy"
+        }
+        
         self.date = dateFormatter.date(from: date) ?? Date()
         self.recordingManager = RecordingManager()
         self.secCode = secCode ?? 0
@@ -52,7 +58,14 @@ class Exposition: ObservableObject, Identifiable, Codable {
     
     init(date: String, grade: String, secCode: Int?) {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-dd-yyyy"
+        dateFormatter.locale = Locale.current
+
+        if dateFormatter.locale.language.languageCode!.identifier == "it" {
+            dateFormatter.dateFormat = "dd.MM.yyyy"
+        } else {
+            dateFormatter.dateFormat = "MM.dd.yyyy"
+        }
+        
         self.date = dateFormatter.date(from: date) ?? Date()
         self.recordingManager = RecordingManager()
         self.grade = grade
@@ -61,7 +74,14 @@ class Exposition: ObservableObject, Identifiable, Codable {
     
     init(date: String, grade: String, secCode: Int?, trash: Bool, trashDate: Date) {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-dd-yyyy"
+        dateFormatter.locale = Locale.current
+
+        if dateFormatter.locale.language.languageCode!.identifier == "it" {
+            dateFormatter.dateFormat = "dd.MM.yyyy"
+        } else {
+            dateFormatter.dateFormat = "MM.dd.yyyy"
+        }
+        
         self.date = dateFormatter.date(from: date) ?? Date()
         self.recordingManager = RecordingManager()
         self.grade = grade

@@ -38,7 +38,7 @@ struct ExpositionStyleSubject: View {
                             .padding([.top,.leading])
                     }
                 }
-                Text("Created on \(dateFormatter.string(from: exposition.date))")
+                Text(NSLocalizedString("Created on", comment: "") + " \(dateFormatter.string(from: exposition.date))")
                     .padding([.leading,.bottom])
                     .foregroundColor(Color(red: 128/255, green: 128/255, blue: 128/255))
             }

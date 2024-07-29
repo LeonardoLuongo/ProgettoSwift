@@ -16,7 +16,7 @@ struct CreateIconView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Create Icon")
+                Text("Create icon")
                     .font(.system(size: 30))
                     .bold()
                     .padding([.top,.leading])

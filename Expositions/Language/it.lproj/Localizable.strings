@@ -1,0 +1,58 @@
+/* 
+  Localizable.strings
+  Expositions
+
+  Created by Studente on 29/07/24.
+  
+*/
+"Sections" = "Sezioni";
+"General sections" = "Sezioni generali";
+"Your sections" = "Le tue sezioni";
+"Delete" = "Elimina";
+"Selected section is not empty. Are you sure to continue?" = "La sezione selezionata non è vuota. Vuoi continuare?";
+"Cancel" = "Annulla";
+"Impossible to edit" = "Impossibile modificare";
+"Rename section" = "Rinomina sezione";
+"Confirm" = "Conferma";
+"Insert new name..." = "Inserisci nuovo nome...";
+"Photo selection failed. Try again." = "Selezione della foto non riuscita. Riprova.";
+"Rename" = "Rinomina";
+"Change icon" = "Cambia icona";
+"Change image" = "Cambia immagine";
+"New" = "Nuovo";
+"All expositions" = "Tutte le esposizioni";
+"Favorites" = "Preferiti";
+"Trash" = "Cestino";
+"Edit icon" = "Modifica icona";
+"Done" = "Fine";
+"Create new section" = "Crea nuova sezione";
+"Insert image" = "Inserisci immagine";
+"Create icon" = "Crea icona";
+"Insert section name..." = "Inserisci il nome...";
+"Your icon:" = "La tua icona:";
+"Select Background Color" = "Seleziona il colore dello sfondo";
+"Select Symbol" = "Seleziona il simbolo";
+"Record name" = "Nome registrazione";
+"Attention!" = "Attenzione!";
+"Save or cancel the record" = "Salva o cancella la registrazione";
+"The operation is irreversible." = "L'operazione è irreversibile.";
+"Save" = "Salva";
+"Evaluating..." = "Valutazione...";
+"Evaluate" = "Valuta";
+"Record permission denied! Grant permission in settings." = "Permesso di registrazione negato! Vai in impostazioni.";
+"Something went wrong. Please delete this page and create a new one." = "Qualcosa è andato storto. Elimina questa pagina e creane un'altra.";
+"Favorite" = "Preferito";
+"Unfavorite" = "Non preferito";
+"Create new exposition" = "Crea nuova esposizione";
+"Insert name..." = "Inserisci nome...";
+"Delete all" = "Elimina tutti";
+"Restore all" = "Ripristina tutti";
+"All expositions will be permanently deleted. Do you want to continue?" = "Tutte le esposizioni saranno definitivamente eliminate. Vuoi continuare?";
+"All expositions will be restored. Do you want to continue?" = "Tutte le esposizioni saranno ripristinate. Vuoi continuare?";
+"Restore" = "Ripristina";
+"Rename exposition" = "Rinomina l'esposizione";
+"Move" = "Sposta";
+"Insert new name..." = "Inserisci il nuovo nome...";
+"Created on" = "Creato il";
+"Deleted in " = "Eliminato in ";
+" days." = " giorni.";

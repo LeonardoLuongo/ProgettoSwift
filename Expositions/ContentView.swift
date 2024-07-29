@@ -16,6 +16,7 @@ struct ContentView: View {
     
     var body: some View {
         Sections(sections: $sections, expositions: $expositions)
+            .environment(\.locale, .init(identifier: "it"))
     }
     
     static func loadSections() -> [Section] {

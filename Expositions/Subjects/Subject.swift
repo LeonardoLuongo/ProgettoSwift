@@ -69,7 +69,7 @@ struct Subject: View {
                                             item.favorite = false
                                             updateExposition(item)
                                         }) {
-                                            Text("Not Favorite")
+                                            Text("Unfavorite")
                                             Image(systemName: "heart.slash")
                                         }
                                         .tint(.orange)
@@ -78,7 +78,7 @@ struct Subject: View {
                         }
                     }
                 }
-                .navigationTitle(section.name)
+                .navigationTitle(LocalizedStringKey(section.name))
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: {
