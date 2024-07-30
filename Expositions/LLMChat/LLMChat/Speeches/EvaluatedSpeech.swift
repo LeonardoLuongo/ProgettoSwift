@@ -1,5 +1,20 @@
 import Foundation
 
+extension String {
+    func ranges(of searchString: String) -> [Range<String.Index>] {
+        var ranges: [Range<String.Index>] = []
+        var startIndex = self.startIndex
+        
+        while startIndex < self.endIndex,
+              let range = self.range(of: searchString, range: startIndex..<self.endIndex) {
+            ranges.append(range)
+            startIndex = range.upperBound
+        }
+        
+        return ranges
+    }
+}
+
 class EvaluatedSpeech: Codable
 {
     private let textInString: String
@@ -54,7 +69,7 @@ class EvaluatedSpeech: Codable
         var temp_wrongSentences: [Sentence] = []
         for error in evaluatedText.errors {
             
-            let ranges = EvaluatedSpeech.findAllRanges(of: error.sentence, in: self.textInString)
+            let ranges = self.textInString.ranges(of: error.sentence)
             
             for range in ranges {
                 let _range = [
@@ -170,7 +185,7 @@ class EvaluatedSpeech: Codable
                 
                 // We can add it to the okay sentences
                 okaySentences.updateValue(paddingSentence, forKey: sentenceCounter)
-                letterTextCursor += okaySenteceStr.count
+                letterTextCursor += okaySenteceStr.count - 1
                 sentenceCounter += 1
             }
             
@@ -200,17 +215,41 @@ class EvaluatedSpeech: Codable
                 sentenceCounter += 1
                 
             }else if letterTextCursor > currentSentence.getRange()[0]{
+                var text: String = ""
+                
+                for i in 0...(self.textInSentences.count - 1) {
+                    text += (self.textInSentences[i]).getText()
+                }
+                
+                print(text)
                 throw LLMUtilsError.runtimeError("How the fuck did you get here? id:0a2208b8-de05-4fee-b2ad-fa493feaf8fe")
+                
             }
         }
     }
     
-    private func getTextInSentences() -> [Sentence]
+    public func getTextInSentences() -> [Sentence]
     {
         var sentences: [Sentence] = []
+        let maxIndex = (self.okaySentences.count - 1) + (self.wrongSentences.count - 1) + (self.warningSentences.count - 1)
         
-        for i in 0...(self.textInSentences.count - 1) {
-            sentences.append(self.textInSentences[i])
+        for i in 0...maxIndex {
+            if let _sentence = okaySentences[i]
+            {
+                sentences.append(_sentence)
+            }
+            else if let _sentence = warningSentences[i]
+            {
+                sentences.append(_sentence)
+            }
+            else if let _sentence = wrongSentences[i]
+            {
+                sentences.append(_sentence)
+            }
+            else
+            {
+                print("!!! You shouldn't be here !!!")
+            }
         }
         
         return sentences

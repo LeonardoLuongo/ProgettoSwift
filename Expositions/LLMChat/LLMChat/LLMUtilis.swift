@@ -33,7 +33,8 @@ class LLMUtilis
                 SafetySetting(harmCategory: .harassment, threshold: .blockNone),
                 SafetySetting(harmCategory: .hateSpeech, threshold: .blockNone),
                 SafetySetting(harmCategory: .sexuallyExplicit, threshold: .blockNone)
-            ]
+            ],
+            requestOptions: RequestOptions(timeout: 5_000.0)
           )
         
         var responseData:String? = nil
@@ -92,7 +93,19 @@ class LLMUtilis
         var responseData:String?
         do
         {
-            responseData = try await LLMUtilis.geminiCall(query: query.toString())
+            if true
+            {
+                responseData = try await LLMUtilis.geminiCall(query: query.toString())
+            }
+            else
+            {
+                responseData = RESPONSE
+            }
+            
+            responseData?.replace("´´´", with: "")
+            responseData?.replace("json\n", with: "")
+            responseData?.replace("```", with: "")
+            print(responseData!)
         }
         catch
         {

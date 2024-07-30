@@ -12,14 +12,27 @@ class PunctualizedSpeech: Codable
         do{
             writeDebugLog("Waiting for Gemini response...")
             // Get the new punctualized text.
-            punctualizedText = try await LLMUtilis.addPuntuactionToText(rawSpeech.getText())
+            if true
+            {
+                punctualizedText = try await LLMUtilis.addPuntuactionToText(rawSpeech.getText())
+            }
+            else
+            {
+                punctualizedText = PUNCTUALIZED_SPEECH
+            }
         }
         catch
         {
             writeDebugLog("Error from Gemini call: \(error)")
             throw LLMUtilsError.runtimeError("\(error)")
         }
+        
+        punctualizedText = punctualizedText.replacingOccurrences(of: "\"", with: "\\\"")
+        
+        
         writeDebugLog("Copying the timestamps...")
+        
+        
         // From the entire punctualized text to array of words.
         let punctualizedSingleStrWords: [String] = SingleWord.stringToSingleStrWords(text: punctualizedText)
         
@@ -102,7 +115,7 @@ class PunctualizedSpeech: Codable
                         isTimestampCaptured: false
                     )
                 )
-                print("Warning: A totally different word was found after the LLM query.\nIn punctualized:<\(newSingleStrWord!)> in raw:<\(oldSingleStrWord)>.\n")
+                // print("Warning: A totally different word was found after the LLM query.\nIn punctualized:<\(newSingleStrWord!)> in raw:<\(oldSingleStrWord)>.\n")
             }
             
         }
@@ -195,6 +208,16 @@ class PunctualizedSpeech: Codable
         }
         
         return commonChars
+    }
+    
+    func indexOf(substring: String, in string: String) -> Int? 
+    {
+        if let range = string.range(of: substring) {
+            // Get the distance from the start of the string to the lower bound of the range
+            let index = string.distance(from: string.startIndex, to: range.lowerBound)
+            return index
+        }
+        return nil
     }
     
 }

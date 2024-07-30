@@ -112,18 +112,21 @@ class EvaluationQuery
         \"Advices\":[
             \"\", \"\", ..., \"\"
         ],
-        "FinalEvaluation":{
-          "Grade":"",
-          "BriefReason":""
+        \"FinalEvaluation\":{
+          \"Grade\":\"\",
+          \"BriefReason\":\"\"
         }
     }
+    Mi raccomando, fai in modo che sia un JSON ben formato!
 
     Ecco gli input:
         contesto:
-        %s
+        "%@"
         
         studente:
-        %s
+        "%@"
+
+    Mi aspetto come rispota solo ed unicamente il JSON.
 """
     private let context: String
     private let exposition: String
