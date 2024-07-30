@@ -1,6 +1,6 @@
 import Foundation
 
-class RawSpeech: Identifiable{
+class RawSpeech: Identifiable, Codable{
     internal var id = UUID()
     private var textInString: String = ""
     private let textInSingleWords: [SingleWord]
@@ -16,7 +16,7 @@ class RawSpeech: Identifiable{
         return self.id
     }
     
-    public func getTextInString() -> String
+    public func getText() -> String
     {
         return self.textInString
     }

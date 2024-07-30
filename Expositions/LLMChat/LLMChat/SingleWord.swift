@@ -1,16 +1,19 @@
+
 import SwiftUI
 
 class SingleWord: Identifiable, Codable{
     internal var id = UUID()
     private let text: String
-    private let sentence: Sentence?
+    private var sentenceId: UUID?
     private var timestamp: Double? = nil // THIS IS JUST FOR TESTING PURPOSE, WE ARE NOT INTERESTED YET IN TIMESTAMP
+    private var isTimestampCaptured: Bool
     
-    init(id: UUID = UUID(), text: String, sentence: Sentence? = nil, timestamp: Double? = nil) {
+    init(id: UUID = UUID(), text: String, sentenceId: UUID? = nil, timestamp: Double? = nil, isTimestampCaptured:Bool = true) {
         self.id = id
         self.text = text
-        self.sentence = sentence
+        self.sentenceId = sentenceId
         self.timestamp = timestamp
+        self.isTimestampCaptured = isTimestampCaptured
     }
     
     public func getTimestamp() -> Double?
@@ -23,13 +26,18 @@ class SingleWord: Identifiable, Codable{
         return text
     }
     
+    public func setSentenceId(_ sentenceId: UUID?)
+    {
+        self.sentenceId = sentenceId
+    }
+    
     public static func stringToSingleStrWords(text: String) -> [String]
     {
         let words = text.split(separator: " ")
         var singleStrWords: [String] = []
         for word in words
         {
-            singleStrWords.append(String(word) + " ")
+            singleStrWords.append(String(word))
         }
         if var lastStr = singleStrWords.last
         {
@@ -38,11 +46,13 @@ class SingleWord: Identifiable, Codable{
         return singleStrWords
     }
     
-    public static func singleWordsToString(textInSingleWords: [SingleWord]) -> String
+    public static func singleWordsToString(
+        textInSingleWords: [SingleWord], wordSeparator: String = " "
+    ) -> String
     {
         var textInString = ""
         for word in textInSingleWords {
-            textInString.append(word.getText())
+            textInString.append(word.getText() + wordSeparator)
         }
 
         return textInString
