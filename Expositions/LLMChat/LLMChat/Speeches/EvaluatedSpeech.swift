@@ -185,7 +185,7 @@ class EvaluatedSpeech: Codable
                 
                 // We can add it to the okay sentences
                 okaySentences.updateValue(paddingSentence, forKey: sentenceCounter)
-                letterTextCursor += okaySenteceStr.count - 1
+                letterTextCursor += okaySenteceStr.count
                 sentenceCounter += 1
             }
             

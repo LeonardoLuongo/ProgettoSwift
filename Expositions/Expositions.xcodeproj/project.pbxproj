@@ -38,20 +38,18 @@
 		1FE219932C49610400A9A159 /* SectionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE219922C49610400A9A159 /* SectionListView.swift */; };
 		1FE504F22C516091000FFA53 /* TestFinalPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE504F12C516091000FFA53 /* TestFinalPage.swift */; };
 		1FECF3072C593DB2006ED37B /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1FECF3062C593DB2006ED37B /* GoogleGenerativeAI */; };
-		1FECF3432C598A62006ED37B /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF32F2C598A62006ED37B /* APIKey.swift */; };
-		1FECF3442C598A62006ED37B /* GenerativeAI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1FECF3302C598A62006ED37B /* GenerativeAI-Info.plist */; };
-		1FECF3452C598A62006ED37B /* JSONResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF3322C598A62006ED37B /* JSONResponse.swift */; };
-		1FECF3462C598A62006ED37B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FECF3342C598A62006ED37B /* Preview Assets.xcassets */; };
-		1FECF3472C598A62006ED37B /* EvaluatedSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF3362C598A62006ED37B /* EvaluatedSpeech.swift */; };
-		1FECF3482C598A62006ED37B /* PunctualizedSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF3372C598A62006ED37B /* PunctualizedSpeech.swift */; };
-		1FECF3492C598A62006ED37B /* RawSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF3382C598A62006ED37B /* RawSpeech.swift */; };
-		1FECF34A2C598A62006ED37B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FECF33A2C598A62006ED37B /* Assets.xcassets */; };
-		1FECF34B2C598A62006ED37B /* EvaluationQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF33B2C598A62006ED37B /* EvaluationQuery.swift */; };
-		1FECF34C2C598A62006ED37B /* LLMChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF33C2C598A62006ED37B /* LLMChatApp.swift */; };
-		1FECF34D2C598A62006ED37B /* LLMUtilis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF33D2C598A62006ED37B /* LLMUtilis.swift */; };
-		1FECF34E2C598A62006ED37B /* PunctualizationQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF33E2C598A62006ED37B /* PunctualizationQuery.swift */; };
-		1FECF34F2C598A62006ED37B /* Sentence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF33F2C598A62006ED37B /* Sentence.swift */; };
-		1FECF3502C598A62006ED37B /* SingleWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF3402C598A62006ED37B /* SingleWord.swift */; };
+		1FECF3622C5AA702006ED37B /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF3512C5AA701006ED37B /* APIKey.swift */; };
+		1FECF3632C5AA702006ED37B /* GenerativeAI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1FECF3522C5AA701006ED37B /* GenerativeAI-Info.plist */; };
+		1FECF3642C5AA702006ED37B /* JSONResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF3542C5AA701006ED37B /* JSONResponse.swift */; };
+		1FECF3652C5AA702006ED37B /* EvaluatedSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF3562C5AA701006ED37B /* EvaluatedSpeech.swift */; };
+		1FECF3662C5AA702006ED37B /* PunctualizedSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF3572C5AA701006ED37B /* PunctualizedSpeech.swift */; };
+		1FECF3672C5AA702006ED37B /* RawSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF3582C5AA701006ED37B /* RawSpeech.swift */; };
+		1FECF3682C5AA702006ED37B /* EvaluationQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF35A2C5AA701006ED37B /* EvaluationQuery.swift */; };
+		1FECF3692C5AA702006ED37B /* LLMChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF35B2C5AA701006ED37B /* LLMChatApp.swift */; };
+		1FECF36A2C5AA702006ED37B /* LLMUtilis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF35C2C5AA701006ED37B /* LLMUtilis.swift */; };
+		1FECF36B2C5AA702006ED37B /* PunctualizationQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF35D2C5AA701006ED37B /* PunctualizationQuery.swift */; };
+		1FECF36C2C5AA702006ED37B /* Sentence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF35E2C5AA701006ED37B /* Sentence.swift */; };
+		1FECF36D2C5AA702006ED37B /* SingleWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF35F2C5AA701006ED37B /* SingleWord.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,20 +105,18 @@
 		1FAF4BE52C47FFFB00A18150 /* IconEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconEditor.swift; sourceTree = "<group>"; };
 		1FE219922C49610400A9A159 /* SectionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionListView.swift; sourceTree = "<group>"; };
 		1FE504F12C516091000FFA53 /* TestFinalPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFinalPage.swift; sourceTree = "<group>"; };
-		1FECF32F2C598A62006ED37B /* APIKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
-		1FECF3302C598A62006ED37B /* GenerativeAI-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GenerativeAI-Info.plist"; sourceTree = "<group>"; };
-		1FECF3322C598A62006ED37B /* JSONResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONResponse.swift; sourceTree = "<group>"; };
-		1FECF3342C598A62006ED37B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		1FECF3362C598A62006ED37B /* EvaluatedSpeech.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluatedSpeech.swift; sourceTree = "<group>"; };
-		1FECF3372C598A62006ED37B /* PunctualizedSpeech.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PunctualizedSpeech.swift; sourceTree = "<group>"; };
-		1FECF3382C598A62006ED37B /* RawSpeech.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawSpeech.swift; sourceTree = "<group>"; };
-		1FECF33A2C598A62006ED37B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		1FECF33B2C598A62006ED37B /* EvaluationQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationQuery.swift; sourceTree = "<group>"; };
-		1FECF33C2C598A62006ED37B /* LLMChatApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LLMChatApp.swift; sourceTree = "<group>"; };
-		1FECF33D2C598A62006ED37B /* LLMUtilis.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LLMUtilis.swift; sourceTree = "<group>"; };
-		1FECF33E2C598A62006ED37B /* PunctualizationQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PunctualizationQuery.swift; sourceTree = "<group>"; };
-		1FECF33F2C598A62006ED37B /* Sentence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sentence.swift; sourceTree = "<group>"; };
-		1FECF3402C598A62006ED37B /* SingleWord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleWord.swift; sourceTree = "<group>"; };
+		1FECF3512C5AA701006ED37B /* APIKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
+		1FECF3522C5AA701006ED37B /* GenerativeAI-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GenerativeAI-Info.plist"; sourceTree = "<group>"; };
+		1FECF3542C5AA701006ED37B /* JSONResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONResponse.swift; sourceTree = "<group>"; };
+		1FECF3562C5AA701006ED37B /* EvaluatedSpeech.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluatedSpeech.swift; sourceTree = "<group>"; };
+		1FECF3572C5AA701006ED37B /* PunctualizedSpeech.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PunctualizedSpeech.swift; sourceTree = "<group>"; };
+		1FECF3582C5AA701006ED37B /* RawSpeech.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawSpeech.swift; sourceTree = "<group>"; };
+		1FECF35A2C5AA701006ED37B /* EvaluationQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationQuery.swift; sourceTree = "<group>"; };
+		1FECF35B2C5AA701006ED37B /* LLMChatApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LLMChatApp.swift; sourceTree = "<group>"; };
+		1FECF35C2C5AA701006ED37B /* LLMUtilis.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LLMUtilis.swift; sourceTree = "<group>"; };
+		1FECF35D2C5AA701006ED37B /* PunctualizationQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PunctualizationQuery.swift; sourceTree = "<group>"; };
+		1FECF35E2C5AA701006ED37B /* Sentence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sentence.swift; sourceTree = "<group>"; };
+		1FECF35F2C5AA701006ED37B /* SingleWord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleWord.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,7 +148,7 @@
 		1F0195032C4162A4001E15B1 = {
 			isa = PBXGroup;
 			children = (
-				1FECF3422C598A62006ED37B /* LLMChat */,
+				1FECF3612C5AA701006ED37B /* LLMChat */,
 				1F01C8CB2C57B8B100E18EF7 /* Language */,
 				1F01950F2C4162A4001E15B1 /* Expositions.swift */,
 				1F0195112C4162A4001E15B1 /* ContentView.swift */,
@@ -278,63 +274,53 @@
 			path = Sections;
 			sourceTree = "<group>";
 		};
-		1FECF3312C598A62006ED37B /* APIKey */ = {
+		1FECF3532C5AA701006ED37B /* APIKey */ = {
 			isa = PBXGroup;
 			children = (
-				1FECF32F2C598A62006ED37B /* APIKey.swift */,
-				1FECF3302C598A62006ED37B /* GenerativeAI-Info.plist */,
+				1FECF3512C5AA701006ED37B /* APIKey.swift */,
+				1FECF3522C5AA701006ED37B /* GenerativeAI-Info.plist */,
 			);
 			path = APIKey;
 			sourceTree = "<group>";
 		};
-		1FECF3332C598A62006ED37B /* JSON */ = {
+		1FECF3552C5AA701006ED37B /* JSON */ = {
 			isa = PBXGroup;
 			children = (
-				1FECF3322C598A62006ED37B /* JSONResponse.swift */,
+				1FECF3542C5AA701006ED37B /* JSONResponse.swift */,
 			);
 			path = JSON;
 			sourceTree = "<group>";
 		};
-		1FECF3352C598A62006ED37B /* Preview Content */ = {
+		1FECF3592C5AA701006ED37B /* Speeches */ = {
 			isa = PBXGroup;
 			children = (
-				1FECF3342C598A62006ED37B /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		1FECF3392C598A62006ED37B /* Speeches */ = {
-			isa = PBXGroup;
-			children = (
-				1FECF3362C598A62006ED37B /* EvaluatedSpeech.swift */,
-				1FECF3372C598A62006ED37B /* PunctualizedSpeech.swift */,
-				1FECF3382C598A62006ED37B /* RawSpeech.swift */,
+				1FECF3562C5AA701006ED37B /* EvaluatedSpeech.swift */,
+				1FECF3572C5AA701006ED37B /* PunctualizedSpeech.swift */,
+				1FECF3582C5AA701006ED37B /* RawSpeech.swift */,
 			);
 			path = Speeches;
 			sourceTree = "<group>";
 		};
-		1FECF3412C598A62006ED37B /* LLMChat */ = {
+		1FECF3602C5AA701006ED37B /* LLMChat */ = {
 			isa = PBXGroup;
 			children = (
-				1FECF3332C598A62006ED37B /* JSON */,
-				1FECF3352C598A62006ED37B /* Preview Content */,
-				1FECF3392C598A62006ED37B /* Speeches */,
-				1FECF33A2C598A62006ED37B /* Assets.xcassets */,
-				1FECF33B2C598A62006ED37B /* EvaluationQuery.swift */,
-				1FECF33C2C598A62006ED37B /* LLMChatApp.swift */,
-				1FECF33D2C598A62006ED37B /* LLMUtilis.swift */,
-				1FECF33E2C598A62006ED37B /* PunctualizationQuery.swift */,
-				1FECF33F2C598A62006ED37B /* Sentence.swift */,
-				1FECF3402C598A62006ED37B /* SingleWord.swift */,
+				1FECF3552C5AA701006ED37B /* JSON */,
+				1FECF3592C5AA701006ED37B /* Speeches */,
+				1FECF35A2C5AA701006ED37B /* EvaluationQuery.swift */,
+				1FECF35B2C5AA701006ED37B /* LLMChatApp.swift */,
+				1FECF35C2C5AA701006ED37B /* LLMUtilis.swift */,
+				1FECF35D2C5AA701006ED37B /* PunctualizationQuery.swift */,
+				1FECF35E2C5AA701006ED37B /* Sentence.swift */,
+				1FECF35F2C5AA701006ED37B /* SingleWord.swift */,
 			);
 			path = LLMChat;
 			sourceTree = "<group>";
 		};
-		1FECF3422C598A62006ED37B /* LLMChat */ = {
+		1FECF3612C5AA701006ED37B /* LLMChat */ = {
 			isa = PBXGroup;
 			children = (
-				1FECF3312C598A62006ED37B /* APIKey */,
-				1FECF3412C598A62006ED37B /* LLMChat */,
+				1FECF3532C5AA701006ED37B /* APIKey */,
+				1FECF3602C5AA701006ED37B /* LLMChat */,
 			);
 			path = LLMChat;
 			sourceTree = "<group>";
@@ -453,9 +439,7 @@
 			files = (
 				1F0195172C4162A5001E15B1 /* Preview Assets.xcassets in Resources */,
 				1F01C8CE2C57B8DA00E18EF7 /* Localizable.strings in Resources */,
-				1FECF3462C598A62006ED37B /* Preview Assets.xcassets in Resources */,
-				1FECF3442C598A62006ED37B /* GenerativeAI-Info.plist in Resources */,
-				1FECF34A2C598A62006ED37B /* Assets.xcassets in Resources */,
+				1FECF3632C5AA702006ED37B /* GenerativeAI-Info.plist in Resources */,
 				1F0195142C4162A5001E15B1 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -483,7 +467,7 @@
 			files = (
 				1F3711302C4E60F1008ABFA6 /* Player.swift in Sources */,
 				1F3E3F0D2C4C23900098432E /* ExpositionStyleSpecialSubject.swift in Sources */,
-				1FECF34E2C598A62006ED37B /* PunctualizationQuery.swift in Sources */,
+				1FECF36B2C5AA702006ED37B /* PunctualizationQuery.swift in Sources */,
 				1FE219932C49610400A9A159 /* SectionListView.swift in Sources */,
 				1F01953A2C416332001E15B1 /* TestView.swift in Sources */,
 				1F3E3F0B2C4C23620098432E /* ExpositionStyleSubject.swift in Sources */,
@@ -491,28 +475,28 @@
 				1F6C0F992C46D89D007D03A0 /* CreateIconView.swift in Sources */,
 				1F38182E2C4E962C00F7B659 /* Evaluator.swift in Sources */,
 				1F3818042C4D2FAF00F7B659 /* IconView.swift in Sources */,
-				1FECF34D2C598A62006ED37B /* LLMUtilis.swift in Sources */,
+				1FECF36A2C5AA702006ED37B /* LLMUtilis.swift in Sources */,
 				1F6C0F972C46D88C007D03A0 /* CreateSectionView.swift in Sources */,
-				1FECF34B2C598A62006ED37B /* EvaluationQuery.swift in Sources */,
+				1FECF3682C5AA702006ED37B /* EvaluationQuery.swift in Sources */,
 				1F3E3F172C4C29B30098432E /* Section.swift in Sources */,
 				1FAF4BE62C47FFFB00A18150 /* IconEditor.swift in Sources */,
-				1FECF3452C598A62006ED37B /* JSONResponse.swift in Sources */,
-				1FECF3492C598A62006ED37B /* RawSpeech.swift in Sources */,
+				1FECF3642C5AA702006ED37B /* JSONResponse.swift in Sources */,
+				1FECF3672C5AA702006ED37B /* RawSpeech.swift in Sources */,
 				1F3E3F112C4C24050098432E /* ExpositionRowTrash.swift in Sources */,
-				1FECF34F2C598A62006ED37B /* Sentence.swift in Sources */,
+				1FECF36C2C5AA702006ED37B /* Sentence.swift in Sources */,
 				1F6C0F932C46D86D007D03A0 /* Sections.swift in Sources */,
 				1F0195402C4163A9001E15B1 /* RecordingManager.swift in Sources */,
 				1F0195122C4162A4001E15B1 /* ContentView.swift in Sources */,
 				1F0195102C4162A4001E15B1 /* Expositions.swift in Sources */,
 				1FE504F22C516091000FFA53 /* TestFinalPage.swift in Sources */,
-				1FECF3482C598A62006ED37B /* PunctualizedSpeech.swift in Sources */,
+				1FECF3662C5AA702006ED37B /* PunctualizedSpeech.swift in Sources */,
 				1F01953E2C41638E001E15B1 /* RecordBar.swift in Sources */,
-				1FECF3432C598A62006ED37B /* APIKey.swift in Sources */,
+				1FECF3622C5AA702006ED37B /* APIKey.swift in Sources */,
 				1F0195422C4163F2001E15B1 /* Stopwatch.swift in Sources */,
-				1FECF3472C598A62006ED37B /* EvaluatedSpeech.swift in Sources */,
-				1FECF3502C598A62006ED37B /* SingleWord.swift in Sources */,
+				1FECF3652C5AA702006ED37B /* EvaluatedSpeech.swift in Sources */,
+				1FECF36D2C5AA702006ED37B /* SingleWord.swift in Sources */,
 				1F6C0F952C46D877007D03A0 /* Subject.swift in Sources */,
-				1FECF34C2C598A62006ED37B /* LLMChatApp.swift in Sources */,
+				1FECF3692C5AA702006ED37B /* LLMChatApp.swift in Sources */,
 				1F3E3F152C4C28EB0098432E /* Exposition.swift in Sources */,
 				1F01953C2C41636B001E15B1 /* RecordPage.swift in Sources */,
 				1F3E3F0F2C4C23F30098432E /* ExpositionRowSubject.swift in Sources */,
