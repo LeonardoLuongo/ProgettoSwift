@@ -88,7 +88,7 @@ struct RecordPage: View {
                                         var paths = "\(fileurl[0])".split(separator: "/")
                                         paths.reverse()
                                         paths[0] = "\(paths[0].replacingOccurrences(of: "%20", with: " ").lowercased())"
-                                        recordingManager.docFilename = String(paths[0]) + recordingManager.dateFormatter.string(from: recordingManager.date)
+                                        recordingManager.docFilename = String(paths[0])
                                         
                                         // Copia il file nella directory dell'app
                                         let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -189,7 +189,7 @@ struct RecordPage: View {
                                         var paths = "\(fileurl[0])".split(separator: "/")
                                         paths.reverse()
                                         paths[0] = "\(paths[0].replacingOccurrences(of: "%20", with: " ").lowercased())"
-                                        recordingManager.recordFilename = String(paths[0]) + recordingManager.dateFormatter.string(from: recordingManager.date)
+                                        recordingManager.recordFilename = String(paths[0])
                                         
                                         // Copia il file nella directory dell'app
                                         let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -242,7 +242,7 @@ struct RecordPage: View {
                 .navigationBarBackButtonHidden(evaluator.progress >= 0)
             }
         } else {
-            TestFinalPage(exposition: $exposition)
+            CorrectionPage(exposition: exposition, totalCardNumber: (exposition.evaluatedSpeech?.numberOfBadSentences())!)
         }
     }
 }

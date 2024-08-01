@@ -30,6 +30,9 @@
 		1F3E3F112C4C24050098432E /* ExpositionRowTrash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F102C4C24050098432E /* ExpositionRowTrash.swift */; };
 		1F3E3F152C4C28EB0098432E /* Exposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F142C4C28EB0098432E /* Exposition.swift */; };
 		1F3E3F172C4C29B30098432E /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3E3F162C4C29B30098432E /* Section.swift */; };
+		1F4CB9E32C5C29580052D5AB /* CorrectionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4CB9E22C5C29570052D5AB /* CorrectionCard.swift */; };
+		1F4CB9E52C5C29790052D5AB /* CorrectionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4CB9E42C5C29790052D5AB /* CorrectionPage.swift */; };
+		1F4CB9E72C5C298C0052D5AB /* GradeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4CB9E62C5C298C0052D5AB /* GradeCard.swift */; };
 		1F6C0F932C46D86D007D03A0 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F922C46D86D007D03A0 /* Sections.swift */; };
 		1F6C0F952C46D877007D03A0 /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F942C46D877007D03A0 /* Subject.swift */; };
 		1F6C0F972C46D88C007D03A0 /* CreateSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F962C46D88C007D03A0 /* CreateSectionView.swift */; };
@@ -97,6 +100,9 @@
 		1F3E3F102C4C24050098432E /* ExpositionRowTrash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpositionRowTrash.swift; sourceTree = "<group>"; };
 		1F3E3F142C4C28EB0098432E /* Exposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exposition.swift; sourceTree = "<group>"; };
 		1F3E3F162C4C29B30098432E /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
+		1F4CB9E22C5C29570052D5AB /* CorrectionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectionCard.swift; sourceTree = "<group>"; };
+		1F4CB9E42C5C29790052D5AB /* CorrectionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectionPage.swift; sourceTree = "<group>"; };
+		1F4CB9E62C5C298C0052D5AB /* GradeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCard.swift; sourceTree = "<group>"; };
 		1F65A5F72C4525A80085A7ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1F6C0F922C46D86D007D03A0 /* Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sections.swift; sourceTree = "<group>"; };
 		1F6C0F942C46D877007D03A0 /* Subject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subject.swift; sourceTree = "<group>"; };
@@ -148,6 +154,7 @@
 		1F0195032C4162A4001E15B1 = {
 			isa = PBXGroup;
 			children = (
+				1F4CB9E12C5C29260052D5AB /* ResultInterface */,
 				1FECF37E2C5BF388006ED37B /* LLMChat */,
 				1F01C8CB2C57B8B100E18EF7 /* Language */,
 				1F01950F2C4162A4001E15B1 /* Expositions.swift */,
@@ -259,6 +266,16 @@
 				1F3E3F162C4C29B30098432E /* Section.swift */,
 			);
 			path = "Classes & Structs";
+			sourceTree = "<group>";
+		};
+		1F4CB9E12C5C29260052D5AB /* ResultInterface */ = {
+			isa = PBXGroup;
+			children = (
+				1F4CB9E22C5C29570052D5AB /* CorrectionCard.swift */,
+				1F4CB9E42C5C29790052D5AB /* CorrectionPage.swift */,
+				1F4CB9E62C5C298C0052D5AB /* GradeCard.swift */,
+			);
+			path = ResultInterface;
 			sourceTree = "<group>";
 		};
 		1F6C0F912C46D85B007D03A0 /* Sections */ = {
@@ -490,12 +507,15 @@
 				1F0195102C4162A4001E15B1 /* Expositions.swift in Sources */,
 				1FE504F22C516091000FFA53 /* TestFinalPage.swift in Sources */,
 				1FECF3832C5BF388006ED37B /* PunctualizedSpeech.swift in Sources */,
+				1F4CB9E32C5C29580052D5AB /* CorrectionCard.swift in Sources */,
 				1F01953E2C41638E001E15B1 /* RecordBar.swift in Sources */,
 				1FECF37F2C5BF388006ED37B /* APIKey.swift in Sources */,
 				1F0195422C4163F2001E15B1 /* Stopwatch.swift in Sources */,
 				1FECF3822C5BF388006ED37B /* EvaluatedSpeech.swift in Sources */,
 				1FECF38A2C5BF388006ED37B /* SingleWord.swift in Sources */,
 				1F6C0F952C46D877007D03A0 /* Subject.swift in Sources */,
+				1F4CB9E52C5C29790052D5AB /* CorrectionPage.swift in Sources */,
+				1F4CB9E72C5C298C0052D5AB /* GradeCard.swift in Sources */,
 				1FECF3862C5BF388006ED37B /* LLMChatApp.swift in Sources */,
 				1F3E3F152C4C28EB0098432E /* Exposition.swift in Sources */,
 				1F01953C2C41636B001E15B1 /* RecordPage.swift in Sources */,

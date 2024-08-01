@@ -30,6 +30,8 @@ class Exposition: ObservableObject, Identifiable, Codable {
     var trashDate: Date?
     var documentText: String?
     
+    var evaluatedSpeech: EvaluatedSpeech?
+    
     enum CodingKeys: CodingKey {
         case id, favorite, trash, evalueted, date, grade, secCode, trashDate, recordingManager
     }

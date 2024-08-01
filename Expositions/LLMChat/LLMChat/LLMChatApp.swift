@@ -451,6 +451,7 @@ func writeDebugLog(_ log: String)
     }
 }
 
+/*
 @main
 struct HighlightApp: App {
     var body: some Scene {
@@ -459,6 +460,7 @@ struct HighlightApp: App {
         }
     }
 }
+ */
 
 struct LLMChatContentView: View {
     let context: String

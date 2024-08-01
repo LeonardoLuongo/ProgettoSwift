@@ -21,6 +21,8 @@ class Evaluator: ObservableObject {
     
     var documentText: String?
     var workItems: [DispatchWorkItem] = []
+    
+    private var evaluatedSpeech: EvaluatedSpeech?
 
     init(exposition: Binding<Exposition>, expositions: Binding<[Int : [Exposition]]>, evaluationError: Binding<Bool>) {
         self._exposition = exposition
@@ -43,7 +45,23 @@ class Evaluator: ObservableObject {
 
                     self?.exposition.recordingManager.processAudioFile(fileName: (self?.exposition.recordingManager.recordFilename)!, evaluator: self!) { success in
                         if success {
-                            self?.taskCompleted()
+                            Task { [weak self] in
+                                do {
+                                    // turn transcription into RawSpeech
+                                    let rawSpeech = RawSpeech(textInSingleWords: SingleWord.textToSingleWordArray(text: self!.exposition.recordingManager.transcription))
+                                    
+                                    // turn RawSpeech into PunctualizedSpeech through Gemini call
+                                    let punctualizedSpeech = try await PunctualizedSpeech(rawSpeech: rawSpeech)
+                                    
+                                    // turn PunctualizedSpeech into EvaluatedSpeech through Gemini call
+                                    self!.evaluatedSpeech = try await EvaluatedSpeech(context: text, punctualizedText: punctualizedSpeech)
+                                    
+                                    self?.taskCompleted()
+                                } catch {
+                                    self?.evaluationError.toggle()
+                                    return
+                                }
+                            }
                         } else {
                             self?.evaluationError.toggle()
                             return
@@ -72,6 +90,7 @@ class Evaluator: ObservableObject {
     
     func taskCompleted() {
         DispatchQueue.main.async { [self] in
+            exposition.evaluatedSpeech = evaluatedSpeech
             exposition.evaluated = true
             self.completed = true
             Exposition.saveDictionary(expositions: expositions)

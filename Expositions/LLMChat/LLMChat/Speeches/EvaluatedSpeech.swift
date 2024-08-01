@@ -328,6 +328,9 @@ class EvaluatedSpeech: Codable
         return false
     }
     
+    func numberOfBadSentences() -> Int {
+        return wrongSentences.count + warningSentences.count
+    }
 
 }
 
