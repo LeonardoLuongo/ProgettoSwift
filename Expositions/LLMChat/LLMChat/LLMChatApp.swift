@@ -37,8 +37,8 @@ La data di nascita di Giulio Cesare è il 23 luglio del 201, nel calendario roma
 """
 
 let RESPONSE = ""
-
 */
+
 
 let CONTEXT: String = """
 I Promessi Sposi è un’opera scritta da Alessandro Manzoni pubblicata per la prima volta nel 1827 e composta da 38 capitoli. Manzoni, per dare più spessore e realismo alla sua opera, non si assunse il merito della sua scrittura ma solo del ritrovamento e della trascrizione di un antico manoscritto contenente fatti accaduti risalenti al ‘600, quando gran parte dell’Italia era sotto il dominio Spagnolo.La storia inizia con Don Abbondio, un prete che deve celebrare il matrimonio fra due giovani, Renzo Tramaglino e Lucia Mondella, mentre sta facendo la sua passeggiata serale. Mentre procede viene fermato da i Bravi, due loschi figuri al servizio di un signore del luogo Don Rodrigo, che esortano il prete a non celebrare le nozze. Infatti, il loro signore ha fatto una scommessa con il cugino Attilio che vedeva Lucia come posta in palio, pertanto vuole impedire le nozze. Don Abbondio accetta e inventa delle scuse per giustificarsi con Renzo che però scopre tutto.La madre di Lucia, Agnese, suggerisce di rivolgersi ad Azzeccagarbugli, un avvocato che inizialmente sembra intenzionato ad aiutare il ragazzo, ma scoperto il coinvolgimento di Don Rodrigo nella faccenda, manda via Renzo. I due innamorati pertanto si rivolgono a Fra Cristoforo, il figlio di un ricco mercante dal cuore d’oro che non ha mai amato le ingiustizie e che, dopo aver ucciso un uomo durante un duello, ha preso i voti. Fra Cristoforo si reca alla residenza di Don Rodrigo per esortarlo a rinunciare ai suoi propositi, ma il signorotto non cambia idea e Fra Cristoforo lo minaccia dicendogli che riceverà la punizione divina. Irritato ed intimorito Don Rodrigo lo caccia in malo modo.Agnese suggerisce ai due giovani un matrimonio a sorpresa, ovvero pronunciare i voti nuziali davanti a un prete e a due testimoni, per ufficializzare l’unione. Sfortunatamente il piano fallisce perché Don Abbondio capisce la situazione ed inizia ad urlare. Intanto Don Rodrigo manda i bravi a rapire Lucia a casa sua ma non la trovano. I due giovani, scoperta la situazione decidono di partire con l’aiuto di Fra Cristoforo che li manda a Milano e a Monza. Lucia viene portata in un convento nei pressi di Monza, gestito da suora Gertrude, una nobile costretta dal padre a prendere i voti ma che presto cederà alle attenzioni di Egidio un giovane poco raccomandabile con cui instaura una torbida relazione che comprenderà anche un omicidio. La monaca ospiterà Lucia nel suo monastero e la giovane racconterà la sua storia alla madre superiora. A Milano è scoppiata una rivolta popolare a causa dell’impressionante aumento del prezzo del pane e Renzo si ritrova coinvolto nel disordine, rischiando di essere arrestato, ma riesce a dileguarsi e a nascondersi a casa di suo cugino Bortolo a Bergamo. Intanto lo zio del conte Attilio fa trasferire Fra Cristoforo a Rimini.Don Rodrigo, scoperta la posizione di Lucia, chiede l’aiuto dell’Innominato, un potentissimo e sanguinario signore, celebre per aver commesso ogni genere di nefandezza, per rapire Lucia. Il rapimento riesce anche grazie all’aiuto di Egidio. La ragazza chiede di essere liberata esortando l’Innominato a redimersi. La notte seguente la ragazza fa voto di castità alla Madonna affinché venga liberata, mentre l’Innominato si pente a seguito dei rimorsi, liberando Lucia la mattina seguente e dandole una dote. Dopo diversi mesi, arriva in Lombardia, e in seguito a Milano, la peste che provoca la morte di moltissima gente. Don Rodrigo si ammala e viene tradito dal capo dei Bravi, Griso, che morirà di peste. Anche Renzo è contagiato ma riesce a guarire e cercherà di ritrovare Lucia nel lazzaretto è nel lazzaretto che si incontrano tutti alla fine. Renzo ritrova Lucia e Fra Cristoforo contagiato e quest’ultimo esorta  Renzo ad abbandonare la sua brama di vendetta verso Don Rodrigo, ormai morente, e libera Lucia dal suo voto. Tornati al loro paese, i due giovani si sposano con Don Abbondio a celebrare le nozze. Finalmente sposi, hanno una figlia che chiameranno Maria, come segno di gratitudine verso la Madonna, e in seguito altri.
@@ -471,11 +471,16 @@ struct LLMChatContentView: View {
     var body: some View {
         ScrollView {
             if let evaluatedSpeech = evaluatedSpeech {
-                var sentences = evaluatedSpeech.getTextInSentences()
+                let sentences = evaluatedSpeech.getTextInSentences()
                 ForEach(sentences)
                 {
                     sentence in
-                    LLMChatContentView.sentenceToText(sentence: sentence)
+                    Text(LLMChatContentView.sentenceToAttributedString(sentence: sentence))
+                        .onTapGesture {
+                            print("Correction: \(sentence.getCorrection())")
+                            print("Reason: \(sentence.getReason())")
+                            print("Status: \(sentence.getStatus())")
+                        }
                 }
             } else {
                 Text(status)
@@ -519,13 +524,23 @@ struct LLMChatContentView: View {
             // This part should be tested
             self.evaluatedSpeech = evaluatedSpeech
             
+            
+            var chrsNum = 0
+            for sentence in evaluatedSpeech.getTextInSentences() {
+                chrsNum += sentence.getText().count
+            }
+            let v = punctualizedSpeech.getText().count - chrsNum
+            print("Punctualized - EvaluatedSpeech: ",
+                  v
+            )
+            
         } catch {
             status = "Error: \(error)"
             print("\(error)")
         }
     }
     
-    static func sentenceToText(sentence: Sentence) -> Text
+    static func sentenceToAttributedString(sentence: Sentence) -> AttributedString
     {
         var attributedString = AttributedString(sentence.getText())
         
@@ -540,7 +555,7 @@ struct LLMChatContentView: View {
             attributedString.backgroundColor = .red
             break
         }
-        return Text(attributedString)
+        return attributedString
     }
 }
 

@@ -50,6 +50,8 @@ class EvaluatedSpeech: Codable
         // Copy the entire exposition
         self.textInString = punctualizedText.getText()
         
+        var allRanges: [[Int]] = []
+        
         // Get the Gemini Response
         var evaluatedText: Response
         do
@@ -77,7 +79,15 @@ class EvaluatedSpeech: Codable
                     range.upperBound.utf16Offset(in: self.textInString)
                 ]
                 do {
-                    temp_wrongSentences.append(try Sentence(entireText: self.textInString, sentenceText: error.sentence, status: .wrong, correction: error.correction, reason: error.reason, range: _range))
+                    if !EvaluatedSpeech.isRangeOccupied(ranges: allRanges, newRange: _range)
+                    {
+                        temp_wrongSentences.append(try Sentence(entireText: self.textInString, sentenceText: error.sentence, status: .wrong, correction: error.correction, reason: error.reason, range: _range))
+                        allRanges.append(_range)
+                    }
+                    else
+                    {
+                        print("A sentence repetition was denied.")
+                    }
                 }
                 catch{
                     throw LLMUtilsError.runtimeError("\(error)")
@@ -97,7 +107,15 @@ class EvaluatedSpeech: Codable
                     range.upperBound.utf16Offset(in: self.textInString)
                 ]
                 do {
-                    temp_wrongSentences.append(try Sentence(entireText: self.textInString, sentenceText: warn.sentence, status: .wrong, correction: warn.correction, reason: warn.reason, range: _range))
+                    if !EvaluatedSpeech.isRangeOccupied(ranges: allRanges, newRange: _range)
+                    {
+                        temp_wrongSentences.append(try Sentence(entireText: self.textInString, sentenceText: warn.sentence, status: .wrong, correction: warn.correction, reason: warn.reason, range: _range))
+                        allRanges.append(_range)
+                    }
+                    else
+                    {
+                        print("A sentence repetition was denied.")
+                    }
                 }
                 catch{
                     throw LLMUtilsError.runtimeError("\(error)")
@@ -136,7 +154,7 @@ class EvaluatedSpeech: Codable
         // We have to find the sentences who comes first, so, the one who has
         // a .getRange()[0] that is the lowest.
         var (min_unsortedSentencesIndex, currentSentence): (Int?, Sentence)
-        while(letterTextCursor < textInString.count - 1)
+        while(letterTextCursor < textInString.count)
         {
             // If the array is not empty
             if !unsortedSentences.isEmpty
@@ -165,7 +183,7 @@ class EvaluatedSpeech: Codable
                     entireText: textInString,
                     sentenceText: String(textInString.suffix(from: index)),
                     status: .okay,
-                    range: [letterTextCursor, textInString.count - 1]
+                    range: [letterTextCursor, textInString.count]
                 )
             }
             
@@ -211,7 +229,7 @@ class EvaluatedSpeech: Codable
                 // TODO: Understand if should be
                 // letterTextCursor += currentSentence.getText().count
                 // Instead of:
-                letterTextCursor += currentSentence.getText().count - 1
+                letterTextCursor += currentSentence.getText().count
                 sentenceCounter += 1
                 
             }else if letterTextCursor > currentSentence.getRange()[0]{
@@ -231,9 +249,9 @@ class EvaluatedSpeech: Codable
     public func getTextInSentences() -> [Sentence]
     {
         var sentences: [Sentence] = []
-        let maxIndex = (self.okaySentences.count - 1) + (self.wrongSentences.count - 1) + (self.warningSentences.count - 1)
+        let maxIndex = (self.okaySentences.count) + (self.wrongSentences.count) + (self.warningSentences.count)
         
-        for i in 0...maxIndex {
+        for i in 0...(maxIndex - 1) {
             if let _sentence = okaySentences[i]
             {
                 sentences.append(_sentence)
@@ -286,6 +304,28 @@ class EvaluatedSpeech: Codable
             i += 1
         }
         return subStr
+    }
+    
+    private static func isRangeOccupied(ranges: [[Int]], newRange: [Int]) -> Bool {
+        // Ensure the new range has exactly 2 elements
+        guard newRange.count == 2 else {
+            return false
+        }
+        
+        let newStart = newRange[0]
+        let newEnd = newRange[1]
+        
+        for range in ranges {
+            let start = range[0]
+            let end = range[1]
+            
+            // Check for overlap
+            if newStart <= end && newEnd >= start {
+                return true
+            }
+        }
+        
+        return false
     }
     
 

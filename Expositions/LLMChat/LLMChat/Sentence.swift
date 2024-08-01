@@ -119,7 +119,7 @@ class Sentence: Identifiable, Codable {
     
     public func getReason() -> String?
     {
-        return self.correction
+        return self.reason
     }
 }
 

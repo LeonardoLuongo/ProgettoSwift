@@ -7,8 +7,7 @@ Sei un professore di italiano e devi inserire la punteggiatura a questo testo se
 """,
 """
     Immagina di essere un professore universitario e di star interrogando uno studente.
-    Voglio che tu valuti la sua interrogazione riportando in formato JSON errori e warnings, con relative correzioni
-    e consigli migliorativi e voto finale.
+    Voglio che tu valuti la sua interrogazione riportando in formato JSON errori(errors) e avvertenze(warnings), con relative correzioni e consigli migliorativi e voto finale.
 
     La valutazione sia per il voto che per il rilevamento di errori si divide in:
 
@@ -120,6 +119,8 @@ Sei un professore di italiano e devi inserire la punteggiatura a questo testo se
           \"BriefReason\":\"\"
         }
     }
+
+    Una frase può essere inserita solo in una delle due categorie (errors, warnings), è impossibile che sia in entrambe. Per questo, valuta bene se la frase è ritenuta errata o è un'imprecisione. 
 """
 ]
 
@@ -157,7 +158,7 @@ class LLMUtilis
                 SafetySetting(harmCategory: .sexuallyExplicit, threshold: .blockNone)
             ],
             systemInstruction: systemInstruction,
-            requestOptions: RequestOptions(timeout: 20_000.0)
+            requestOptions: RequestOptions(timeout: 50_000.0)
           )
         
         var responseData:String? = nil
@@ -210,52 +211,97 @@ class LLMUtilis
         }
     }
     
+    private static func cleanUpTheJSONString(JSONString: String) -> String
+    {
+        var str = JSONString
+        str.replace("´´´", with: "")
+        str.replace("json\n", with: "")
+        str.replace("```", with: "")
+        str.replace("\\'", with: "'")
+        return str
+    }
     
     public static func evaluate(context: String, exposition: String) async throws -> Response
     {
         let query = EvaluationQuery(context: context, exposition: exposition)
         var responseData:String?
+        
         do
         {
-            if true
-            {
-                responseData = try await LLMUtilis.geminiCall(query: query.toString(), systemInstruction: ModelContent(role: "system", parts: [.text(SYSTEM_INSTRUCTION[1])]))
-                
-                print("Formatting the JSON in a better way...")
-                
-                responseData = try await LLMUtilis.geminiCall(
-                    query: "Rendi ben formato questo JSON. Mi aspetto come tua risposta solo il JSON. Ecco quello su cui devi lavorare:\n\(responseData)",
-                    systemInstruction: ModelContent(role: "system", parts: [.text("Sei il miglior formattatore JSON esistente.")])
-                )
-                    
-            }
-            else
-            {
-                responseData = RESPONSE
-            }
+            responseData = try await LLMUtilis.geminiCall(query: query.toString(), systemInstruction: ModelContent(role: "system", parts: [.text(SYSTEM_INSTRUCTION[1])]))
             
-            responseData?.replace("´´´", with: "")
-            responseData?.replace("json\n", with: "")
-            responseData?.replace("```", with: "")
-            print(responseData!)
+            print("Formatting the JSON in a better way...")
+            
+            responseData = try await LLMUtilis.geminiCall(
+                query: "Rendi ben formato questo JSON. Mi aspetto come tua risposta solo il JSON. Ecco quello su cui devi lavorare:\n\(responseData)",
+                systemInstruction: ModelContent(role: "system", parts: [.text("Sei il miglior formattatore JSON esistente.")])
+            )
         }
         catch
         {
             throw LLMUtilsError.runtimeError("\(error)")
         }
         
-        var response: Response? = nil
+        responseData = cleanUpTheJSONString(JSONString: responseData!)
+        print(responseData!)
         
+        var response: Response? = nil
+        var i = 0
+        var isCorrectJSON = false
         if let data = responseData
         {
-            if let jsonData = data.data(using: .utf8) {
+            if var jsonData = data.data(using: .utf8)
+            {
                 let decoder = JSONDecoder()
-                do {
-                    response = try decoder.decode(Response.self, from: jsonData)
-                } catch {
-                    throw LLMUtilsError.runtimeError("Error decoding JSON: \(error)")
+                
+                while i < 5
+                {
+                    do {
+                        response = try decoder.decode(Response.self, from: jsonData)
+                        i = 5
+                        isCorrectJSON = true
+                    } catch {
+                        print("(\(i)/5) Trying to get a correct JSON...")
+                        responseData = try await LLMUtilis.geminiCall(
+                            query: "I've got this JSON error: \(error) on this JSON data \(response). Solve those problems.",
+                            systemInstruction: ModelContent(role: "system", parts: [.text("You're the best JSON formatter."), .text("You must return the JSON only.")]))
+                        
+                        responseData = cleanUpTheJSONString(JSONString: responseData!)
+                        print(responseData!)
+                        
+                        if let _data = responseData
+                        {
+                            if let _jsonData = _data.data(using: .utf8)
+                            {
+                                jsonData = _jsonData
+                            }
+                            else
+                            {
+                                throw LLMUtilsError.runtimeError("Error from data to utf8 error.")
+                            }
+                        }
+                        else
+                        {
+                            throw LLMUtilsError.runtimeError("Response data was nil.")
+                        }
+                        i += 1
+                    }
                 }
+                
             }
+            else
+            {
+                throw LLMUtilsError.runtimeError("Error from data to utf8 error.")
+            }
+        }
+        else
+        {
+            throw LLMUtilsError.runtimeError("Response data was nil.")
+        }
+        
+        if !isCorrectJSON
+        {
+            throw LLMUtilsError.runtimeError("Too many attempts for JSON formatting. Try again later.")
         }
         
         return response!
