@@ -331,6 +331,22 @@ class EvaluatedSpeech: Codable
     func numberOfBadSentences() -> Int {
         return wrongSentences.count + warningSentences.count
     }
+    
+    func getWrongSentences() -> [Int: Sentence] {
+        return wrongSentences
+    }
+    
+    func getWarningSentences() -> [Int: Sentence] {
+        return warningSentences
+    }
+    
+    func getOkaySentences() -> [Int: Sentence] {
+        return okaySentences
+    }
+    
+    func getSentences() -> [Sentence] {
+        return textInSentences
+    }
 
 }
 

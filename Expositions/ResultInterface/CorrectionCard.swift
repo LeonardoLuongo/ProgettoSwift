@@ -16,132 +16,164 @@ struct CorrectionCard: View {
     var body: some View {
         GeometryReader { metrics in
             VStack {
-                Spacer()
 
                 HStack {
                     Spacer()
                     ScrollView(showsIndicators: false) {
                         VStack(alignment: .center) {
                             Spacer()
-                            HStack {
-                                if let prevSentence = self.prevSentence {
-                                    switch prevSentence.getStatus() {
-                                    case .warning:
-                                        Text("\(prevSentence.getText())")
-                                            .foregroundColor(.black)
-                                            .padding(.all)
-                                            .background(Color.yellow)
-                                    case .wrong:
-                                        Text("\(prevSentence.getText())")
-                                            .foregroundColor(.black)
-                                            .padding(.all)
-                                            .background(Color.red)
-                                    default:
-                                        Text("\(prevSentence.getText())")
-                                            .foregroundColor(.black)
-                                            .padding(.all)
-                                    }
-                                }
-
-                                switch mainSentence.getStatus() {
-                                case .warning:
-                                    Text("\(mainSentence.getText())")
-                                        .foregroundColor(.black)
-                                        .padding(.all)
-                                        .background(Color.yellow)
-                                case .wrong:
-                                    Text("\(mainSentence.getText())")
-                                        .foregroundColor(.black)
-                                        .padding(.all)
-                                        .background(Color.red)
-                                default:
-                                    Text("\(mainSentence.getText())")
-                                        .foregroundColor(.black)
-                                        .padding(.all)
-                                        .background(Color.gray)
-                                }
-
-                                if let nextSentence = self.nextSentence {
-                                    switch nextSentence.getStatus() {
-                                    case .warning:
-                                        Text("\(nextSentence.getText())")
-                                            .foregroundColor(.black)
-                                            .padding(.all)
-                                            .background(Color.yellow)
-                                    case .wrong:
-                                        Text("\(nextSentence.getText())")
-                                            .foregroundColor(.black)
-                                            .padding(.all)
-                                            .background(Color.red)
-                                    default:
-                                        Text("\(nextSentence.getText())")
-                                            .foregroundColor(.black)
-                                            .padding(.all)
-                                    }
-                                }
-                                if let correction = mainSentence.getCorrection() {
-                                    Divider()
-                                    Text("\(correction)")
-                                        .foregroundColor(.black)
-                                        .padding(.all)
-                                }
-                                if let reason = mainSentence.getReason() {
-                                    Divider()
-                                    Text("\(reason)")
-                                        .foregroundColor(.black)
-                                        .padding(.all)
-                                }
-                                Spacer()
+                            
+                            switch mainSentence.getStatus() {
+                            case .warning:
+                                Text("Warning")
+                                    .foregroundColor(.black)
+                                    .font(.title)
+                                    .padding(.top)
+                            case .wrong:
+                                Text("Error")
+                                    .foregroundColor(.black)
+                                    .font(.title)
+                                    .padding(.top)
+                            default:
+                                Text("Sentence")
+                                    .foregroundColor(.black)
+                                    .font(.title)
+                                    .padding(.top)
                             }
+                            
+                            Text(self.combinedAttributedText())
+                                .foregroundColor(.black)
+                                .padding(.all)
+
+
+                            if let correction = mainSentence.getCorrection() {
+                                Rectangle()
+                                    .frame(width: metrics.size.width * 0.7, height: 2)
+                                    .cornerRadius(100)
+                                    .padding(.vertical)
+                                
+                                Text("Correction")
+                                    .foregroundColor(.black)
+                                    .font(.title)
+                                
+                                Text("\(correction)")
+                                    .foregroundColor(.black)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 1)
+                            }
+                            
+                            if let reason = mainSentence.getReason() {
+                                Rectangle()
+                                    .frame(width: metrics.size.width * 0.7, height: 2)
+                                    .cornerRadius(100)
+                                    .padding(.vertical)
+                                
+                                Text("Reason")
+                                    .foregroundColor(.black)
+                                    .font(.title)
+                                
+                                Text("\(reason)")
+                                    .foregroundColor(.black)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 1)
+                            }
+                            
+                            Spacer().frame(height: metrics.size.height * 0.4)
                         }
-                        .frame(width: metrics.size.width*0.8, height: metrics.size.height*0.95)
-                        .background(Color.white)
-                        .cornerRadius(20)
-                        .shadow(radius: 10)
 
                         Spacer()
                     }
+                    .frame(width: metrics.size.width * 0.8, height: metrics.size.height * 0.85)
+                    .background(Color.white)
+                    .cornerRadius(20)
+                    .shadow(radius: 10, y: 15.0)
 
                     Spacer()
                 }
+                .padding(.top, 20)
+                Spacer()
             }
         }
+    }
+    
+    
+    func combinedAttributedText() -> AttributedString {
+        var attributedString = AttributedString()
+            
+        if let prevSentence = self.prevSentence {
+            var prevAttributedString = AttributedString(prevSentence.getText())
+//            switch prevSentence.getStatus() {
+//            case .warning:
+//                prevAttributedString.backgroundColor = .yellow
+//            case .wrong:
+//                prevAttributedString.backgroundColor = .red
+//            default:
+//                prevAttributedString.backgroundColor = .clear
+//            }
+            attributedString += prevAttributedString + AttributedString(" ")
+        }
+            
+        var mainAttributedString = AttributedString(mainSentence.getText())
+        switch mainSentence.getStatus() {
+        case .warning:
+            mainAttributedString.backgroundColor = .yellow
+        case .wrong:
+            mainAttributedString.backgroundColor = .red
+        default:
+            mainAttributedString.font = .headline
+        }
+        attributedString += mainAttributedString + AttributedString(" ")
+        
+        if let nextSentence = self.nextSentence {
+            var nextAttributedString = AttributedString(nextSentence.getText())
+//            switch nextSentence.getStatus() {
+//            case .warning:
+//                nextAttributedString.backgroundColor = .yellow
+//            case .wrong:
+//                nextAttributedString.backgroundColor = .red
+//            default:
+//                nextAttributedString.backgroundColor = .clear
+//            }
+            attributedString += nextAttributedString
+        }
+        
+        return attributedString
     }
 }
 
 struct CorrectionCard_Previews: PreviewProvider {
-    
+
     static private var mainSentence: Sentence? = initMainSentence()
     static private var prevSentence: Sentence? = initPrevSentence()
     static private var nextSentence: Sentence? = initNextSentence()
-    
+
     static func initMainSentence() -> Sentence? {
         do {
-            let sentence = try Sentence(entireText: "Prima frase. Seconda frase. Terza frase. ", sentenceText: "Seconda frase. ", status: .wrong)
+            let sentence = try Sentence(entireText: "Frase precedente a quella d'interesse, che serve solo a dare contesto, quindi cerco di allungarla per testare la scrollview scrivendo ancora ancora e ancora, solo che non ho più idee. Frase principale da correggere, cerco di scriverla più lunga ma ancora non basta. Quindi continuo ancora a scrivere questa frase, solo che non so cosa scrivere, perché non ho un contesto. Mentre questa è la frase successiva, che serve a sua voltab a dare contesto, e cerco di allungare anche questa per provare, ma non troppo.", sentenceText: "Frase principale da correggere, cerco di scriverla più lunga ma ancora non basta. Quindi continuo ancora a scrivere questa frase, solo che non so cosa scrivere, perché non ho un contesto.", status: .okay, correction: "Questa è la correzione. Bla bla bla, hai sbagliato, e invece dovresti dire così. Allungo un po' il brodo per scrivere altre parole e testare la scrollview. Forse mi conviene allungare un altro po'. Devo scoprire come rendere i Divider più visibili ma lasciare un po' di padding a lato.", reason: "La ragione è che dovevo testare. Quindi scrivo qualcosa ancora sempre per testare e vedere la card che scrolla.")
             return sentence
         } catch {
             return nil
         }
     }
-    
+
     static func initPrevSentence() -> Sentence? {
         do {
-            let sentence = try Sentence(entireText: "Prima frase. Seconda frase. Terza frase. ", sentenceText: "Prima frase. ", status: .wrong)
+            let sentence = try Sentence(entireText: "Frase precedente a quella d'interesse, che serve solo a dare contesto, quindi cerco di allungarla per testare la scrollview scrivendo ancora ancora e ancora, solo che non ho più idee. Frase principale da correggere, cerco di scriverla più lunga ma ancora non basta. Quindi continuo ancora a scrivere questa frase, solo che non so cosa scrivere, perché non ho un contesto. Mentre questa è la frase successiva, che serve a sua voltab a dare contesto, e cerco di allungare anche questa per provare, ma non troppo.", sentenceText: "Frase precedente a quella d'interesse, che serve solo a dare contesto, quindi cerco di allungarla per testare la scrollview scrivendo ancora ancora e ancora, solo che non ho più idee.", status: .okay)
             return sentence
         } catch {
             return nil
         }
     }
-    
+
     static func initNextSentence() -> Sentence? {
         do {
-            let sentence = try Sentence(entireText: "Prima frase. Seconda frase. Terza frase. ", sentenceText: "Terza frase. ", status: .wrong)
+            let sentence = try Sentence(entireText: "Frase precedente a quella d'interesse, che serve solo a dare contesto, quindi cerco di allungarla per testare la scrollview scrivendo ancora ancora e ancora, solo che non ho più idee. Frase principale da correggere, cerco di scriverla più lunga ma ancora non basta. Quindi continuo ancora a scrivere questa frase, solo che non so cosa scrivere, perché non ho un contesto. Mentre questa è la frase successiva, che serve a sua voltab a dare contesto, e cerco di allungare anche questa per provare, ma non troppo.", sentenceText: "Mentre questa è la frase successiva, che serve a sua voltab a dare contesto, e cerco di allungare anche questa per provare, ma non troppo.", status: .warning)
             return sentence
         } catch {
             return nil
         }
     }
-    
+
     static var previews: some View {
         CorrectionCard(number: 5, mainSentence: mainSentence!, prevSentence: prevSentence!, nextSentence: nextSentence!)
     }

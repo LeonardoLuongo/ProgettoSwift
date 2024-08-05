@@ -30,13 +30,19 @@ struct RecordPage: View {
                         VStack {
                             /*  You can rename the page, but if you let the textfield empty
                              the page will be identified by the date and time it was created */
-                            TextField("Record name", text: $recordingManager.recordName)
-                                .font(.largeTitle)
-                                .fontWeight(.semibold)
-                                .textFieldStyle(DefaultTextFieldStyle())
-                                .padding()
-                                .multilineTextAlignment(.leading)
-                                .disabled(recordingManager.isRecording)
+                            HStack {
+                                Spacer()
+                                
+                                TextField("Record name", text: $recordingManager.recordName)
+                                    .font(.largeTitle)
+                                    .fontWeight(.semibold)
+                                    .textFieldStyle(DefaultTextFieldStyle())
+                                    .padding()
+                                    .multilineTextAlignment(.leading)
+                                    .disabled(recordingManager.isRecording)
+                                
+                                Spacer()
+                            }
                             
                             /*  This button allows to load the text file used to controll the accuracy
                              of the exposition recorded/loaded by the user.*/
@@ -242,7 +248,7 @@ struct RecordPage: View {
                 .navigationBarBackButtonHidden(evaluator.progress >= 0)
             }
         } else {
-            CorrectionPage(exposition: exposition, totalCardNumber: (exposition.evaluatedSpeech?.numberOfBadSentences())!)
+            CorrectionPage(exposition: exposition, totalCardNumber: (exposition.evaluatedSpeech?.numberOfBadSentences())! + 1)
         }
     }
 }

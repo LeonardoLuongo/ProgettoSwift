@@ -37,10 +37,11 @@
 		1F6C0F952C46D877007D03A0 /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F942C46D877007D03A0 /* Subject.swift */; };
 		1F6C0F972C46D88C007D03A0 /* CreateSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F962C46D88C007D03A0 /* CreateSectionView.swift */; };
 		1F6C0F992C46D89D007D03A0 /* CreateIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F982C46D89D007D03A0 /* CreateIconView.swift */; };
+		1F9DDA2A2C5E3801006B600E /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1F9DDA292C5E3801006B600E /* GoogleGenerativeAI */; };
+		1F9DDA2C2C5E3813006B600E /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1F9DDA2B2C5E3813006B600E /* GoogleGenerativeAI */; };
 		1FAF4BE62C47FFFB00A18150 /* IconEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAF4BE52C47FFFB00A18150 /* IconEditor.swift */; };
 		1FE219932C49610400A9A159 /* SectionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE219922C49610400A9A159 /* SectionListView.swift */; };
 		1FE504F22C516091000FFA53 /* TestFinalPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE504F12C516091000FFA53 /* TestFinalPage.swift */; };
-		1FECF3072C593DB2006ED37B /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1FECF3062C593DB2006ED37B /* GoogleGenerativeAI */; };
 		1FECF37F2C5BF388006ED37B /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF36E2C5BF388006ED37B /* APIKey.swift */; };
 		1FECF3802C5BF388006ED37B /* GenerativeAI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1FECF36F2C5BF388006ED37B /* GenerativeAI-Info.plist */; };
 		1FECF3812C5BF388006ED37B /* JSONResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FECF3712C5BF388006ED37B /* JSONResponse.swift */; };
@@ -130,7 +131,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1FECF3072C593DB2006ED37B /* GoogleGenerativeAI in Frameworks */,
+				1F9DDA2A2C5E3801006B600E /* GoogleGenerativeAI in Frameworks */,
+				1F9DDA2C2C5E3813006B600E /* GoogleGenerativeAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,6 +169,7 @@
 				1F38182C2C4E960D00F7B659 /* Evaluation */,
 				1F3818212C4E463500F7B659 /* Documents */,
 				1F01950D2C4162A4001E15B1 /* Products */,
+				1F8BEFA02C5D1E950075B092 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -291,6 +294,13 @@
 			path = Sections;
 			sourceTree = "<group>";
 		};
+		1F8BEFA02C5D1E950075B092 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		1FECF3702C5BF388006ED37B /* APIKey */ = {
 			isa = PBXGroup;
 			children = (
@@ -360,7 +370,8 @@
 			);
 			name = Expositions;
 			packageProductDependencies = (
-				1FECF3062C593DB2006ED37B /* GoogleGenerativeAI */,
+				1F9DDA292C5E3801006B600E /* GoogleGenerativeAI */,
+				1F9DDA2B2C5E3813006B600E /* GoogleGenerativeAI */,
 			);
 			productName = RecordingPages;
 			productReference = 1F01950C2C4162A4001E15B1 /* Expositions.app */;
@@ -905,9 +916,12 @@
 			package = 1F5606842C51450A0079EF4A /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
 			productName = GoogleGenerativeAI;
 		};
-		1FECF3062C593DB2006ED37B /* GoogleGenerativeAI */ = {
+		1F9DDA292C5E3801006B600E /* GoogleGenerativeAI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1F5606842C51450A0079EF4A /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
+		};
+		1F9DDA2B2C5E3813006B600E /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
 			productName = GoogleGenerativeAI;
 		};
 /* End XCSwiftPackageProductDependency section */
