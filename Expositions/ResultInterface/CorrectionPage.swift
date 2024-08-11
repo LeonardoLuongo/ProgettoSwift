@@ -8,6 +8,9 @@ struct CorrectionPage: View {
     @ObservedObject var recordingManager: RecordingManager
     var grade: String
     @State private var index: Int = 0
+    @State private var player: Player?
+    @State var cards: [Int: CorrectionCard] = [:]
+
 
     init(exposition: Exposition, totalCardNumber: Int) {
         self.exposition = exposition
@@ -20,7 +23,11 @@ struct CorrectionPage: View {
     var body: some View {
         
         GeometryReader { metrics in
+            
             VStack {
+                Spacer()
+                    .frame(height: metrics.size.height * 0.1)
+                
                 TextField("Record name", text: $recordingManager.recordName)
                     .font(.largeTitle)
                     .fontWeight(.semibold)
@@ -56,6 +63,9 @@ struct CorrectionPage: View {
                     } else {
                         Text("\(currentCardNumber) / \(totalCardNumber - 1)")
                             .font(.system(size: metrics.size.height * 0.04))
+                            .onChange(of: currentCardNumber) { newValue in
+                                handleCardChange(newCardNumber: newValue)
+                            }
                     }
 
                     Spacer()
@@ -80,7 +90,7 @@ struct CorrectionPage: View {
                 Spacer()
 
                 TabView(selection: $currentCardNumber) {
-                    ForEach(1..<totalCardNumber, id: \.self) { index in
+                    ForEach(1...totalCardNumber, id: \.self) { index in
                         if index == totalCardNumber {
                             GradeCard(number: index, grade: grade)
                                 .tag(index)
@@ -91,22 +101,24 @@ struct CorrectionPage: View {
                                 .frame(height: metrics.size.height * 0.8)
                         }
                     }
-                    // Grade page as the last page
-                    Text("Grade")
-                        .tag(totalCardNumber)
-                        .frame(height: metrics.size.height * 0.8)
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 .frame(height: metrics.size.height * 0.75)
                 
-                Spacer()
+                //Spacer()
                 
                 VStack {
-                    Player(recordingManager: RecordingManager())
+                    Player(recordingManager: recordingManager)
+                        .onAppear {
+                            player = Player(recordingManager: recordingManager)
+                        }
                     Spacer()
+                        .frame(height: metrics.size.height * 0.1)
                 }
+                Spacer()
                 
             }
+            .frame(height: metrics.size.height)
         }
     }
     
@@ -115,7 +127,7 @@ struct CorrectionPage: View {
         if let correctionCard = try? createCorrectionCard() {
             correctionCard
         } else {
-            GradeCard(number: index, grade: "")
+            GradeCard(number: index, grade: grade)
         }
     }
 
@@ -139,7 +151,18 @@ struct CorrectionPage: View {
         } else {
             nextSentence = nil
         }
-        return CorrectionCard(number: index, mainSentence: mainSentence!, prevSentence: prevSentence, nextSentence: nextSentence)
+        cards[index] = CorrectionCard(number: index, mainSentence: mainSentence!, prevSentence: prevSentence, nextSentence: nextSentence)
+        return cards[index] ?? CorrectionCard(number: index, mainSentence: mainSentence!, prevSentence: prevSentence, nextSentence: nextSentence)
+    }
+    
+    func handleCardChange(newCardNumber: Int) {
+        if var time = cards[newCardNumber]?.mainSentence.getSingleWords()[0].getTimestamp() {
+            if time < 10 {
+                player?.toTime(time)
+            } else {
+                player?.toTime(time - 10)
+            }
+        }
         
     }
 }

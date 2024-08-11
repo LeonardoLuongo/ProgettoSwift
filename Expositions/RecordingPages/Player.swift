@@ -91,6 +91,12 @@ struct Player: View {
         let seconds = Int(seconds) % 60
         return String(format: "%02d:%02d", minutes, seconds)
     }
+    
+    func toTime(_ time: Double) {
+        self.currentTime = time - 10
+        self.player?.seek(to: CMTime(seconds: time - 10, preferredTimescale: 600))
+        self.player?.pause()
+    }
 }
 
 #Preview {

@@ -101,7 +101,7 @@ struct CorrectionCard: View {
         var attributedString = AttributedString()
             
         if let prevSentence = self.prevSentence {
-            var prevAttributedString = AttributedString(prevSentence.getText())
+            let prevAttributedString = AttributedString(prevSentence.getText())
 //            switch prevSentence.getStatus() {
 //            case .warning:
 //                prevAttributedString.backgroundColor = .yellow
@@ -125,7 +125,7 @@ struct CorrectionCard: View {
         attributedString += mainAttributedString + AttributedString(" ")
         
         if let nextSentence = self.nextSentence {
-            var nextAttributedString = AttributedString(nextSentence.getText())
+            let nextAttributedString = AttributedString(nextSentence.getText())
 //            switch nextSentence.getStatus() {
 //            case .warning:
 //                nextAttributedString.backgroundColor = .yellow
