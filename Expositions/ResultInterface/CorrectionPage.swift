@@ -132,6 +132,7 @@ struct CorrectionPage: View {
     }
 
     func createCorrectionCard() throws -> CorrectionCard {
+        
         let sentences = evaluatedSpeech?.getTextInSentences()
         
         let mainSentence: Sentence?
@@ -153,9 +154,11 @@ struct CorrectionPage: View {
         }
         cards[index] = CorrectionCard(number: index, mainSentence: mainSentence!, prevSentence: prevSentence, nextSentence: nextSentence)
         return cards[index] ?? CorrectionCard(number: index, mainSentence: mainSentence!, prevSentence: prevSentence, nextSentence: nextSentence)
+        return CorrectionCard(number: index, mainSentence: mainSentence!, prevSentence: prevSentence, nextSentence: nextSentence)
     }
     
     func handleCardChange(newCardNumber: Int) {
+        print(cards[newCardNumber] ?? "non c'è")
         if var time = cards[newCardNumber]?.mainSentence.getSingleWords()[0].getTimestamp() {
             if time < 10 {
                 player?.toTime(time)
