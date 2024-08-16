@@ -33,6 +33,7 @@
 		1F4CB9E32C5C29580052D5AB /* CorrectionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4CB9E22C5C29570052D5AB /* CorrectionCard.swift */; };
 		1F4CB9E52C5C29790052D5AB /* CorrectionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4CB9E42C5C29790052D5AB /* CorrectionPage.swift */; };
 		1F4CB9E72C5C298C0052D5AB /* GradeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4CB9E62C5C298C0052D5AB /* GradeCard.swift */; };
+		1F4CB9EA2C6F85980052D5AB /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1F4CB9E92C6F85980052D5AB /* GoogleGenerativeAI */; };
 		1F6C0F932C46D86D007D03A0 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F922C46D86D007D03A0 /* Sections.swift */; };
 		1F6C0F952C46D877007D03A0 /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F942C46D877007D03A0 /* Subject.swift */; };
 		1F6C0F972C46D88C007D03A0 /* CreateSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F962C46D88C007D03A0 /* CreateSectionView.swift */; };
@@ -131,6 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F4CB9EA2C6F85980052D5AB /* GoogleGenerativeAI in Frameworks */,
 				1F9DDA2A2C5E3801006B600E /* GoogleGenerativeAI in Frameworks */,
 				1F9DDA2C2C5E3813006B600E /* GoogleGenerativeAI in Frameworks */,
 			);
@@ -372,6 +374,7 @@
 			packageProductDependencies = (
 				1F9DDA292C5E3801006B600E /* GoogleGenerativeAI */,
 				1F9DDA2B2C5E3813006B600E /* GoogleGenerativeAI */,
+				1F4CB9E92C6F85980052D5AB /* GoogleGenerativeAI */,
 			);
 			productName = RecordingPages;
 			productReference = 1F01950C2C4162A4001E15B1 /* Expositions.app */;
@@ -447,7 +450,7 @@
 			);
 			mainGroup = 1F0195032C4162A4001E15B1;
 			packageReferences = (
-				1F5606842C51450A0079EF4A /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
+				1F4CB9E82C6F85980052D5AB /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
 			);
 			productRefGroup = 1F01950D2C4162A4001E15B1 /* Products */;
 			projectDirPath = "";
@@ -900,6 +903,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1F4CB9E82C6F85980052D5AB /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/generative-ai-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.5;
+			};
+		};
 		1F5606842C51450A0079EF4A /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/generative-ai-swift";
@@ -911,6 +922,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1F4CB9E92C6F85980052D5AB /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1F4CB9E82C6F85980052D5AB /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
+		};
 		1F5606872C5146530079EF4A /* GoogleGenerativeAI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1F5606842C51450A0079EF4A /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
