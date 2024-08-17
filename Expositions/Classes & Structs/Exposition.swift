@@ -19,15 +19,16 @@ class Exposition: ObservableObject, Identifiable, Codable {
     // Other properties
     var date: Date // Creation date
     var recordingManager: RecordingManager // RecordingManager is an object that is necessary to manage all the recording-related properties
-    var grade: String = "..." // Grade will be assigned by Gemini once the exposition is valuated. For now, it is initialized with "..." (meaning that the exposition is not been evaluated yet)
-    var secCode: Int // This property is necessary to keep track of the section where the exposition is. We need this property, because, when the user wants to restore an exposition from the trash, we will use this code to know which section was the exposition originally in.
-    var trashDate: Date? // When the user put the exposition in the trash. 30 days after this date, the exposition will be automatically deleted.\
+    var grade: String = "..." // Grade will be assigned by Gemini once the exposition is evaluated. For now, it is initialized with "..." (meaning that the exposition has not been evaluated yet)
+    var finalEvaluation: String? // This brief description explains the reason why Gemini gave a certain grade to this exposition
+    var secCode: Int // This property is necessary to keep track of the section where the exposition is. We need this property, because, when the user wants to restore an exposition from the trash, we will use this code to know which section the exposition was originally in.
+    var trashDate: Date? // When the user puts the exposition in the trash. 30 days after this date, the exposition will be automatically deleted.
     
     var evaluatedSpeech: EvaluatedSpeech? // Once the exposition is evaluated, we will save all the informations (errors, corrections, warnings, etc.) in this property.
     
     // This coding keys will be used to code the exposition and save it in UserDefaults
     enum CodingKeys: CodingKey {
-        case id, favorite, trash, evalueted, date, grade, secCode, trashDate, recordingManager, evaluatedSpeech
+        case id, favorite, trash, evalueted, date, grade, secCode, trashDate, recordingManager, evaluatedSpeech, finalEvaluation
     }
     
     // Initializer
@@ -131,6 +132,7 @@ class Exposition: ObservableObject, Identifiable, Codable {
         evaluated = try container.decode(Bool.self, forKey: .evalueted)
         date = try container.decode(Date.self, forKey: .date)
         grade = try container.decode(String.self, forKey: .grade)
+        finalEvaluation = try container.decodeIfPresent(String.self, forKey: .finalEvaluation)
         secCode = try container.decode(Int.self, forKey: .secCode)
         trashDate = try container.decodeIfPresent(Date.self, forKey: .trashDate)
         recordingManager = try container.decode(RecordingManager.self, forKey: .recordingManager)
@@ -145,10 +147,19 @@ class Exposition: ObservableObject, Identifiable, Codable {
         try container.encode(evaluated, forKey: .evalueted)
         try container.encode(date, forKey: .date)
         try container.encode(grade, forKey: .grade)
+        try container.encodeIfPresent(finalEvaluation, forKey: .finalEvaluation)
         try container.encode(secCode, forKey: .secCode)
         try container.encodeIfPresent(trashDate, forKey: .trashDate)
         try container.encode(recordingManager, forKey: .recordingManager)
         try container.encodeIfPresent(evaluatedSpeech, forKey: .evaluatedSpeech)
+    }
+    
+    func insertFinalEvaluation(finalEvaluation: FinalEvaluation) {
+        var gradeDouble = Double(finalEvaluation.grade)
+        if let gradeDouble = gradeDouble {
+            self.grade = String(ceil(gradeDouble))
+        }
+        self.finalEvaluation = finalEvaluation.briefReason
     }
     
     // This function is used to save the current dictionary of expositions in UserDefaults
