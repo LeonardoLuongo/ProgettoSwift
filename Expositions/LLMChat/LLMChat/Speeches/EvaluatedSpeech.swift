@@ -18,7 +18,7 @@ extension String {
 class EvaluatedSpeech: Codable
 {
     private let textInString: String
-    public let textInSentences: [Sentence]
+    public var textInSentences: [Sentence]
     private var wrongSentences: [Int: Sentence] = [:]
     private var okaySentences: [Int: Sentence] = [:]
     private var warningSentences: [Int: Sentence] = [:]
@@ -332,12 +332,25 @@ class EvaluatedSpeech: Codable
         return wrongSentences.count + warningSentences.count
     }
     
-    func getBadSentence (index: Int) -> (prevSentence: Sentence, mainSentence: Sentence, nextSentence: Sentence)? {
+    func getBadSentence (index: Int) -> (prevSentence: Sentence?, mainSentence: Sentence, nextSentence: Sentence?)? {
         let badSentences = Array(wrongSentences.values) + Array(warningSentences.values)
         let mainSentence = badSentences[index]
-        if let i = textInSentences.firstIndex(where: {$0.id == mainSentence.id}) {
-            let prevSentence = textInSentences[i - 1]
-            let nextSentence = textInSentences[i + 1]
+        if textInSentences.isEmpty {
+            textInSentences = getTextInSentences()
+        }
+        if let i = textInSentences.firstIndex(where: {$0.getText() == mainSentence.getText()}) {
+            var prevSentence: Sentence?
+            var nextSentence: Sentence?
+            if i != 0 {
+                prevSentence = textInSentences[i - 1]
+            } else {
+                prevSentence = nil
+            }
+            if i < textInSentences.count - 1 {
+                nextSentence = textInSentences[i + 1]
+            } else {
+                nextSentence = nil
+            }
             return (prevSentence, mainSentence, nextSentence)
         }
         return nil

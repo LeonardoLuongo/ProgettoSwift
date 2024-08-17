@@ -40,7 +40,6 @@ class Evaluator: ObservableObject {
             DispatchQueue.main.async {
                 self?.documentText = DocumentManager.extractTextFromPDF(fileName: (self?.exposition.recordingManager.docFilename)!)
                 if let text = self?.documentText {
-                    self?.exposition.documentText = text
                     self?.exposition.recordingManager.requestTranscribePermissions()
 
                     self?.exposition.recordingManager.processAudioFile(fileName: (self?.exposition.recordingManager.recordFilename)!, evaluator: self!) { success in

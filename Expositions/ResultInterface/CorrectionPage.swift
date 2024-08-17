@@ -96,7 +96,7 @@ struct CorrectionPage: View {
                                 .tag(index)
                                 .frame(height: metrics.size.height * 0.8)
                         } else {
-                            createCorrectionCardView(for: index)
+                            createCorrectionCardView(for: index-1)
                                 .tag(index)
                                 .frame(height: metrics.size.height * 0.8)
                         }
@@ -123,21 +123,75 @@ struct CorrectionPage: View {
     }
     
     @ViewBuilder
-    func createCorrectionCardView(for index: Int) -> some View {
-        if let correctionCard = try? createCorrectionCard() {
-            correctionCard
-        } else {
-            GradeCard(number: index, grade: grade)
+        func createCorrectionCardView(for index: Int) -> some View {
+            if let correctionCard = try? createCorrectionCard(for: index) {
+                correctionCard
+            } else {
+                GradeCard(number: index, grade: grade)
+            }
         }
-    }
 
-    func createCorrectionCard(for index: Int) throws -> CorrectionCard {
-        if let (prevSentence, mainSentence, nextSentence) = exposition.evaluatedSpeech?.getBadSentence(index: index) {
-            return CorrectionCard(number: index, mainSentence: mainSentence, prevSentence: prevSentence, nextSentence: nextSentence)
+    /*
+        func createCorrectionCard() throws -> CorrectionCard {
+            
+            let sentences = evaluatedSpeech?.getTextInSentences()
+            
+            let mainSentence: Sentence?
+            let prevSentence: Sentence?
+            let nextSentence: Sentence?
+            
+            while index < (sentences?.count ?? 0) && sentences?[index].getStatus() == .okay {
+                index += 1
+                print("Index incrementato: \(index)")
+            }
+            
+            mainSentence = sentences?[index]
+            if index != 0 {
+                prevSentence = sentences?[index - 1]
+            } else {
+                prevSentence = nil
+            }
+            if index != sentences?.count {
+                nextSentence = sentences?[index + 1]
+            } else {
+                nextSentence = nil
+            }
+            cards[index] = CorrectionCard(number: index, mainSentence: mainSentence!, prevSentence: prevSentence, nextSentence: nextSentence)
+            
+            let correctionCard = CorrectionCard(number: index, mainSentence: mainSentence!, prevSentence: prevSentence, nextSentence: nextSentence)
+            
+            return correctionCard
         }
-        let mainSentence = try Sentence(entireText: "Entire text", sentenceText: "Sentence Text", status: .okay)
-        return CorrectionCard(number: 1, mainSentence: mainSentence)
+        */
+    
+    func createCorrectionCard(for index: Int) throws -> CorrectionCard? {
+        let (prevSentence, mainSentence, nextSentence) = exposition.evaluatedSpeech?.getBadSentence(index: index) ?? (nil, nil, nil)
+        
+        if let mainSentence = mainSentence {
+            if let prevSentence = prevSentence {
+                if let nextSentence = nextSentence {
+                    return CorrectionCard(number: index, mainSentence: mainSentence, prevSentence: prevSentence, nextSentence: nextSentence)
+                } else {
+                    return CorrectionCard(number: index, mainSentence: mainSentence, prevSentence: prevSentence)
+                }
+            } else {
+                return CorrectionCard(number: index, mainSentence: mainSentence, nextSentence: nextSentence)
+            }
+        }
+        return nil
     }
+    
+        func handleCardChange(newCardNumber: Int) {
+            print(cards[newCardNumber] ?? "non c'è")
+            if var time = cards[newCardNumber]?.mainSentence.getSingleWords()[0].getTimestamp() {
+                if time < 10 {
+                    player?.toTime(time)
+                } else {
+                    player?.toTime(time - 10)
+                }
+            }
+            
+        }
 }
 
 struct CorrectionPagePreview: PreviewProvider {
