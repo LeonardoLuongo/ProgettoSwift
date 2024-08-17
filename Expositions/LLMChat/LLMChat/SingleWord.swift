@@ -58,16 +58,25 @@ class SingleWord: Identifiable, Codable{
         return textInString
     }
     
-    public static func textToSingleWordArray(text: String) -> [SingleWord] {
+    // To Do: Check if the commented code is obsolete
+    public static func textToSingleWordArray(text: String) -> [SingleWord]
+    {
+        let words = text.split(separator: " ")
         var singleWords: [SingleWord] = []
-        
-        for word in text.split(separator: " ") {
-            singleWords.append(SingleWord(text: word + " "))
+        for word in words
+        {
+            singleWords.append(SingleWord(text: String(word)))
         }
+        
+        /*
+        if var lastStr = singleWords.last
+        {
+            singleWords.removeLast()
+        }
+        */
         
         return singleWords
     }
-    
 }
 
 

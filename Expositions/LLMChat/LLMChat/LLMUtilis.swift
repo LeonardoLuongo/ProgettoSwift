@@ -3,11 +3,11 @@ import Foundation
 
 let SYSTEM_INSTRUCTION = [
 """
-Sei un professore di italiano e devi inserire la punteggiatura a questo testo senza alterarne il numero di parole e senza riassumerlo. Solo la punteggiatura.
+Sei un professore di italiano e devi inserire la punteggiatura a questo testo senza alterarne il numero di parole e senza riassumerlo. Solo la punteggiatura. Senza asterischi.
 """,
 """
     Immagina di essere un professore universitario e di star interrogando uno studente.
-    Voglio che tu valuti la sua interrogazione riportando in formato JSON errori(errors) e avvertenze(warnings), con relative correzioni e consigli migliorativi e voto finale.
+    Voglio che tu valuti la sua interrogazione riportando in formato JSON errori(errors) e avvertenze(warnings), con relative correzioni e consigli migliorativi e voto finale. La tua valutazione deve basarsi in primo luogo su quello che sarà il contesto che ti fornirò.
 
     La valutazione sia per il voto che per il rilevamento di errori si divide in:
 
@@ -120,7 +120,7 @@ Sei un professore di italiano e devi inserire la punteggiatura a questo testo se
         }
     }
 
-    Una frase può essere inserita solo in una delle due categorie (errors, warnings), è impossibile che sia in entrambe. Per questo, valuta bene se la frase è ritenuta errata o è un'imprecisione. 
+    Una frase può essere inserita solo in una delle due categorie (errors, warnings), è impossibile che sia in entrambe. Per questo, valuta bene se la frase è ritenuta errata o è un'imprecisione.
 """
 ]
 
@@ -136,9 +136,9 @@ class LLMUtilis
         return EvaluationQuery(context: context, exposition: exposition).toString()
     }
     
-    private static func buildPunctualizationQuery(text: String) -> String
+    private static func buildPunctualizationQuery(text: String, context: String) -> String
     {
-        return PunctualizationQuery(text: text).toString()
+        return PunctualizationQuery(text: text, context: context).toString()
     }
     
     private static func geminiCall(query: String, systemInstruction: ModelContent? = nil) async throws -> String?
@@ -158,7 +158,7 @@ class LLMUtilis
                 SafetySetting(harmCategory: .sexuallyExplicit, threshold: .blockNone)
             ],
             systemInstruction: systemInstruction,
-            requestOptions: RequestOptions(timeout: 50_000.0)
+            requestOptions: RequestOptions(timeout: 100_000.0)
           )
         
         var responseData:String? = nil
@@ -187,9 +187,9 @@ class LLMUtilis
         return responseData
     }
     
-    public static func addPuntuactionToText(_ text: String) async throws -> String
+    public static func addPuntuactionToText(_ text: String, context: String) async throws -> String
     {
-        let query = PunctualizationQuery(text: text)
+        let query = PunctualizationQuery(text: text, context: context)
         var retVal: String? = nil
         do
         {
@@ -228,14 +228,20 @@ class LLMUtilis
         
         do
         {
-            responseData = try await LLMUtilis.geminiCall(query: query.toString(), systemInstruction: ModelContent(role: "system", parts: [.text(SYSTEM_INSTRUCTION[1])]))
+            responseData = try await LLMUtilis.geminiCall(query: query.toString(), systemInstruction: ModelContent(role: "system", parts: [.text(SYSTEM_INSTRUCTION[1]), .text("Valuta solo il contenuto. IGNORA LA PUNTEGGIATURA.")]))
             
+            /*
             print("Formatting the JSON in a better way...")
             
             responseData = try await LLMUtilis.geminiCall(
                 query: "Rendi ben formato questo JSON. Mi aspetto come tua risposta solo il JSON. Ecco quello su cui devi lavorare:\n\(responseData)",
-                systemInstruction: ModelContent(role: "system", parts: [.text("Sei il miglior formattatore JSON esistente.")])
+                systemInstruction: ModelContent(role: "system", 
+                                                parts: [
+                                                    .text("Sei il miglior formattatore JSON esistente.")
+                                                ]
+                                               )
             )
+             */
         }
         catch
         {
@@ -248,56 +254,43 @@ class LLMUtilis
         var response: Response? = nil
         var i = 0
         var isCorrectJSON = false
-        if let data = responseData
+        while i < 5
         {
-            if var jsonData = data.data(using: .utf8)
+            if let data = responseData
             {
-                let decoder = JSONDecoder()
-                
-                while i < 5
+                if var jsonData = data.data(using: .utf8)
                 {
-                    do {
+                    let decoder = JSONDecoder()
+
+                    do 
+                    {
                         response = try decoder.decode(Response.self, from: jsonData)
                         i = 5
                         isCorrectJSON = true
-                    } catch {
+                    }
+                    catch
+                    {
                         print("(\(i)/5) Trying to get a correct JSON...")
+                        print("JSON: \(responseData)\nError: \(error)")
                         responseData = try await LLMUtilis.geminiCall(
-                            query: "I've got this JSON error: \(error) on this JSON data \(response). Solve those problems.",
+                            query: "I've got this JSON error: \(error) on this JSON data \(responseData). Solve those problems.",
                             systemInstruction: ModelContent(role: "system", parts: [.text("You're the best JSON formatter."), .text("You must return the JSON only.")]))
                         
                         responseData = cleanUpTheJSONString(JSONString: responseData!)
                         print(responseData!)
-                        
-                        if let _data = responseData
-                        {
-                            if let _jsonData = _data.data(using: .utf8)
-                            {
-                                jsonData = _jsonData
-                            }
-                            else
-                            {
-                                throw LLMUtilsError.runtimeError("Error from data to utf8 error.")
-                            }
-                        }
-                        else
-                        {
-                            throw LLMUtilsError.runtimeError("Response data was nil.")
-                        }
-                        i += 1
                     }
                 }
-                
+                else
+                {
+                    throw LLMUtilsError.runtimeError("Error from data to utf8 error.")
+                }
             }
             else
             {
-                throw LLMUtilsError.runtimeError("Error from data to utf8 error.")
+                throw LLMUtilsError.runtimeError("Response data was nil.")
             }
         }
-        else
-        {
-            throw LLMUtilsError.runtimeError("Response data was nil.")
-        }
+        
         
         if !isCorrectJSON
         {

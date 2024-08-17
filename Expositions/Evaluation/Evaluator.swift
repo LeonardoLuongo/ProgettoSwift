@@ -50,7 +50,7 @@ class Evaluator: ObservableObject {
                                     let rawSpeech = RawSpeech(textInSingleWords: SingleWord.textToSingleWordArray(text: self!.exposition.recordingManager.transcription))
                                     
                                     // turn RawSpeech into PunctualizedSpeech through Gemini call
-                                    let punctualizedSpeech = try await PunctualizedSpeech(rawSpeech: rawSpeech)
+                                    let punctualizedSpeech = try await PunctualizedSpeech(rawSpeech: rawSpeech, context: text)
                                     
                                     // turn PunctualizedSpeech into EvaluatedSpeech through Gemini call
                                     self!.evaluatedSpeech = try await EvaluatedSpeech(context: text, punctualizedText: punctualizedSpeech)

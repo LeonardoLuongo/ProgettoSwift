@@ -22,7 +22,9 @@ class EvaluatedSpeech: Codable
     private var wrongSentences: [Int: Sentence] = [:]
     private var okaySentences: [Int: Sentence] = [:]
     private var warningSentences: [Int: Sentence] = [:]
+    private var response: Response? = nil
     
+    // This should never be used. Test only
     init(text: String, textInSentences: [Sentence]) {
         self.textInString = text
         self.textInSentences = textInSentences
@@ -53,11 +55,10 @@ class EvaluatedSpeech: Codable
         var allRanges: [[Int]] = []
         
         // Get the Gemini Response
-        var evaluatedText: Response
         do
         {
             writeDebugLog("Waiting for Gemini response...")
-            evaluatedText = try await LLMUtilis.evaluate(context: context, exposition: punctualizedText.getText())
+            self.response = try await LLMUtilis.evaluate(context: context, exposition: punctualizedText.getText())
         }
         catch
         {
@@ -67,9 +68,11 @@ class EvaluatedSpeech: Codable
         writeDebugLog("From JSON to Sentence...")
         // From JSON format to Sentence
         
+        var response = self.response!
+        
         // Store all the wrong sentences
         var temp_wrongSentences: [Sentence] = []
-        for error in evaluatedText.errors {
+        for error in response.errors {
             
             let ranges = self.textInString.ranges(of: error.sentence)
             
@@ -98,7 +101,7 @@ class EvaluatedSpeech: Codable
         
         // Store all the warning sentence
         let temp_warningSentences: [Sentence] = []
-        for warn in evaluatedText.warnings {
+        for warn in response.warnings {
             
             let ranges = EvaluatedSpeech.findAllRanges(of: warn.sentence, in: self.textInString)
             for range in ranges {
@@ -328,11 +331,11 @@ class EvaluatedSpeech: Codable
         return false
     }
     
-    func numberOfBadSentences() -> Int {
+    public func numberOfBadSentences() -> Int {
         return wrongSentences.count + warningSentences.count
     }
     
-    func getBadSentence (index: Int) -> (prevSentence: Sentence?, mainSentence: Sentence, nextSentence: Sentence?)? {
+    public func getBadSentence (index: Int) -> (prevSentence: Sentence?, mainSentence: Sentence, nextSentence: Sentence?)? {
         let badSentences = Array(wrongSentences.values) + Array(warningSentences.values)
         let mainSentence = badSentences[index]
         if textInSentences.isEmpty {
@@ -355,16 +358,11 @@ class EvaluatedSpeech: Codable
         }
         return nil
     }
+    
+    public func getResponse() -> Response?
+    {
+        return self.response
+    }
 
 }
 
-/*
- 
- * nome dell'app in virgolette
- *
- *
- 
- 
- * API Per la traduzione delle label
- 
-*/

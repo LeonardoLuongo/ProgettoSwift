@@ -6,20 +6,15 @@ class PunctualizedSpeech: Codable
     private let textInString: String
     private let textInSingleWords: [SingleWord]
 
-    init(rawSpeech: RawSpeech) async throws {
+    init(rawSpeech: RawSpeech, context: String) async throws {
         var punctualizedText: String = ""
         
         do{
             writeDebugLog("Waiting for Gemini response...")
+            
             // Get the new punctualized text.
-            if true
-            {
-                punctualizedText = try await LLMUtilis.addPuntuactionToText(rawSpeech.getText())
-            }
-            else
-            {
-                punctualizedText = PUNCTUALIZED_SPEECH
-            }
+            punctualizedText = try await LLMUtilis.addPuntuactionToText(rawSpeech.getText(), context: context)
+            
         }
         catch
         {
@@ -28,7 +23,7 @@ class PunctualizedSpeech: Codable
         }
         
         punctualizedText = punctualizedText.replacingOccurrences(of: "\"", with: "\\\"")
-        
+        punctualizedText = punctualizedText.replacingOccurrences(of: "\n", with: "")
         
         writeDebugLog("Copying the timestamps...")
         
@@ -54,7 +49,7 @@ class PunctualizedSpeech: Codable
         var oldSingleStrWord: String
         
         // For every old single word...
-        for i in 0...(min(punctualizedSingleStrWords.count, rawSingleWords.count) - 1)
+        for i in 0...(punctualizedSingleStrWords.count - 1)
         {
             // It removes the punctualization from the current word
             newSingleStrWord = PunctualizedSpeech.removePunctuation(from: punctualizedSingleStrWords[i])?
@@ -72,7 +67,7 @@ class PunctualizedSpeech: Codable
                 throw LLMUtilsError.runtimeError("How the fuck did you get here? id:c76b53f0-8f0f-45e9-9894-d13000e6e7ce")
             }
             
-            // Count how many chars have in common the thow versions
+            // Count how many chars have in common the two versions
             // (it's used because the LLM may correct the raw text, maybe a word can be misspelled)
             let commonCharsCount = PunctualizedSpeech.commonCharactersCount(
                 oldSingleStrWord,
@@ -115,7 +110,6 @@ class PunctualizedSpeech: Codable
                         isTimestampCaptured: false
                     )
                 )
-                // print("Warning: A totally different word was found after the LLM query.\nIn punctualized:<\(newSingleStrWord!)> in raw:<\(oldSingleStrWord)>.\n")
             }
             
         }
