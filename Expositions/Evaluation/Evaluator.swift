@@ -90,6 +90,7 @@ class Evaluator: ObservableObject {
     func taskCompleted() {
         DispatchQueue.main.async { [self] in
             exposition.evaluatedSpeech = evaluatedSpeech
+            exposition.insertFinalEvaluation()
             exposition.evaluated = true
             self.completed = true
             Exposition.saveDictionary(expositions: expositions)

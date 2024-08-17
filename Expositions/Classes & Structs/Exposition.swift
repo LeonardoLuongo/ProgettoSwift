@@ -19,7 +19,7 @@ class Exposition: ObservableObject, Identifiable, Codable {
     // Other properties
     var date: Date // Creation date
     var recordingManager: RecordingManager // RecordingManager is an object that is necessary to manage all the recording-related properties
-    var grade: String = "..." // Grade will be assigned by Gemini once the exposition is evaluated. For now, it is initialized with "..." (meaning that the exposition has not been evaluated yet)
+    @Published var grade: String = "..." // Grade will be assigned by Gemini once the exposition is evaluated. For now, it is initialized with "..." (meaning that the exposition has not been evaluated yet)
     var finalEvaluation: String? // This brief description explains the reason why Gemini gave a certain grade to this exposition
     var secCode: Int // This property is necessary to keep track of the section where the exposition is. We need this property, because, when the user wants to restore an exposition from the trash, we will use this code to know which section the exposition was originally in.
     var trashDate: Date? // When the user puts the exposition in the trash. 30 days after this date, the exposition will be automatically deleted.
@@ -154,12 +154,14 @@ class Exposition: ObservableObject, Identifiable, Codable {
         try container.encodeIfPresent(evaluatedSpeech, forKey: .evaluatedSpeech)
     }
     
-    func insertFinalEvaluation(finalEvaluation: FinalEvaluation) {
-        var gradeDouble = Double(finalEvaluation.grade)
-        if let gradeDouble = gradeDouble {
-            self.grade = String(ceil(gradeDouble))
+    func insertFinalEvaluation() {
+        if let finalEvaluation = evaluatedSpeech?.getResponse()?.finalEvaluation {
+            var gradeDouble = Double(finalEvaluation.grade)
+            if let gradeDouble = gradeDouble {
+                self.grade = String(Int(ceil(gradeDouble)))
+            }
+            self.finalEvaluation = finalEvaluation.briefReason
         }
-        self.finalEvaluation = finalEvaluation.briefReason
     }
     
     // This function is used to save the current dictionary of expositions in UserDefaults
