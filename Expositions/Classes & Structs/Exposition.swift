@@ -1,19 +1,13 @@
-//
-//  Exposition.swift
-//  Expositions
-//
-//  Created by Studente on 20/07/24.
-//
-
 import SwiftUI
 
+// This class represents a generic file created by the user.
 class Exposition: ObservableObject, Identifiable, Codable {
     // Identifier
     var id = UUID()
     
-    // Observable proprieties
-    @Published var favorite: Bool = false
-    @Published var trash: Bool = false {
+    // Observable properties
+    @Published var favorite: Bool = false // The user can mark expositions as favorite
+    @Published var trash: Bool = false { // The user can put expositions in the trash
         didSet {
             if trash {
                 self.trashDate = Date()
@@ -22,18 +16,18 @@ class Exposition: ObservableObject, Identifiable, Codable {
     }
     @Published var evaluated: Bool = false
     
-    // Not-public proprieties, but necessary for Codable
-    var date: Date
-    var recordingManager: RecordingManager
-    var grade: String = "..."
-    var secCode: Int
-    var trashDate: Date?
-    var documentText: String?
+    // Other properties
+    var date: Date // Creation date
+    var recordingManager: RecordingManager // RecordingManager is an object that is necessary to manage all the recording-related properties
+    var grade: String = "..." // Grade will be assigned by Gemini once the exposition is valuated. For now, it is initialized with "..." (meaning that the exposition is not been evaluated yet)
+    var secCode: Int // This property is necessary to keep track of the section where the exposition is. We need this property, because, when the user wants to restore an exposition from the trash, we will use this code to know which section was the exposition originally in.
+    var trashDate: Date? // When the user put the exposition in the trash. 30 days after this date, the exposition will be automatically deleted.\
     
-    var evaluatedSpeech: EvaluatedSpeech?
+    var evaluatedSpeech: EvaluatedSpeech? // Once the exposition is evaluated, we will save all the informations (errors, corrections, warnings, etc.) in this property.
     
+    // This coding keys will be used to code the exposition and save it in UserDefaults
     enum CodingKeys: CodingKey {
-        case id, favorite, trash, evalueted, date, grade, secCode, trashDate, recordingManager
+        case id, favorite, trash, evalueted, date, grade, secCode, trashDate, recordingManager, evaluatedSpeech
     }
     
     // Initializer
@@ -98,7 +92,7 @@ class Exposition: ObservableObject, Identifiable, Codable {
         self.secCode = secCode ?? 0
     }
     
-    // Utility Functions
+    // Utility Function, used to have different colors associated to a certain grade
     func gradeStyle() -> (textColor: Color, background: Color) {
         switch grade {
         case "...":
@@ -140,6 +134,7 @@ class Exposition: ObservableObject, Identifiable, Codable {
         secCode = try container.decode(Int.self, forKey: .secCode)
         trashDate = try container.decodeIfPresent(Date.self, forKey: .trashDate)
         recordingManager = try container.decode(RecordingManager.self, forKey: .recordingManager)
+        evaluatedSpeech = try container.decodeIfPresent(EvaluatedSpeech.self, forKey: .evaluatedSpeech)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -153,8 +148,10 @@ class Exposition: ObservableObject, Identifiable, Codable {
         try container.encode(secCode, forKey: .secCode)
         try container.encodeIfPresent(trashDate, forKey: .trashDate)
         try container.encode(recordingManager, forKey: .recordingManager)
+        try container.encodeIfPresent(evaluatedSpeech, forKey: .evaluatedSpeech)
     }
     
+    // This function is used to save the current dictionary of expositions in UserDefaults
     static func saveDictionary(expositions: [Int:[Exposition]]) {
         do {
             let data = try JSONEncoder().encode(expositions)

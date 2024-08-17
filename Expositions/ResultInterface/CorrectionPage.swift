@@ -131,42 +131,12 @@ struct CorrectionPage: View {
         }
     }
 
-    func createCorrectionCard() throws -> CorrectionCard {
-        
-        let sentences = evaluatedSpeech?.getTextInSentences()
-        
-        let mainSentence: Sentence?
-        let prevSentence: Sentence?
-        let nextSentence: Sentence?
-        
-        while sentences?[index].getStatus() == .okay { index += 1 }
-        
-        mainSentence = sentences?[index]
-        if index != 0 {
-            prevSentence = sentences?[index - 1]
-        } else {
-            prevSentence = nil
+    func createCorrectionCard(for index: Int) throws -> CorrectionCard {
+        if let (prevSentence, mainSentence, nextSentence) = exposition.evaluatedSpeech?.getBadSentence(index: index) {
+            return CorrectionCard(number: index, mainSentence: mainSentence, prevSentence: prevSentence, nextSentence: nextSentence)
         }
-        if index != sentences?.count {
-            nextSentence = sentences?[index + 1]
-        } else {
-            nextSentence = nil
-        }
-        cards[index] = CorrectionCard(number: index, mainSentence: mainSentence!, prevSentence: prevSentence, nextSentence: nextSentence)
-        return cards[index] ?? CorrectionCard(number: index, mainSentence: mainSentence!, prevSentence: prevSentence, nextSentence: nextSentence)
-        return CorrectionCard(number: index, mainSentence: mainSentence!, prevSentence: prevSentence, nextSentence: nextSentence)
-    }
-    
-    func handleCardChange(newCardNumber: Int) {
-        print(cards[newCardNumber] ?? "non c'è")
-        if var time = cards[newCardNumber]?.mainSentence.getSingleWords()[0].getTimestamp() {
-            if time < 10 {
-                player?.toTime(time)
-            } else {
-                player?.toTime(time - 10)
-            }
-        }
-        
+        let mainSentence = try Sentence(entireText: "Entire text", sentenceText: "Sentence Text", status: .okay)
+        return CorrectionCard(number: 1, mainSentence: mainSentence)
     }
 }
 

@@ -332,20 +332,15 @@ class EvaluatedSpeech: Codable
         return wrongSentences.count + warningSentences.count
     }
     
-    func getWrongSentences() -> [Int: Sentence] {
-        return wrongSentences
-    }
-    
-    func getWarningSentences() -> [Int: Sentence] {
-        return warningSentences
-    }
-    
-    func getOkaySentences() -> [Int: Sentence] {
-        return okaySentences
-    }
-    
-    func getSentences() -> [Sentence] {
-        return textInSentences
+    func getBadSentence (index: Int) -> (prevSentence: Sentence, mainSentence: Sentence, nextSentence: Sentence)? {
+        let badSentences = Array(wrongSentences.values) + Array(warningSentences.values)
+        let mainSentence = badSentences[index]
+        if let i = textInSentences.firstIndex(where: {$0.id == mainSentence.id}) {
+            let prevSentence = textInSentences[i - 1]
+            let nextSentence = textInSentences[i + 1]
+            return (prevSentence, mainSentence, nextSentence)
+        }
+        return nil
     }
 
 }

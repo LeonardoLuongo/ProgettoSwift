@@ -1,20 +1,15 @@
-//
-//  Section.swift
-//  Expositions
-//
-//  Created by Studente on 20/07/24.
-//
-
 import SwiftUI
 
+// This struct is used to represent and save informations of both the general sections and the user-created sections in which the expositions will be "saved"
 struct Section: Identifiable, Codable {
-    var id = UUID()
-    var secCode: Int
+    var id = UUID() // identifier
+    var secCode: Int // secCode is used as a second identifier for sections. We manually assign a special code for general sections. For the other sections (user-created) a secCode will automatically be assigned. These codes are used as keys for the "expositions" dictionary and to have an easy way to manage sections.
     var name: String
-    var icon: Icon?
+    var icon: Icon? // An icon is assigned to each section. This icon can be ether an image or a symbol or just a colorful circle.
     
-    static var lastCode = 2
+    static var lastCode = 2 // This static variable is used to keep track of the last code assigned to a section. It will be incremented each time a new section is created
     
+    // Initializers
     init(name: String, image: UIImage?, symbol: String?, color: Color?) {
         self.name = name
         
@@ -42,6 +37,7 @@ struct Section: Identifiable, Codable {
         self.secCode = specialCode
     }
     
+    // Utility functions used to change the value of properties
     mutating func changeIcon(color: Color, symbol: String) {
         self.icon = Icon(symbol: symbol, color: color)
     }
@@ -63,6 +59,7 @@ struct Section: Identifiable, Codable {
         return lastCode
     }
     
+    // This method is used to save the "sections" array in UserDefaults
     static func save(sections: [Section]) {
         do {
             let data = try JSONEncoder().encode(sections)
@@ -73,11 +70,17 @@ struct Section: Identifiable, Codable {
     }
 }
 
+// This struct is used to represent the section icon
 struct Icon: Identifiable, Codable {
-    var id = UUID()
+    var id = UUID() // Identifier
+    /* An icon is generally a circle-shaped image.
+     1) Users can upload images to create icons.
+     2) Users can create their icons in the app:
+        2.1) They can choose just a color, that will be used to color the circle
+        2.2) They can choose a color and one of the symbols (saved in Assets) */
     var symbol: String?
     var color: Color?
-    var imageData: Data?
+    var imageData: Data? // imageData is used to save images in UserDefaults
     
     var image: Image? {
         if let imageData = self.imageData {
@@ -92,6 +95,7 @@ struct Icon: Identifiable, Codable {
         case id, symbol, colorRed, colorGreen, colorBlue, imageData
     }
     
+    // Initializers
     init(color: Color) {
         self.color = color
     }
