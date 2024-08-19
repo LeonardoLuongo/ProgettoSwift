@@ -56,3 +56,10 @@
 "Created on" = "Creato il";
 "Deleted in " = "Eliminato in ";
 " days." = " giorni.";
+"Error" = "Errore";
+"Correction" = "Correzione";
+"Reason" = "Spiegazione";
+"Grade" = "Voto";
+"Final grade" = "Voto finale";
+"Final evaluation" = "Valutazione finale";
+"Warning" = "Imprecisione";

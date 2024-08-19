@@ -112,7 +112,7 @@ class EvaluatedSpeech: Codable
                 do {
                     if !EvaluatedSpeech.isRangeOccupied(ranges: allRanges, newRange: _range)
                     {
-                        temp_wrongSentences.append(try Sentence(entireText: self.textInString, sentenceText: warn.sentence, status: .wrong, correction: warn.correction, reason: warn.reason, range: _range))
+                        temp_wrongSentences.append(try Sentence(entireText: self.textInString, sentenceText: warn.sentence, status: .warning, correction: warn.correction, reason: warn.reason, range: _range))
                         allRanges.append(_range)
                     }
                     else

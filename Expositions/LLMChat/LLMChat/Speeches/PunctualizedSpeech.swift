@@ -49,7 +49,7 @@ class PunctualizedSpeech: Codable
         var oldSingleStrWord: String
         
         // For every old single word...
-        for i in 0...(punctualizedSingleStrWords.count - 1)
+        for i in 0...(min(punctualizedSingleStrWords.count, rawSingleWords.count) - 1)
         {
             // It removes the punctualization from the current word
             newSingleStrWord = PunctualizedSpeech.removePunctuation(from: punctualizedSingleStrWords[i])?
