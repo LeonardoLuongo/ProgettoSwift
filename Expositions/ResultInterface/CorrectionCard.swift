@@ -50,6 +50,7 @@ struct CorrectionCard: View {
                                 Rectangle()
                                     .frame(width: metrics.size.width * 0.7, height: 2)
                                     .cornerRadius(100)
+                                    .foregroundStyle(.black)
                                     .padding(.vertical)
                                 
                                 Text("Correction")
@@ -66,6 +67,7 @@ struct CorrectionCard: View {
                                 Rectangle()
                                     .frame(width: metrics.size.width * 0.7, height: 2)
                                     .cornerRadius(100)
+                                    .foregroundStyle(.black)
                                     .padding(.vertical)
                                 
                                 Text("Reason")

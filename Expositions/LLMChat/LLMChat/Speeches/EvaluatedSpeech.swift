@@ -335,7 +335,7 @@ class EvaluatedSpeech: Codable
         return wrongSentences.count + warningSentences.count
     }
     
-    public func getBadSentence (index: Int) -> (prevSentence: Sentence?, mainSentence: Sentence, nextSentence: Sentence?)? {
+    public func getBadSentence (index: Int) -> (prevSentence: Sentence?, mainSentence: Sentence, nextSentence: Sentence?) {
         let badSentences = Array(wrongSentences.values) + Array(warningSentences.values)
         let mainSentence = badSentences[index]
         if textInSentences.isEmpty {
@@ -356,7 +356,7 @@ class EvaluatedSpeech: Codable
             }
             return (prevSentence, mainSentence, nextSentence)
         }
-        return nil
+        return (nil, mainSentence, nil)
     }
     
     public func getResponse() -> Response?

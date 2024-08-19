@@ -50,8 +50,10 @@ struct CorrectionPage: View {
                         Image(systemName: "chevron.left")
                             .resizable()
                             .frame(width: metrics.size.height * 0.025, height: metrics.size.height * 0.025)
-                            .foregroundColor(.black)
                             .opacity(currentCardNumber == 1 ? 0 : 1)
+                            .foregroundColor(Color(UIColor { traitCollection in
+                                    return traitCollection.userInterfaceStyle == .dark ? .white : .black
+                                }))
                     }
                     .disabled(currentCardNumber == 1)
 
@@ -80,8 +82,10 @@ struct CorrectionPage: View {
                         Image(systemName: "chevron.right")
                             .resizable()
                             .frame(width: metrics.size.height * 0.025, height: metrics.size.height * 0.025)
-                            .foregroundColor(.black)
                             .opacity(currentCardNumber == totalCardNumber ? 0 : 1)
+                            .foregroundColor(Color(UIColor { traitCollection in
+                                    return traitCollection.userInterfaceStyle == .dark ? .white : .black
+                                }))
                     }
                     .disabled(currentCardNumber == totalCardNumber)
 
@@ -92,7 +96,7 @@ struct CorrectionPage: View {
                 TabView(selection: $currentCardNumber) {
                     ForEach(1...totalCardNumber, id: \.self) { index in
                         if index == totalCardNumber {
-                            GradeCard(number: index, grade: grade)
+                            GradeCard(number: index, exposition: exposition)
                                 .tag(index)
                                 .frame(height: metrics.size.height * 0.8)
                         } else {
@@ -127,7 +131,7 @@ struct CorrectionPage: View {
             if let correctionCard = try? createCorrectionCard(for: index) {
                 correctionCard
             } else {
-                GradeCard(number: index, grade: grade)
+                GradeCard(number: index, exposition: exposition)
             }
         }
 
@@ -196,7 +200,7 @@ struct CorrectionPage: View {
 
 struct CorrectionPagePreview: PreviewProvider {
     static var previews: some View {
-        let exposition = Exposition(date: "28-07-2024", grade: "B", secCode: 1)
+        let exposition = Exposition(date: "28-07-2024", grade: "10", secCode: 1)
         CorrectionPage(exposition: exposition, totalCardNumber: 11)
     }
 }
