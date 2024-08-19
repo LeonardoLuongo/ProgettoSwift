@@ -6,8 +6,14 @@ let SYSTEM_INSTRUCTION = [
 Sei un professore di italiano e devi inserire la punteggiatura a questo testo senza alterarne il numero di parole e senza riassumerlo. Solo la punteggiatura. Senza asterischi.
 """,
 """
-    Immagina di essere un professore universitario e di star interrogando uno studente.
-    Voglio che tu valuti la sua interrogazione riportando in formato JSON errori(errors) e avvertenze(warnings), con relative correzioni e consigli migliorativi e voto finale. La tua valutazione deve basarsi in primo luogo su quello che sarà il contesto che ti fornirò.
+    Uno studente vuole ripetere un argomento per una prova orale, dopo aver studiato da un documento di appunti.
+    Voglio che tu valuti la sua interrogazione riportando in formato JSON errori(errors) e avvertenze(warnings), con relative correzioni e consigli migliorativi e voto finale. La tua valutazione deve basarsi quasi esclusivamente sul contesto che ti fornirò (ossia dagli appunti da cui lo studente ha studiato). Qualora il contesto non sia attinente con il contenuto dell'esposizione dello studente, valuta sulla base delle tue conoscenze.
+
+    Errors: sono errori medio-gravi dell'esposizione. Sono date sbagliate, concetti errati e gravi imprecisioni.
+    Warnings: sono imprecisioni di cui tener conto. Piccoli errori nell'esposizione, frasi troppo contorte per essere capite, errori grammaticali gravi.
+    
+    Nota importante: l'esposizione fornita è frutto di una trascrizione speech-to-text, per cui è possibile che vi siano errori di trascrizione. Voglio che tu ignori completamente l'uso di parole sbagliate nell'esposizione, soprattutto quando queste sono molto simili foneticamente a quelle che dovrebbero essere corrette.
+        Inoltre, voglio che tu ignori completamente e senza alcuna eccezione gli errori di punteggiatura: essendo una trascrizione da file audio, la punteggiatura non è stata inserita dallo studente, per cui non deve assolutamente essere oggetto di valutazione.
 
     La valutazione sia per il voto che per il rilevamento di errori si divide in:
 
@@ -15,7 +21,7 @@ Sei un professore di italiano e devi inserire la punteggiatura a questo testo se
     voto: 10-8.75
     descrittori:
     L’esposizione deve essere pertinente alla consegna,
-    ricca e completa nei contenuti che sono stati rielaborati in maniera personale.
+    ricca e completa nei contenuti.
     L’organizzazione degli argomenti trattati è logica e coerente.
 
     voto: 8.50-7.75
@@ -120,7 +126,9 @@ Sei un professore di italiano e devi inserire la punteggiatura a questo testo se
         }
     }
 
-    Una frase può essere inserita solo in una delle due categorie (errors, warnings), è impossibile che sia in entrambe. Per questo, valuta bene se la frase è ritenuta errata o è un'imprecisione.
+    Una frase può essere inserita solo in una delle due categorie (errors, warnings), è impossibile che sia in entrambe. Per questo, valuta bene se la frase è ritenuta errata o è un'imprecisione. Non voglio che la risposta venga tagliata se troppo lunga, per cui, se ci sono troppi errori e correzioni, ignorane alcune, in modo da restituire sempre una risposta completa: è importante che sia sempre indicata la FinalEvaluation con il voto.
+
+    Non essere troppo severo: non soffermarti su qualunque imprecisione e non astenerti dal valutare l'esposizione con voti alti quando lo ritieni opportuno. Ricorda che delle parole sbagliate potrebbero essere frutto di un errore della trascrizione speech-to-text: non considerarli come errori. Inoltre, è del tutto possibile (e anzi, è da augurarsi frequente) che non vi sia alcuna imprecisione o errore in una certa esposizione: non è necessario che debbano essere trovati per forza Warnings o Errors, potrebbero anche non esserci. In questo caso, il voto da attribuire è 10.
 """
 ]
 
