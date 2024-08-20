@@ -194,12 +194,20 @@ class EvaluatedSpeech: Codable
             if letterTextCursor < currentSentence.getRange()[0]
             {
                 // Get the string that fils the gap
-                let okaySenteceStr = EvaluatedSpeech.substring(of: textInString, from: letterTextCursor, to: currentSentence.getRange()[0])
+                let okaySenteceStr = EvaluatedSpeech.substring(
+                    of: textInString,
+                    from: letterTextCursor,
+                    to: currentSentence.getRange()[0]
+                )
             
                 
                 // Let's create the sentence
                 do{
-                    paddingSentence = try Sentence(entireText: textInString, sentenceText: String(okaySenteceStr), status: .okay)
+                    paddingSentence = try Sentence(
+                        entireText: textInString,
+                        sentenceText: String(okaySenteceStr),
+                        status: .okay
+                    )
                 }catch{
                     throw LLMUtilsError.runtimeError("\(error)")
                 }
@@ -229,22 +237,44 @@ class EvaluatedSpeech: Codable
                     throw LLMUtilsError.runtimeError("How the fuck did you get here? id:af2377a5-8f5f-4375-89af-acb3500347cd")
                     
                 }
-                // TODO: Understand if should be
-                // letterTextCursor += currentSentence.getText().count
-                // Instead of:
-                letterTextCursor += currentSentence.getText().count
+                letterTextCursor += currentSentence.toString().count
                 sentenceCounter += 1
                 
             }else if letterTextCursor > currentSentence.getRange()[0]{
-                var text: String = ""
-                
-                for i in 0...(self.textInSentences.count - 1) {
-                    text += (self.textInSentences[i]).getText()
-                }
-                
-                print(text)
                 throw LLMUtilsError.runtimeError("How the fuck did you get here? id:0a2208b8-de05-4fee-b2ad-fa493feaf8fe")
-                
+            }
+        }
+        do{
+            textInSentences = Array(
+                repeating: try Sentence(
+                    entireText: "a ",
+                    words: [SingleWord(text: "a")],
+                    status: .wrong
+                ),
+                count: sentenceCounter
+            )
+        }
+        catch{
+            throw LLMUtilsError.runtimeError("\(error)")
+        }
+        
+        for i in 0...(sentenceCounter - 1)
+        {
+            if let _okay = okaySentences[i]
+            {
+                textInSentences[i] = _okay
+            }
+            else if let _warn = warningSentences[i]
+            {
+                textInSentences[i] = _warn
+            }
+            else if let _wrong = wrongSentences[i]
+            {
+                textInSentences[i] = _wrong
+            }
+            else
+            {
+                throw LLMUtilsError.runtimeError("There's a missing sentence.")
             }
         }
     }
@@ -335,28 +365,41 @@ class EvaluatedSpeech: Codable
         return wrongSentences.count + warningSentences.count
     }
     
-    public func getBadSentence (index: Int) -> (prevSentence: Sentence?, mainSentence: Sentence, nextSentence: Sentence?) {
-        let badSentences = Array(wrongSentences.values) + Array(warningSentences.values)
-        let mainSentence = badSentences[index]
-        if textInSentences.isEmpty {
-            textInSentences = getTextInSentences()
+    public func getBadSentence(index: Int) -> (prevSentence: Sentence?, mainSentence: Sentence?, nextSentence: Sentence?)? {
+        var prevSentence: Sentence? = nil
+        var mainSentence: Sentence? = nil
+        var nextSentence: Sentence? = nil
+        
+        
+        if index >= 0 && index < textInSentences.count
+        {
+            mainSentence = textInSentences[index]
         }
-        if let i = textInSentences.firstIndex(where: {$0.getText() == mainSentence.getText()}) {
-            var prevSentence: Sentence?
-            var nextSentence: Sentence?
-            if i != 0 {
-                prevSentence = textInSentences[i - 1]
-            } else {
+        else
+        {
+            mainSentence = nil
+        }
+        
+        if index - 1 >= 0 && index - 1 < textInSentences.count
+        {
+            prevSentence = textInSentences[index - 1]
+        }
+        else
+        {
                 prevSentence = nil
             }
-            if i < textInSentences.count - 1 {
-                nextSentence = textInSentences[i + 1]
-            } else {
-                nextSentence = nil
-            }
-            return (prevSentence, mainSentence, nextSentence)
+        
+        if index + 1 >= 0 && index + 1 < textInSentences.count
+        {
+            nextSentence = textInSentences[index + 1]
         }
-        return (nil, mainSentence, nil)
+        else
+        {
+            prevSentence = nil
+            }
+        
+        
+        return (prevSentence, mainSentence, nextSentence);
     }
     
     public func getResponse() -> Response?

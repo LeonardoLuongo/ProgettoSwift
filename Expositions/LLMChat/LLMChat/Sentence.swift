@@ -7,7 +7,6 @@ enum SentenceError: Error {
 class Sentence: Identifiable, Codable {
     
     var id = UUID()
-    private let text: String
     private let status: SentenceStatus
     private let correction: String?
     private let reason: String?
@@ -16,7 +15,6 @@ class Sentence: Identifiable, Codable {
     
     init(entireText: String, words: [SingleWord], status: SentenceStatus, correction: String? = nil, reason: String? = nil, range:Range<String.Index>? = nil) throws
     {
-        self.text = entireText
         self.words = words
         
         self.status = status
@@ -35,7 +33,7 @@ class Sentence: Identifiable, Codable {
                 _range.lowerBound.utf16Offset(in: entireText),
                 _range.upperBound.utf16Offset(in: entireText)
             ]
-        } 
+        }
         else
         {
             if let range = entireText.range(of: sentenceText){
@@ -47,11 +45,11 @@ class Sentence: Identifiable, Codable {
             }
             else
             {
-                throw SentenceError.runtimeError("The string \"\(text)\" was not found in \"\(self.text)\"")
+                throw SentenceError.runtimeError("The string <\(sentenceText)> was not found in <\(entireText)>")
             }
         }
         
-        let words = self.text.split(separator: " ")
+        let words = sentenceText.split(separator: " ")
         for word in words
         {
             self.words.append(SingleWord(text: String(word) + " ", sentenceId: self.id))
@@ -61,7 +59,6 @@ class Sentence: Identifiable, Codable {
     
     init(entireText:String, sentenceText: String, status: SentenceStatus, correction: String? = nil, reason: String? = nil, range:[Int]? = nil) throws
     {
-        self.text = sentenceText
         self.status = status
         self.correction = correction
         self.reason = reason
@@ -80,11 +77,11 @@ class Sentence: Identifiable, Codable {
             }
             else
             {
-                throw SentenceError.runtimeError("The string \"\(text)\" was not found in \"\(self.text)\"")
+                throw SentenceError.runtimeError("The string <\(sentenceText)> was not found in <\(entireText)>")
             }
         }
         
-        let words = self.text.split(separator: " ")
+        let words = sentenceText.split(separator: " ")
         for word in words
         {
             self.words.append(SingleWord(text: String(word) + " ", sentenceId: self.id))
@@ -112,9 +109,16 @@ class Sentence: Identifiable, Codable {
         return self.status
     }
     
-    public func getText() -> String
+    public func toString() -> String
     {
-        return self.text
+        var str: String = ""
+        
+        for word in words
+        {
+            str += word.getText()
+        }
+        
+        return str
     }
     
     public func getReason() -> String?

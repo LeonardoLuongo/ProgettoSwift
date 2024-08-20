@@ -52,6 +52,7 @@
 		1F9309AD2C70F49200C2EC38 /* GenerativeAI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1F9309A02C70F49200C2EC38 /* GenerativeAI-Info.plist */; };
 		1F9DDA2A2C5E3801006B600E /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1F9DDA292C5E3801006B600E /* GoogleGenerativeAI */; };
 		1F9DDA2C2C5E3813006B600E /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1F9DDA2B2C5E3813006B600E /* GoogleGenerativeAI */; };
+		1F9E46E32C752BFD000E1A8B /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1F9E46E22C752BFD000E1A8B /* GoogleGenerativeAI */; };
 		1FAF4BE62C47FFFB00A18150 /* IconEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAF4BE52C47FFFB00A18150 /* IconEditor.swift */; };
 		1FE219932C49610400A9A159 /* SectionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE219922C49610400A9A159 /* SectionListView.swift */; };
 		1FE504F22C516091000FFA53 /* TestFinalPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE504F12C516091000FFA53 /* TestFinalPage.swift */; };
@@ -142,6 +143,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F9E46E32C752BFD000E1A8B /* GoogleGenerativeAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,6 +396,9 @@
 				1F01951E2C4162A5001E15B1 /* PBXTargetDependency */,
 			);
 			name = ExpositionsTests;
+			packageProductDependencies = (
+				1F9E46E22C752BFD000E1A8B /* GoogleGenerativeAI */,
+			);
 			productName = RecordingPagesTests;
 			productReference = 1F01951C2C4162A5001E15B1 /* ExpositionsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -940,6 +945,11 @@
 		};
 		1F9DDA2B2C5E3813006B600E /* GoogleGenerativeAI */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = GoogleGenerativeAI;
+		};
+		1F9E46E22C752BFD000E1A8B /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1F3EB1CF2C70FEA1007CE29B /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
 			productName = GoogleGenerativeAI;
 		};
 /* End XCSwiftPackageProductDependency section */
