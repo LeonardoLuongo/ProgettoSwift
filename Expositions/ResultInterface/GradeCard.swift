@@ -12,7 +12,7 @@ struct GradeCard: View{
                     ScrollView(showsIndicators: false) {
                         VStack(alignment: .center) {
                             Spacer()
-                            Text("Final grade:")
+                            Text("Final grade")
                                 .font(.title)
                                 .padding()
                                 .foregroundStyle(.black)
@@ -49,7 +49,7 @@ struct GradeCard: View{
                                     .cornerRadius(100)
                                     .foregroundStyle(.black)
                                     .padding(.vertical)
-                                Text("Final evaluation:")
+                                Text("Final evaluation")
                                     .font(.title)
                                     .foregroundStyle(.black)
                                     .padding()

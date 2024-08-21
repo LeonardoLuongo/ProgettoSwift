@@ -14,7 +14,7 @@ class Exposition: ObservableObject, Identifiable, Codable {
             }
         }
     }
-    @Published var evaluated: Bool = false
+    @Published var evaluated: Bool = false // This property will be updated to "true" once the exposition is evaluated
     
     // Other properties
     var date: Date // Creation date
@@ -31,7 +31,7 @@ class Exposition: ObservableObject, Identifiable, Codable {
         case id, favorite, trash, evalueted, date, grade, secCode, trashDate, recordingManager, evaluatedSpeech, finalEvaluation
     }
     
-    // Initializer
+    // Initializers
     init(date: String, secCode: Int?) {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
@@ -154,9 +154,10 @@ class Exposition: ObservableObject, Identifiable, Codable {
         try container.encodeIfPresent(evaluatedSpeech, forKey: .evaluatedSpeech)
     }
     
+    // This function is used to set the grade and the final evaluation to a certain exposition after being evaluated
     func insertFinalEvaluation() {
         if let finalEvaluation = evaluatedSpeech?.getResponse()?.finalEvaluation {
-            var gradeDouble = Double(finalEvaluation.grade)
+            let gradeDouble = Double(finalEvaluation.grade)
             if let gradeDouble = gradeDouble {
                 self.grade = String(Int(ceil(gradeDouble)))
             }

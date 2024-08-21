@@ -3,7 +3,7 @@ import SwiftUI
 // This struct is used to represent and save informations of both the general sections and the user-created sections in which the expositions will be "saved"
 struct Section: Identifiable, Codable {
     var id = UUID() // identifier
-    var secCode: Int // secCode is used as a second identifier for sections. We manually assign a special code for general sections. For the other sections (user-created) a secCode will automatically be assigned. These codes are used as keys for the "expositions" dictionary and to have an easy way to manage sections.
+    var secCode: Int // secCode is used as a second identifier for sections. We manually assign a special code for general sections. For the other sections (user-created) a secCode will be automatically assigned. These codes are used as keys for the "expositions" dictionary and to have an easy way to manage sections.
     var name: String
     var icon: Icon? // An icon is assigned to each section. This icon can be ether an image or a symbol or just a colorful circle.
     

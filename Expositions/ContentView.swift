@@ -28,7 +28,7 @@ struct ContentView: View {
                 print("Impossible to decode. Error: \(error)")
             }
         }
-        // If there's nothing to decode or if something went wrong, just the array of standard sections will be returned
+        // If there's nothing to decode or if something went wrong, the array of standard sections will be returned
         return standardSections
     }
     
@@ -60,7 +60,7 @@ struct ContentView: View {
             Section.lastCode = max + 1
         }
         
-        // We also need to update the Trash section. Once the app is opened, we check if any of the trashed expositions have expired. (An exposition stays in the trash for 30 days before being automatically permantly removed).
+        // We also need to update the Trash section. Once the app is opened, we check if any of the trashed expositions has expired. (An exposition stays in the trash for 30 days before being automatically and permantly removed).
         let calendar = Calendar.current
         for exposition in expositions.flatMap({$0.value}).filter({$0.trash}) {
             if let expiryDate = calendar.date(byAdding: .day, value: 30, to: exposition.trashDate!) {

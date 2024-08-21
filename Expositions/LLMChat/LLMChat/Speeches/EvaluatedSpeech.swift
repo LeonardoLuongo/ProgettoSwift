@@ -365,41 +365,26 @@ class EvaluatedSpeech: Codable
         return wrongSentences.count + warningSentences.count
     }
     
-    public func getBadSentence(index: Int) -> (prevSentence: Sentence?, mainSentence: Sentence?, nextSentence: Sentence?)? {
-        var prevSentence: Sentence? = nil
-        var mainSentence: Sentence? = nil
-        var nextSentence: Sentence? = nil
+    public func getBadSentence (index: Int) -> (prevSentence: Sentence?, mainSentence: Sentence, nextSentence: Sentence?) {
+        let badSentences = Array(wrongSentences.values) + Array(warningSentences.values)
+        let mainSentence = badSentences[index]
         
-        
-        if index >= 0 && index < textInSentences.count
-        {
-            mainSentence = textInSentences[index]
-        }
-        else
-        {
-            mainSentence = nil
-        }
-        
-        if index - 1 >= 0 && index - 1 < textInSentences.count
-        {
-            prevSentence = textInSentences[index - 1]
-        }
-        else
-        {
+        if let i = textInSentences.firstIndex(where: {$0.id == mainSentence.id}) {
+            var prevSentence: Sentence?
+            var nextSentence: Sentence?
+            if i != 0 {
+                prevSentence = textInSentences[i - 1]
+            } else {
                 prevSentence = nil
             }
-        
-        if index + 1 >= 0 && index + 1 < textInSentences.count
-        {
-            nextSentence = textInSentences[index + 1]
-        }
-        else
-        {
-            prevSentence = nil
+            if i < textInSentences.count - 1 {
+                nextSentence = textInSentences[i + 1]
+            } else {
+                nextSentence = nil
             }
-        
-        
-        return (prevSentence, mainSentence, nextSentence);
+            return (prevSentence, mainSentence, nextSentence)
+        }
+        return (nil, mainSentence, nil)
     }
     
     public func getResponse() -> Response?
