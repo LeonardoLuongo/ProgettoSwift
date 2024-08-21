@@ -26,7 +26,7 @@ struct CorrectionPage: View {
             
             VStack {
                 Spacer()
-                    .frame(height: metrics.size.height * 0.1)
+                    .frame(height: metrics.size.height * 0.2)
                 
                 TextField("Record name", text: $recordingManager.recordName)
                     .font(.largeTitle)
@@ -109,15 +109,13 @@ struct CorrectionPage: View {
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 .frame(height: metrics.size.height * 0.75)
                 
-                //Spacer()
-                
                 VStack {
                     Player(recordingManager: recordingManager)
                         .onAppear {
                             player = Player(recordingManager: recordingManager)
                         }
                     Spacer()
-                        .frame(height: metrics.size.height * 0.1)
+                        .frame(height: metrics.size.height * 0.3)
                 }
                 Spacer()
                 
@@ -134,39 +132,6 @@ struct CorrectionPage: View {
                 GradeCard(number: index, exposition: exposition)
             }
         }
-
-    /*
-        func createCorrectionCard() throws -> CorrectionCard {
-            
-            let sentences = evaluatedSpeech?.getTextInSentences()
-            
-            let mainSentence: Sentence?
-            let prevSentence: Sentence?
-            let nextSentence: Sentence?
-            
-            while index < (sentences?.count ?? 0) && sentences?[index].getStatus() == .okay {
-                index += 1
-                print("Index incrementato: \(index)")
-            }
-            
-            mainSentence = sentences?[index]
-            if index != 0 {
-                prevSentence = sentences?[index - 1]
-            } else {
-                prevSentence = nil
-            }
-            if index != sentences?.count {
-                nextSentence = sentences?[index + 1]
-            } else {
-                nextSentence = nil
-            }
-            cards[index] = CorrectionCard(number: index, mainSentence: mainSentence!, prevSentence: prevSentence, nextSentence: nextSentence)
-            
-            let correctionCard = CorrectionCard(number: index, mainSentence: mainSentence!, prevSentence: prevSentence, nextSentence: nextSentence)
-            
-            return correctionCard
-        }
-        */
     
     func createCorrectionCard(for index: Int) throws -> CorrectionCard? {
         let (prevSentence, mainSentence, nextSentence) = exposition.evaluatedSpeech?.getBadSentence(index: index) ?? (nil, nil, nil)

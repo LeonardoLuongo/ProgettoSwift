@@ -58,7 +58,7 @@ struct RecordPage: View {
                                             .foregroundColor(Color(hue: 0.58, saturation: 0.63, brightness: 0.96))
                                     }
                                     .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
-                                    .background(Color(hue: 0, saturation: 0, brightness: 0.95))
+                                    .background(Color(.secondarySystemBackground))
                                     .cornerRadius(15)
                                     .contextMenu(ContextMenu(menuItems: {
                                         Button(action: {
@@ -80,7 +80,7 @@ struct RecordPage: View {
                                             .foregroundColor(Color(hue: 0.58, saturation: 0.63, brightness: 0.96))
                                     }
                                     .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
-                                    .background(Color(hue: 0, saturation: 0, brightness: 0.95))
+                                    .background(Color(.secondarySystemBackground))
                                     .cornerRadius(15)
                                 }
                             }
@@ -136,7 +136,7 @@ struct RecordPage: View {
                                             Player(recordingManager: recordingManager)
                                         }
                                         .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
-                                        .background(Color(hue: 0, saturation: 0, brightness: 0.95))
+                                        .background(Color(.secondarySystemBackground))
                                         .cornerRadius(15)
                                         .contextMenu(ContextMenu(menuItems: {
                                             Button(action: {
@@ -157,7 +157,7 @@ struct RecordPage: View {
                                             Player(recordingManager: recordingManager)
                                         }
                                         .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
-                                        .background(Color(hue: 0, saturation: 0, brightness: 0.95))
+                                        .background(Color(.secondarySystemBackground))
                                         .cornerRadius(15)
                                         .contextMenu(ContextMenu(menuItems: {
                                             Button(action: {
@@ -181,7 +181,7 @@ struct RecordPage: View {
                                             .foregroundColor(Color(hue: 0.58, saturation: 0.63, brightness: 0.96))
                                     }
                                     .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
-                                    .background(Color(hue: 0, saturation: 0, brightness: 0.95))
+                                    .background(Color(.secondarySystemBackground))
                                     .cornerRadius(15)
                                 }
                             }

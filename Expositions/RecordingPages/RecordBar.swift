@@ -86,7 +86,7 @@ struct RecordBar: View {
                                 .frame(width: 65, height: 65)
                                 .padding(.all, 4)
                                 .overlay(
-                                    Circle().stroke(Color.black, lineWidth: 3)
+                                    Circle().stroke(Color.primary, lineWidth: 3)
                                 )
                         }
                     }
@@ -137,7 +137,7 @@ struct RecordBar: View {
             }
             .padding(.top, 10)
             .frame(maxWidth: .infinity)
-            .background(Color(hue: 0, saturation: 0, brightness: 0.95))
+            .background(Color(.secondarySystemBackground))
         }
     }
 }

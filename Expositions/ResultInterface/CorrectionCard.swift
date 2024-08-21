@@ -93,6 +93,7 @@ struct CorrectionCard: View {
                     Spacer()
                 }
                 .padding(.top, 20)
+                .background(Color.black.opacity(0.0))
                 Spacer()
             }
         }
@@ -104,14 +105,6 @@ struct CorrectionCard: View {
             
         if let prevSentence = self.prevSentence {
             let prevAttributedString = AttributedString(prevSentence.toString())
-//            switch prevSentence.getStatus() {
-//            case .warning:
-//                prevAttributedString.backgroundColor = .yellow
-//            case .wrong:
-//                prevAttributedString.backgroundColor = .red
-//            default:
-//                prevAttributedString.backgroundColor = .clear
-//            }
             attributedString += prevAttributedString + AttributedString(" ")
         }
             
@@ -119,6 +112,7 @@ struct CorrectionCard: View {
         switch mainSentence.getStatus() {
         case .warning:
             mainAttributedString.backgroundColor = .yellow
+            mainAttributedString.foregroundColor = .black
         case .wrong:
             mainAttributedString.backgroundColor = .red
         default:

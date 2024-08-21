@@ -15,7 +15,7 @@ struct GradeCard: View{
                             Text("Final grade")
                                 .font(.title)
                                 .padding()
-                                .foregroundStyle(.black)
+                                .foregroundStyle(Color.primary)
                             ZStack {
                                 Rectangle()
                                     .frame(width: 100, height: 100)
@@ -47,27 +47,28 @@ struct GradeCard: View{
                                 Rectangle()
                                     .frame(width: metrics.size.width * 0.7, height: 2)
                                     .cornerRadius(100)
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(Color.primary)
                                     .padding(.vertical)
                                 Text("Final evaluation")
                                     .font(.title)
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(Color.primary)
                                     .padding()
                                 Text(finalEvaluation)
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(Color.primary)
                                     .padding([.leading, .trailing])
                             }
                             Spacer()
                         }
                     }
                     .frame(width: metrics.size.width * 0.8, height: metrics.size.height * 0.85)
-                    .background(Color.white)
+                    .background(Color(.secondarySystemBackground))
                     .cornerRadius(20)
                     .shadow(radius: 10, y: 15.0)
 
                     Spacer()
                 }
                 .padding(.top, 20)
+                .background(Color.black.opacity(0.0))
                 
                 Spacer()
             }
