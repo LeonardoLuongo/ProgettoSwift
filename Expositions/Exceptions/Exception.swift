@@ -10,7 +10,7 @@ import Foundation
 class Exception: ObservableObject{
     @Published var exceptionName: String = ""
     @Published var exceptionMessage: String = ""
-    @Published var hasException: Bool = true
+    @Published var hasException: Bool = false
     
     init(exceptionName: String, exceptionMessage: String) {
         self.exceptionName = exceptionName
