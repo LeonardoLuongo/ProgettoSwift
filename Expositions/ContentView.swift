@@ -7,14 +7,21 @@ struct ContentView: View {
      expositions is a dictionary that containes arrays of Exposition-type objects. The keys (Int type) are sections' "secCode". Basically, an array of expositions is related to each section, representing the files (recording + document) created by the user. */
     @State var sections: [Section] = loadSections()
     @State var expositions: [Int:[Exposition]] = loadExpositions()
+    @ObservedObject var exception: Exception = Exception(exceptionName: "", exceptionMessage: "")
     
     
     // This property represents the "general sections" (that are "All expositions", "Favorites" and "Trash").
     static var standardSections = [Section(name: "All expositions", symbol: "folder.fill", color: Color(red: 0.3568627450980392, green: 0.6627450980392157, blue: 0.9568627450980393), specialCode: 0), Section(name: "Favorites", symbol: "heart.fill", color: Color(red: 1, green: 0.27058823529411763, blue: 0.2235294117647059), specialCode: 1),Section(name: "Trash", symbol: "trash.fill", color: Color(red: 0.6784313725490196, green: 0.6784313725490196, blue: 0.6784313725490196), specialCode: 2)]
     
     var body: some View {
-        Sections(sections: $sections, expositions: $expositions)
-            .environment(\.locale, .init(identifier: "it"))
+        ZStack {
+            Sections(sections: $sections, expositions: $expositions)
+                .environment(\.locale, .init(identifier: "it"))
+            if exception.hasException {
+                ExceptionView(exception: exception)
+            }
+            
+        }
     }
     
     /* This method is used to load sections from UserDefaults */
