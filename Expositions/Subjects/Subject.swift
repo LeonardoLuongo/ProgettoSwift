@@ -114,7 +114,7 @@ struct Subject: View {
                         }
                     }
                 }
-                .navigationTitle(section.name)
+                .navigationTitle(LocalizedStringKey(section.name))
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
                         Button(action: {

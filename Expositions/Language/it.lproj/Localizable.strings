@@ -37,6 +37,7 @@
 "Save or cancel the record" = "Salva o cancella la registrazione";
 "The operation is irreversible." = "L'operazione è irreversibile.";
 "Save" = "Salva";
+"Analyzing audio file..." = "Analizzando il file audio...";
 "Evaluating..." = "Valutazione...";
 "Evaluate" = "Valuta";
 "Record permission denied! Grant permission in settings." = "Permesso di registrazione negato! Vai in impostazioni.";
