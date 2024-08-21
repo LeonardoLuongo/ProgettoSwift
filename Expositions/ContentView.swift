@@ -7,7 +7,7 @@ struct ContentView: View {
      expositions is a dictionary that containes arrays of Exposition-type objects. The keys (Int type) are sections' "secCode". Basically, an array of expositions is related to each section, representing the files (recording + document) created by the user. */
     @State var sections: [Section] = loadSections()
     @State var expositions: [Int:[Exposition]] = loadExpositions()
-    @ObservedObject var exception: Exception = Exception(exceptionName: "Runtime exception", exceptionMessage: "Messaggio di errore. Si è verificata questa eccezione per questo motivo. Comportarsi in questo modo.")
+    @ObservedObject var exception: Exception = Exception(exceptionName: "", exceptionMessage: "")
     
     
     // This property represents the "general sections" (that are "All expositions", "Favorites" and "Trash").
