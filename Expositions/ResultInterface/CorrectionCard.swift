@@ -26,23 +26,23 @@ struct CorrectionCard: View {
                             switch mainSentence.getStatus() {
                             case .warning:
                                 Text("Warning")
-                                    .foregroundColor(.black)
+                                    .foregroundStyle(Color.primary)
                                     .font(.title)
                                     .padding(.top)
                             case .wrong:
                                 Text("Error")
-                                    .foregroundColor(.black)
+                                    .foregroundStyle(Color.primary)
                                     .font(.title)
                                     .padding(.top)
                             default:
                                 Text("Sentence")
-                                    .foregroundColor(.black)
+                                    .foregroundStyle(Color.primary)
                                     .font(.title)
                                     .padding(.top)
                             }
                             
                             Text(self.combinedAttributedText())
-                                .foregroundColor(.black)
+                                .foregroundStyle(Color.primary)
                                 .padding(.all)
 
 
@@ -50,15 +50,15 @@ struct CorrectionCard: View {
                                 Rectangle()
                                     .frame(width: metrics.size.width * 0.7, height: 2)
                                     .cornerRadius(100)
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(Color.primary)
                                     .padding(.vertical)
                                 
                                 Text("Correction")
-                                    .foregroundColor(.black)
+                                    .foregroundColor(Color.primary)
                                     .font(.title)
                                 
                                 Text("\(correction)")
-                                    .foregroundColor(.black)
+                                    .foregroundStyle(Color.primary)
                                     .padding(.horizontal)
                                     .padding(.vertical, 1)
                             }
@@ -67,15 +67,15 @@ struct CorrectionCard: View {
                                 Rectangle()
                                     .frame(width: metrics.size.width * 0.7, height: 2)
                                     .cornerRadius(100)
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(Color.primary)
                                     .padding(.vertical)
                                 
                                 Text("Reason")
-                                    .foregroundColor(.black)
+                                    .foregroundStyle(Color.primary)
                                     .font(.title)
                                 
                                 Text("\(reason)")
-                                    .foregroundColor(.black)
+                                    .foregroundStyle(Color.primary)
                                     .padding(.horizontal)
                                     .padding(.vertical, 1)
                             }
@@ -86,7 +86,7 @@ struct CorrectionCard: View {
                         Spacer()
                     }
                     .frame(width: metrics.size.width * 0.8, height: metrics.size.height * 0.85)
-                    .background(Color.white)
+                    .background(Color(.secondarySystemBackground))
                     .cornerRadius(20)
                     .shadow(radius: 10, y: 15.0)
 
