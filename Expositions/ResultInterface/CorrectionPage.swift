@@ -34,8 +34,6 @@ struct CorrectionPage: View {
                     .textFieldStyle(DefaultTextFieldStyle())
                     .padding()
                     .padding(.bottom, -10)
-                    .multilineTextAlignment(.center)
-                    .disabled(recordingManager.isRecording)
 
                 HStack {
                     Spacer()
