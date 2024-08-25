@@ -18,6 +18,7 @@ class Evaluator: ObservableObject {
     
     @Published var progress: Float = -1
     @Published var completed: Bool = false
+    @Published var evaluating: Bool = false
     
     var documentText: String?
     var workItems: [DispatchWorkItem] = []
@@ -46,6 +47,9 @@ class Evaluator: ObservableObject {
                         if success {
                             Task { [weak self] in
                                 do {
+                                    
+                                    self!.evaluating = true
+                                    
                                     // turn transcription into RawSpeech
                                     let rawSpeech = RawSpeech(textInSingleWords: SingleWord.textToSingleWordArray(text: self!.exposition.recordingManager.transcription))
                                     

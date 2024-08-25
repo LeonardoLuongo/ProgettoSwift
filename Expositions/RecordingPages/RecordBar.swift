@@ -109,30 +109,41 @@ struct RecordBar: View {
                         )
                     }
                 } else {
-                    // Mostra la ProgressView quando il bottone viene premuto
-                    VStack {
-                        Text("Evaluating...")
-                            .foregroundStyle(.black)
-                        ProgressView(value: evaluator.progress)
-                            .progressViewStyle(CustomLinearProgressViewStyle(trackColor: .gray, progressColor: Color(hue: 0.58, saturation: 0.63, brightness: 0.96)))
-                        Text(evaluator.progress.formatted(.percent.precision(.fractionLength(0))))
-                            .foregroundStyle(.black)
-                        Button(action: {
-                            evaluator.stopTask()
-                        }) {
-                            VStack {
-                                Text("Stop")
-                                    .font(.system(size: 25))
-                                    .foregroundColor(.white)
+                    if !evaluator.evaluating {
+                        // Mostra la ProgressView quando il bottone viene premuto
+                        VStack {
+                            Text("Analyzing audio file...")
+                                .foregroundStyle(.black)
+                            ProgressView(value: evaluator.progress)
+                                .progressViewStyle(CustomLinearProgressViewStyle(trackColor: .gray, progressColor: Color(hue: 0.58, saturation: 0.63, brightness: 0.96)))
+                            Text(evaluator.progress.formatted(.percent.precision(.fractionLength(0))))
+                                .foregroundStyle(.black)
+                            Button(action: {
+                                evaluator.stopTask()
+                            }) {
+                                VStack {
+                                    Text("Stop")
+                                        .font(.system(size: 25))
+                                        .foregroundColor(.white)
+                                }
+                                .frame(width: 125, height: 50)
+                                .background(.red)
+                                .cornerRadius(15)
+                                .padding(.bottom, 15)
+                                .padding(.top, 10)
                             }
-                            .frame(width: 125, height: 50)
-                            .background(.red)
-                            .cornerRadius(15)
-                            .padding(.bottom, 15)
-                            .padding(.top, 10)
+                        }
+                        .padding([.bottom, .leading, .trailing])
+                    } else {
+                        VStack {
+                            Text("Evaluating...")
+                                .foregroundStyle(.black)
+                            Text("It might take some minutes.")
+                                .foregroundStyle(.black)
+                            ProgressView()
+                                .tint(.black)
                         }
                     }
-                    .padding([.bottom, .leading, .trailing])
                 }
             }
             .padding(.top, 10)
