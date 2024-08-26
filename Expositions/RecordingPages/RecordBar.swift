@@ -27,10 +27,9 @@ struct RecordBar: View {
                 /*  If an audio has already been recorded the bottom bar will display the evaluate button*/
                 if recordingManager.recorded && evaluator.progress < 0 {
                     Button(action: {
-                        // Aggiungi azione per "Evaluate"
                         evaluator.evaluate()
                     }) {
-                        /*  The evalueate button will be usable (and colorful) only if both the doc and the rec have been loaded */
+                        /*  The evaluate button will be usable (and colorful) only if both the doc and the rec have been loaded */
                         if recordingManager.textLoaded && recordingManager.recorded {
                             VStack {
                                 Text("Evaluate")
@@ -113,11 +112,9 @@ struct RecordBar: View {
                         // Mostra la ProgressView quando il bottone viene premuto
                         VStack {
                             Text("Analyzing audio file...")
-                                .foregroundStyle(.black)
                             ProgressView(value: evaluator.progress)
                                 .progressViewStyle(CustomLinearProgressViewStyle(trackColor: .gray, progressColor: Color(hue: 0.58, saturation: 0.63, brightness: 0.96)))
                             Text(evaluator.progress.formatted(.percent.precision(.fractionLength(0))))
-                                .foregroundStyle(.black)
                             Button(action: {
                                 evaluator.stopTask()
                             }) {
@@ -137,11 +134,8 @@ struct RecordBar: View {
                     } else {
                         VStack {
                             Text("Evaluating...")
-                                .foregroundStyle(.black)
                             Text("It might take some minutes.")
-                                .foregroundStyle(.black)
                             ProgressView()
-                                .tint(.black)
                         }
                     }
                 }

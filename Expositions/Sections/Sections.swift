@@ -47,9 +47,7 @@ struct Sections: View {
                                 SectionRow(section: $section)
                                     .swipeActions {
                                         Button(action: {
-                                            if let index = sections.firstIndex(where: { $0.id == section.id }) {
-                                                deleteSection(at: IndexSet(integer: index))
-                                            }
+                                            deleteSection(section: section)
                                         }) {
                                             Label("Delete", systemImage: "trash")
                                         }
@@ -68,13 +66,29 @@ struct Sections: View {
                             ) {
                                 Button("Cancel", role: .cancel) {}
                                 Button("Delete", action: {
-                                    if let index = sections.firstIndex(where: { $0.id == section.id }) {
-                                        expositions[section.secCode] = []
+                                    if let index = sections.firstIndex(where: { $0.secCode == section.secCode }) {
+                                        // Sposta le esposizioni nella sezione "Trash"
+                                        if var expositionsForSection = expositions[section.secCode] {
+                                            for exposition in expositionsForSection {
+                                                exposition.trash = true
+                                                exposition.secCode = 0
+                                                expositions[2]?.append(exposition)
+                                            }
+                                            expositions.removeValue(forKey: section.secCode)
+                                        }
+                                        
+                                        // Rimuovi la sezione
                                         sections.remove(at: index)
+                                        
+                                        // Aggiorna i secCode delle sezioni rimanenti e il dizionario delle esposizioni
+                                        Section.updateSecCodes(sections: &sections, expositions: &expositions)
+                                        
+                                        // Salva le sezioni e le esposizioni aggiornate
                                         Section.save(sections: sections)
                                         Exposition.saveDictionary(expositions: expositions)
                                     }
                                 })
+
                             }
                         }
                     }
@@ -132,17 +146,13 @@ struct Sections: View {
         }
     }
     
-    func deleteSection(at offsets: IndexSet) {
-        sections.remove(atOffsets: offsets)
-        Section.save(sections: sections)
-    }
-    
     func deleteSection(section: Section) {
         if !expositions[section.secCode]!.isEmpty {
             showDeleteAlert.toggle()
         } else if let index = sections.firstIndex(where: { $0.id == section.id }) {
-            expositions[section.secCode] = []
+            expositions.removeValue(forKey: section.secCode)
             sections.remove(at: index)
+            Section.updateSecCodes(sections: &sections, expositions: &expositions)
             Section.save(sections: sections)
             Exposition.saveDictionary(expositions: expositions)
         }

@@ -22,6 +22,8 @@ struct Subject: View {
     @State var text = ""
     @State private var searchText = ""
     
+    @State private var refreshID = UUID()
+    
     private func subjectExp() -> [Exposition] {
         if section.secCode == 0 {
             return expositions.flatMap {$0.value}.filter{!$0.trash}
@@ -30,7 +32,7 @@ struct Subject: View {
         } else if section.secCode == 2 {
             return expositions.flatMap{$0.value}.filter{$0.trash}
         }
-        return expositions[section.secCode] ?? []
+        return expositions[section.secCode]?.filter{!$0.trash} ?? []
     }
     
     var body: some View {
@@ -38,16 +40,14 @@ struct Subject: View {
             NavigationStack {
                 List {
                     ForEach(subjectExp(), id: \.id) { exposition in
-                        if searchText.isEmpty || exposition.recordingManager.recordName.lowercased().starts(with: searchText.lowercased()) {
-                            ExpositionRowSubject(expositions: $expositions, section: $section, sections: $sections, exposition: exposition, subjectExp: subjectExp(), showCreateExpView: $showCreateExpView)
+                        if (searchText.isEmpty || exposition.recordingManager.recordName.lowercased().starts(with: searchText.lowercased())) && !exposition.trash {
+                            ExpositionRowSubject(expositions: $expositions, section: $section, sections: $sections, exposition: exposition, subjectExp: subjectExp(), showCreateExpView: $showCreateExpView, refreshID: $refreshID)
                                 .swipeActions {
                                     Button(action: {
-                                        let item = exposition
-                                        item.trash = true
-                                        item.trashDate = Date.now
-                                        expositions[2]?.append(item)
-                                        expositions[item.secCode]?.removeAll(where: {$0.id == item.id})
+                                        exposition.trash = true
+                                        exposition.trashDate = Date.now
                                         Exposition.saveDictionary(expositions: expositions)
+                                        refreshID = UUID()
                                     }) {
                                         Text("Delete")
                                         Image(systemName: "trash")
@@ -55,9 +55,9 @@ struct Subject: View {
                                     .tint(.red)
                                     if !exposition.favorite {
                                         Button(action: {
-                                            let item = exposition
-                                            item.favorite = true
-                                            updateExposition(item)
+                                            exposition.favorite = true
+                                            Exposition.saveDictionary(expositions: expositions)
+                                            refreshID = UUID()
                                         }) {
                                             Text("Favorite")
                                             Image(systemName: "heart")
@@ -65,9 +65,9 @@ struct Subject: View {
                                         .tint(.orange)
                                     } else {
                                         Button(action: {
-                                            let item = exposition
-                                            item.favorite = false
-                                            updateExposition(item)
+                                            exposition.favorite = false
+                                            Exposition.saveDictionary(expositions: expositions)
+                                            refreshID = UUID()
                                         }) {
                                             Text("Unfavorite")
                                             Image(systemName: "heart.slash")
@@ -78,6 +78,7 @@ struct Subject: View {
                         }
                     }
                 }
+                .id(refreshID)
                 .navigationTitle(LocalizedStringKey(section.name))
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -110,7 +111,7 @@ struct Subject: View {
                 List {
                     ForEach(subjectExp(), id: \.id) { exposition in
                         if searchText.isEmpty || exposition.recordingManager.recordName.lowercased().starts(with: searchText.lowercased()) {
-                            ExpositionRowTrash(expositions: $expositions, section: $section, sections: $sections, exposition: exposition, subjectExp: subjectExp())
+                            ExpositionRowTrash(expositions: $expositions, section: $section, sections: $sections, exposition: exposition, subjectExp: subjectExp(), refreshID: $refreshID)
                         }
                     }
                 }
@@ -124,6 +125,7 @@ struct Subject: View {
                                 .imageScale(.large)
                         }
                         .padding()
+                        .disabled(subjectExp().isEmpty)
                     }
                     ToolbarItem(placement: .bottomBar) {
                         Button(action: {
@@ -133,13 +135,14 @@ struct Subject: View {
                                 .imageScale(.large)
                         }
                         .padding()
+                        .disabled(subjectExp().isEmpty)
                     }
                 }
                 .alert("All expositions will be permanently deleted. Do you want to continue?", isPresented: $showDeleteAlert) {
                     Button("Cancel", role: .cancel) {}
                     Button("Confirm", action: {
                         for exposition in subjectExp() {
-                            expositions[2]?.removeAll(where: { $0.id == exposition.id })
+                            expositions[exposition.secCode]?.removeAll(where: { $0.id == exposition.id })
                             Exposition.saveDictionary(expositions: expositions)
                         }
                     })
@@ -148,24 +151,14 @@ struct Subject: View {
                     Button("Cancel", role: .cancel) {}
                     Button("Confirm", action: {
                         for exposition in subjectExp() {
-                            let item = exposition
-                            item.trash = false
-                            item.trashDate = nil
-                            expositions[item.secCode]?.append(item)
-                            expositions[2]?.removeAll(where: { $0.id == exposition.id })
+                            exposition.trash = false
+                            exposition.trashDate = nil
                             Exposition.saveDictionary(expositions: expositions)
                         }
                     })
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             }
-        }
-    }
-    
-    private func updateExposition(_ item: Exposition) {
-        if let index = expositions[item.secCode]?.firstIndex(where: { $0.id == item.id }) {
-            expositions[item.secCode]?[index] = item
-            Exposition.saveDictionary(expositions: expositions)
         }
     }
 }

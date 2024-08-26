@@ -48,13 +48,22 @@ struct SectionListView: View {
                                             .frame(width: 40, height: 40)
                                             .foregroundColor(icon.color)
                                         if let symbol = icon.symbol {
-                                            Image(uiImage: UIImage(named: symbol)!)
-                                                .imageScale(.large)
-                                                .frame(width: 30, height: 30)
-                                                .foregroundColor(.white)
+                                            if symbol == "folder.fill" {
+                                                Image(systemName: symbol)
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .frame(width: 20, height: 20)
+                                                    .foregroundColor(.white)
+                                            } else {
+                                                Image(uiImage: UIImage(named: symbol)!)
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .frame(width: 50, height: 50)
+                                            }
                                         }
                                     }
-                                    Text(section.name)
+                                    .frame(width: 50, height: 50)
+                                    Text(LocalizedStringKey(section.name))
                                         .padding()
                                 }
                             }

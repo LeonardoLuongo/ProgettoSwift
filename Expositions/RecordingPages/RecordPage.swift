@@ -8,18 +8,22 @@ struct RecordPage: View {
     @Binding var exposition: Exposition
     @ObservedObject var evaluator: Evaluator
     
-    init(exposition: Binding<Exposition>, expositions: Binding<[Int:[Exposition]]>) {
+    @Binding var refreshID: UUID
+    
+    init(exposition: Binding<Exposition>, expositions: Binding<[Int:[Exposition]]>, refreshID: Binding<UUID>) {
         self._recordingManager = ObservedObject(wrappedValue: exposition.wrappedValue.recordingManager)
         self._expositions = expositions
         self._exposition = exposition
         self.evaluator = Evaluator(exposition: exposition, expositions: expositions, evaluationError: .constant(false))
+        self._refreshID = refreshID
     }
     
-    init(recordingManager: RecordingManager, expositions: Binding<[Int:[Exposition]]>, exposition: Binding<Exposition>) {
+    init(recordingManager: RecordingManager, expositions: Binding<[Int:[Exposition]]>, exposition: Binding<Exposition>, refreshID: Binding<UUID>) {
         self.recordingManager = recordingManager
         self._expositions = expositions
         self._exposition = exposition
         self.evaluator = Evaluator(exposition: exposition, expositions: expositions, evaluationError: .constant(false))
+        self._refreshID = refreshID
     }
     
     var body: some View {
@@ -40,6 +44,10 @@ struct RecordPage: View {
                                     .padding()
                                     .multilineTextAlignment(.leading)
                                     .disabled(recordingManager.isRecording)
+                                    .onSubmit {
+                                        refreshID = UUID()
+                                        Exposition.saveDictionary(expositions: expositions)
+                                    }
                                 
                                 Spacer()
                             }
@@ -164,6 +172,7 @@ struct RecordPage: View {
                                                 recordingManager.recordFilename = ""
                                                 recordingManager.recorded = false
                                                 recordingManager.recLoaded = false
+                                                recordingManager.deleteRecordedAudio()
                                                 Exposition.saveDictionary(expositions: expositions)
                                             }, label: {
                                                 HStack {
@@ -249,10 +258,13 @@ struct RecordPage: View {
             }
         } else {
             CorrectionPage(exposition: exposition, totalCardNumber: (exposition.evaluatedSpeech?.numberOfBadSentences())! + 1)
+                .onAppear {
+                    refreshID = UUID()
+                }
         }
     }
 }
 
 #Preview {
-    RecordPage(exposition: .constant(Exposition(date: "07-20-2024", grade: "10", secCode: 3)), expositions: .constant([3:[Exposition(date: "07-20-2024", grade: "10", secCode: 3)]]))
+    RecordPage(exposition: .constant(Exposition(date: "07-20-2024", grade: "10", secCode: 3)), expositions: .constant([3:[Exposition(date: "07-20-2024", grade: "10", secCode: 3)]]), refreshID: .constant(UUID()))
 }

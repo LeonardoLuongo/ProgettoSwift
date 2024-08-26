@@ -62,10 +62,7 @@ struct ContentView: View {
         }
         
         // In the struct "Section" there's a static property called "lastCode" that represents the last integer used to initialize a section's secCode. We make sure that lastCode is updated when we load the sections and expositions.
-        let keys = Array(expositions.keys)
-        if let max = keys.max() {
-            Section.lastCode = max + 1
-        }
+        Section.lastCode = sections.count - 1
         
         // We also need to update the Trash section. Once the app is opened, we check if any of the trashed expositions has expired. (An exposition stays in the trash for 30 days before being automatically and permantly removed).
         let calendar = Calendar.current

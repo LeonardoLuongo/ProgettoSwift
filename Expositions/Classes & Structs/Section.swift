@@ -68,6 +68,28 @@ struct Section: Identifiable, Codable {
             print("Impossible to save. Error: \(error)")
         }
     }
+    
+    static func updateSecCodes(sections: inout [Section], expositions: inout [Int:[Exposition]]) {
+        var newSecCode = 0
+        var newExpositions: [Int:[Exposition]] = [:]
+        
+        for i in 0..<sections.count {
+            let oldSecCode = sections[i].secCode
+            sections[i].secCode = newSecCode
+            
+            if let expositionsForOldCode = expositions[oldSecCode] {
+                for exposition in expositionsForOldCode {
+                    exposition.secCode = newSecCode
+                }
+                newExpositions[newSecCode] = expositionsForOldCode
+            }
+            
+            newSecCode += 1
+        }
+        
+        expositions = newExpositions
+        Section.lastCode = newSecCode - 1
+    }
 }
 
 // This struct is used to represent the section icon

@@ -11,7 +11,6 @@ struct CorrectionPage: View {
     @State private var player: Player?
     @State var cards: [Int: CorrectionCard] = [:]
 
-
     init(exposition: Exposition, totalCardNumber: Int) {
         self.exposition = exposition
         self.totalCardNumber = totalCardNumber
