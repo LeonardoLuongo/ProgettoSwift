@@ -39,6 +39,7 @@
 "Save" = "Salva";
 "Analyzing audio file..." = "Analizzando il file audio...";
 "Evaluating..." = "Valutazione...";
+"It might take some minutes." = "Potrebbe volerci qualche minuto.";
 "Evaluate" = "Valuta";
 "Record permission denied! Grant permission in settings." = "Permesso di registrazione negato! Vai in impostazioni.";
 "Something went wrong. Please delete this page and create a new one." = "Qualcosa è andato storto. Elimina questa pagina e creane un'altra.";

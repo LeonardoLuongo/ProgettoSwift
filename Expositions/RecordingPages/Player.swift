@@ -51,6 +51,13 @@ struct Player: View {
         }
         .padding()
         .onAppear {
+            do {
+                try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+                try AVAudioSession.sharedInstance().setActive(true)
+            } catch {
+                print("Errore nella configurazione della sessione audio: \(error)")
+            }
+            
             if let audioPath = recordingManager.audioPath {
                 let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
                 let fileURL = appDirectory.appendingPathComponent(recordingManager.recordFilename)
