@@ -5,20 +5,11 @@ class SingleWord: Identifiable, Codable{
     internal var id = UUID()
     private let text: String
     private var sentenceId: UUID?
-    private var timestamp: Double? = nil // THIS IS JUST FOR TESTING PURPOSE, WE ARE NOT INTERESTED YET IN TIMESTAMP
-    private var isTimestampCaptured: Bool
     
     init(id: UUID = UUID(), text: String, sentenceId: UUID? = nil, timestamp: Double? = nil, isTimestampCaptured:Bool = true) {
         self.id = id
         self.text = text
         self.sentenceId = sentenceId
-        self.timestamp = timestamp
-        self.isTimestampCaptured = isTimestampCaptured
-    }
-    
-    public func getTimestamp() -> Double?
-    {
-        return timestamp
     }
     
     public func getText() -> String

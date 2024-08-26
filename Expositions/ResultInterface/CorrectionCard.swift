@@ -23,6 +23,7 @@ struct CorrectionCard: View {
                         VStack(alignment: .center) {
                             Spacer()
                             
+                            // shows a different header according to the main sencence status
                             switch mainSentence.getStatus() {
                             case .warning:
                                 Text("Warning")
@@ -41,11 +42,12 @@ struct CorrectionCard: View {
                                     .padding(.top)
                             }
                             
+                            // shows the text with the ain sentence properly highlighted according to its status
                             Text(self.combinedAttributedText())
                                 .foregroundStyle(Color.primary)
                                 .padding(.all)
 
-
+                            // if there is a correction display it preceded by a divider
                             if let correction = mainSentence.getCorrection() {
                                 Rectangle()
                                     .frame(width: metrics.size.width * 0.7, height: 2)
@@ -63,6 +65,7 @@ struct CorrectionCard: View {
                                     .padding(.vertical, 1)
                             }
                             
+                            // if there is a reason display it preceded by a divider
                             if let reason = mainSentence.getReason() {
                                 Rectangle()
                                     .frame(width: metrics.size.width * 0.7, height: 2)
@@ -99,7 +102,7 @@ struct CorrectionCard: View {
         }
     }
     
-    
+    // assemble the previous, main and next sentences highlighting the main one according to its status
     func combinedAttributedText() -> AttributedString {
         var attributedString = AttributedString()
             
@@ -122,14 +125,6 @@ struct CorrectionCard: View {
         
         if let nextSentence = self.nextSentence {
             let nextAttributedString = AttributedString(nextSentence.toString())
-//            switch nextSentence.getStatus() {
-//            case .warning:
-//                nextAttributedString.backgroundColor = .yellow
-//            case .wrong:
-//                nextAttributedString.backgroundColor = .red
-//            default:
-//                nextAttributedString.backgroundColor = .clear
-//            }
             attributedString += nextAttributedString
         }
         

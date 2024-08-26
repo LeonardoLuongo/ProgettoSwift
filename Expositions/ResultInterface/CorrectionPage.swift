@@ -33,10 +33,12 @@ struct CorrectionPage: View {
                     .textFieldStyle(DefaultTextFieldStyle())
                     .padding()
                     .padding(.bottom, -10)
-
+                
+                // Top bar
                 HStack {
                     Spacer()
-
+                    
+                    // Left arrow button - disabled when the first card is displayed - focuses on the next card
                     Button(action: {
                         if currentCardNumber > 1 {
                             withAnimation {
@@ -55,20 +57,19 @@ struct CorrectionPage: View {
                     .disabled(currentCardNumber == 1)
 
                     Spacer()
-
+                    
+                    // displays the number of the current card on the total card numebr or "Grade" if the grade card is displayed
                     if currentCardNumber == totalCardNumber {
                         Text("Grade")
                             .font(.system(size: metrics.size.height * 0.04))
                     } else {
                         Text("\(currentCardNumber) / \(totalCardNumber - 1)")
                             .font(.system(size: metrics.size.height * 0.04))
-                            .onChange(of: currentCardNumber) { newValue in
-                                handleCardChange(newCardNumber: newValue)
-                            }
                     }
 
                     Spacer()
-
+                    
+                    // Right arrow button - disabled when the grade card is displayed - focuses on the previous card
                     Button(action: {
                         if currentCardNumber < totalCardNumber {
                             withAnimation {
@@ -89,7 +90,8 @@ struct CorrectionPage: View {
                     Spacer()
                 }
                 Spacer()
-
+                
+                // Shows all the cards that can be scrolled horizontally - every card has an index linked to the number showed in the top bar
                 TabView(selection: $currentCardNumber) {
                     ForEach(1...totalCardNumber, id: \.self) { index in
                         if index == totalCardNumber {
@@ -106,6 +108,7 @@ struct CorrectionPage: View {
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 .frame(height: metrics.size.height * 0.75)
                 
+                // The player in the bottom allows the user to re-hear the exposition
                 VStack {
                     Player(recordingManager: recordingManager)
                         .onAppear {
