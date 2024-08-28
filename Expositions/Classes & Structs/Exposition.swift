@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 // This class represents a generic file created by the user.
 class Exposition: ObservableObject, Identifiable, Codable {

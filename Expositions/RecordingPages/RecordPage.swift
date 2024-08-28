@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 struct RecordPage: View {
     @ObservedObject var recordingManager: RecordingManager

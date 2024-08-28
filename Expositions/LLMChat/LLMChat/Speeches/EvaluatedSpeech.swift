@@ -1,6 +1,7 @@
 import Foundation
 
 extension String {
+    // This function returns the ranges of a substring in a string
     func ranges(of searchString: String) -> [Range<String.Index>] {
         var ranges: [Range<String.Index>] = []
         var startIndex = self.startIndex
@@ -17,41 +18,31 @@ extension String {
 
 class EvaluatedSpeech: Codable
 {
+    // The speech in string.
     private let textInString: String
+    
+    // The speech in sentences.
     public var textInSentences: [Sentence]
+    
+    // All the wrong sentences.
     private var wrongSentences: [Int: Sentence] = [:]
+    
+    // All the okay sentences.
     private var okaySentences: [Int: Sentence] = [:]
+    
+    // All the warning sentences.
     private var warningSentences: [Int: Sentence] = [:]
+    
+    // The JSON response from LLM.
     private var response: Response? = nil
     
-    // This should never be used. Test only
-    init(text: String, textInSentences: [Sentence]) {
-        self.textInString = text
-        self.textInSentences = textInSentences
-        
-        var index: Int = 0
-        for sentence in textInSentences {
-            if sentence.getStatus() == .okay
-            {
-                okaySentences.updateValue(sentence, forKey: index)
-            }
-            else if sentence.getStatus() == .warning
-            {
-                warningSentences.updateValue(sentence, forKey: index)
-            }
-            else if sentence.getStatus() == .wrong
-            {
-                wrongSentences.updateValue(sentence, forKey: index)
-            }
-            index += 1
-        }
-    }
     
     init(context: String, punctualizedText: PunctualizedSpeech) async throws
     {
         // Copy the entire exposition
         self.textInString = punctualizedText.getText()
         
+        // A sentence has got an unique range. However, the LLM could return the same sentence multiple times. It's a precaution.
         var allRanges: [[Int]] = []
         
         // Get the Gemini Response
@@ -63,7 +54,7 @@ class EvaluatedSpeech: Codable
         catch
         {
             writeDebugLog("Got an error from Gemini call: \(error)")
-            throw LLMUtilsError.runtimeError("\(error)")
+            throw error
         }
         writeDebugLog("From JSON to Sentence...")
         // From JSON format to Sentence
@@ -74,17 +65,26 @@ class EvaluatedSpeech: Codable
         var temp_wrongSentences: [Sentence] = []
         for error in response.errors {
             
+            // A sentence could be repeated in the speech. Therefore, let's store all the ranges of the sentence
             let ranges = self.textInString.ranges(of: error.sentence)
             
+            // For each range
             for range in ranges {
+                // Let's convert the ranges into integer.
                 let _range = [
                     range.lowerBound.utf16Offset(in: self.textInString),
                     range.upperBound.utf16Offset(in: self.textInString)
                 ]
+                
                 do {
+                    
+                    // If the range is not occupied
                     if !EvaluatedSpeech.isRangeOccupied(ranges: allRanges, newRange: _range)
                     {
+                        // Let's add it into the wrong sentences...
                         temp_wrongSentences.append(try Sentence(entireText: self.textInString, sentenceText: error.sentence, status: .wrong, correction: error.correction, reason: error.reason, range: _range))
+                        
+                        // ...and into the ranges.
                         allRanges.append(_range)
                     }
                     else
@@ -93,16 +93,16 @@ class EvaluatedSpeech: Codable
                     }
                 }
                 catch{
-                    throw LLMUtilsError.runtimeError("\(error)")
+                    throw error
                 }
             }
             
         }
         
         // Store all the warning sentence
-        let temp_warningSentences: [Sentence] = []
+        var temp_warningSentences: [Sentence] = []
         for warn in response.warnings {
-            
+            // Same process as above for tempt_wrongSentences
             let ranges = EvaluatedSpeech.findAllRanges(of: warn.sentence, in: self.textInString)
             for range in ranges {
                 let _range = [
@@ -112,7 +112,7 @@ class EvaluatedSpeech: Codable
                 do {
                     if !EvaluatedSpeech.isRangeOccupied(ranges: allRanges, newRange: _range)
                     {
-                        temp_wrongSentences.append(try Sentence(entireText: self.textInString, sentenceText: warn.sentence, status: .warning, correction: warn.correction, reason: warn.reason, range: _range))
+                        temp_warningSentences.append(try Sentence(entireText: self.textInString, sentenceText: warn.sentence, status: .warning, correction: warn.correction, reason: warn.reason, range: _range))
                         allRanges.append(_range)
                     }
                     else
@@ -121,7 +121,7 @@ class EvaluatedSpeech: Codable
                     }
                 }
                 catch{
-                    throw LLMUtilsError.runtimeError("\(error)")
+                    throw error
                 }
             }
             
@@ -174,7 +174,7 @@ class EvaluatedSpeech: Codable
                 else
                 {
                     // Something impossible
-                    throw LLMUtilsError.runtimeError("Min not found.")
+                    throw Exception(exceptionName: "UnexpectedBehaviour", exceptionMessage: "Min was not found, that must be impossible.")
                 }
             }
             else
@@ -190,7 +190,7 @@ class EvaluatedSpeech: Codable
                 )
             }
             
-            // if the first not okay sentence is away from where we was pointing since the last iteration
+            // if the first not-okay-sentence is away from where we was pointing since the last iteration
             if letterTextCursor < currentSentence.getRange()[0]
             {
                 // Get the string that fils the gap
@@ -200,7 +200,6 @@ class EvaluatedSpeech: Codable
                     to: currentSentence.getRange()[0]
                 )
             
-                
                 // Let's create the sentence
                 do{
                     paddingSentence = try Sentence(
@@ -209,7 +208,7 @@ class EvaluatedSpeech: Codable
                         status: .okay
                     )
                 }catch{
-                    throw LLMUtilsError.runtimeError("\(error)")
+                    throw error
                 }
                 
                 // We can add it to the okay sentences
@@ -218,8 +217,10 @@ class EvaluatedSpeech: Codable
                 sentenceCounter += 1
             }
             
+            // If the cursor is the right position
             if letterTextCursor == currentSentence.getRange()[0]
             {
+                // Identify the Sentence Status and add it to the correct status-based array
                 switch currentSentence.getStatus()
                 {
                 case .okay:
@@ -234,17 +235,18 @@ class EvaluatedSpeech: Codable
                     break
                     
                 default:
-                    throw LLMUtilsError.runtimeError("How the fuck did you get here? id:af2377a5-8f5f-4375-89af-acb3500347cd")
+                    throw Exception(exceptionName: "UnexpectedBehaviour", exceptionMessage: "You reached the default section in the switch that must be unreachable.")
                     
                 }
                 letterTextCursor += currentSentence.toString().count
                 sentenceCounter += 1
                 
             }else if letterTextCursor > currentSentence.getRange()[0]{
-                throw LLMUtilsError.runtimeError("How the fuck did you get here? id:0a2208b8-de05-4fee-b2ad-fa493feaf8fe")
+                throw Exception(exceptionName: "UnexpectedBehaviour", exceptionMessage: "Cursor is ahead .")
             }
         }
         do{
+            // We have to create a dumb data to fill the array with some sentences
             textInSentences = Array(
                 repeating: try Sentence(
                     entireText: "a ",
@@ -255,11 +257,13 @@ class EvaluatedSpeech: Codable
             )
         }
         catch{
-            throw LLMUtilsError.runtimeError("\(error)")
+            throw error
         }
         
+        // For each index
         for i in 0...(sentenceCounter - 1)
         {
+            // Get the sentence ignoring the status and put it in the textInSentences
             if let _okay = okaySentences[i]
             {
                 textInSentences[i] = _okay
@@ -274,12 +278,12 @@ class EvaluatedSpeech: Codable
             }
             else
             {
-                throw LLMUtilsError.runtimeError("There's a missing sentence.")
+                throw Exception(exceptionName: "SentenceNotFound", exceptionMessage: "There's a missing sentence. [no sencence found at index: \(i)]") 
             }
         }
     }
     
-    public func getTextInSentences() -> [Sentence]
+    public func getTextInSentences() throws -> [Sentence] 
     {
         var sentences: [Sentence] = []
         let maxIndex = (self.okaySentences.count) + (self.wrongSentences.count) + (self.warningSentences.count)
@@ -299,7 +303,7 @@ class EvaluatedSpeech: Codable
             }
             else
             {
-                print("!!! You shouldn't be here !!!")
+                throw Exception(exceptionName: "SentenceNotFound", exceptionMessage: "There's a missing sentence. [no sencence found at index: \(i)]") 
             }
         }
         
@@ -332,8 +336,8 @@ class EvaluatedSpeech: Codable
         var subStr = ""
         while i < index1
         {
-            let appleShittyIndex = str.index(str.startIndex, offsetBy: i)
-            subStr.append(str[appleShittyIndex])
+            let appleStrangeIndex = str.index(str.startIndex, offsetBy: i)
+            subStr.append(str[appleStrangeIndex])
             i += 1
         }
         return subStr

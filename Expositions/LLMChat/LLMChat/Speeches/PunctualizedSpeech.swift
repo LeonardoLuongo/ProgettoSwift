@@ -19,7 +19,7 @@ class PunctualizedSpeech: Codable
         catch
         {
             writeDebugLog("Error from Gemini call: \(error)")
-            throw LLMUtilsError.runtimeError("\(error)")
+            throw error
         }
         
         punctualizedText = punctualizedText.replacingOccurrences(of: "\"", with: "\\\"")
@@ -64,7 +64,7 @@ class PunctualizedSpeech: Codable
             // If somehow it gets an error
             if newSingleStrWord == nil
             {
-                throw LLMUtilsError.runtimeError("How the fuck did you get here? id:c76b53f0-8f0f-45e9-9894-d13000e6e7ce")
+                throw Exception(exceptionName: "UnexpectedBehaviour", exceptionMessage: "The word at position \(i) was not found in the punctualized version.") 
             }
             
             // Count how many chars have in common the two versions
@@ -119,24 +119,6 @@ class PunctualizedSpeech: Codable
         
     }
     
-    // TEST ONLY
-    // ----------------------------------------
-    // THOSE METHODS ARE GOING TO BE REMOVED IN RELEASE
-    
-    init(textInString: String)
-    {
-        self.textInString = textInString
-        var textInSingleWords: [SingleWord] = []
-        for singleStrWord in SingleWord.stringToSingleStrWords(text: textInString)
-        {
-            textInSingleWords.append(
-                SingleWord(text: singleStrWord)
-            )
-        }
-        self.textInSingleWords = textInSingleWords
-    }
-    
-    // ----------------------------------------
     
     private static func singleWordsToString(textInSingleWords: [SingleWord]) -> String
     {
@@ -192,10 +174,10 @@ class PunctualizedSpeech: Codable
         }
         
         for i in 0...(size - 1){
-            let appleShittyIndexStr1 = str1.index(str1.startIndex, offsetBy: i)
-            let appleShittyIndexStr2 = str2.index(str2.startIndex, offsetBy: i)
+            let appleStrangeIndexStr1 = str1.index(str1.startIndex, offsetBy: i)
+            let appleStrangeIndexStr2 = str2.index(str2.startIndex, offsetBy: i)
             
-            if str1[appleShittyIndexStr1] == str2[appleShittyIndexStr2]
+            if str1[appleStrangeIndexStr1] == str2[appleStrangeIndexStr2]
             {
                 commonChars += 1
             }
