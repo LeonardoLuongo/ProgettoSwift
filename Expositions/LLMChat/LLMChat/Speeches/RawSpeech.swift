@@ -9,7 +9,7 @@ class RawSpeech: Identifiable, Codable{
     {
         if textInSingleWords.count == 0
         {
-            throw Exception(exceptionName: "IllegalArgument", exceptionMessage: "Cannot create a RawSpeech from an empty text.") 
+            throw Exception(exceptionName: "IllegalArgument", exceptionMessage: "Cannot create a text with the used audio. Try to speak closer to the phone.")
         }
         self.textInSingleWords = textInSingleWords
         self.textInString = SingleWord.singleWordsToString(textInSingleWords: self.textInSingleWords)

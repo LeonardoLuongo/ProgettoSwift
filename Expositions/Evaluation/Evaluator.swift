@@ -41,8 +41,13 @@ class Evaluator: ObservableObject {
         let operation = BlockOperation { [weak self] in
             DispatchQueue.main.async {
                 self?.documentText = DocumentManager.extractTextFromPDF(fileName: (self?.exposition.recordingManager.docFilename)!)
-                if let text = self?.documentText {
+                if let text = self?.documentText{
                     self?.exposition.recordingManager.requestTranscribePermissions()
+                    
+                    if text.isEmpty
+                    {
+                        self?.handleError(message: "EmptyDocument: Cannot extract any text from the document. The Evaluation process can continue anyway, but it'll use the LLM knownledge", killTheEvaluation: false)
+                    }
 
                     self?.exposition.recordingManager.processAudioFile(fileName: (self?.exposition.recordingManager.recordFilename)!, evaluator: self!) { success in
                         if success {
@@ -65,18 +70,18 @@ class Evaluator: ObservableObject {
                                     self?.handleError(message: "\(error.exceptionName): \(error.exceptionMessage)")
                                     return
                                 }
+                                catch{
+                                    
+                                }
                             }
                         } else {
                             
                             self?.handleError(message: "AudioFileProcessError: Cannot process the audio file.")
-                            
                             return
                         }
                     }
                 } else {
-            
-                    self?.handleError(message: "EmptyDocument: Cannot extract any text from the document.")
-
+                    self?.handleError(message: "EmptyDocument: Cannot extract any text from the document. The Evaluation process can continue anyway, but it'll use the LLM knownledge", killTheEvaluation: false)
                     return
                 }
             }
@@ -85,10 +90,14 @@ class Evaluator: ObservableObject {
         operationQueue.addOperation(operation)
     }
     
-    func handleError(message: String) {
+    func handleError(message: String, killTheEvaluation: Bool = true) {
         self.exposition.recordingManager.errorMessage = message
         self.exposition.recordingManager.showErrorAlert = true
-        self.stopTask()
+        
+        if killTheEvaluation{
+            self.stopTask()
+            self.evaluating = false
+        }
     }
 
     func stopTask() {

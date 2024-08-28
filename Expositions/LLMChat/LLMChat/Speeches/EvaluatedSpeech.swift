@@ -54,7 +54,7 @@ class EvaluatedSpeech: Codable
         catch
         {
             writeDebugLog("Got an error from Gemini call: \(error)")
-            throw error
+            throw Exception(exceptionName: "GeminiCallError", exceptionMessage: error.self.localizedDescription)
         }
         writeDebugLog("From JSON to Sentence...")
         // From JSON format to Sentence
