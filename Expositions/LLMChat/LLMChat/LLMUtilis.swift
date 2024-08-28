@@ -129,9 +129,6 @@ Sei un professore di italiano e devi inserire la punteggiatura a questo testo se
 """
 ]
 
-enum LLMUtilsError: Error {
-    case runtimeError(String)
-}
 
 class LLMUtilis
 {
@@ -184,7 +181,7 @@ class LLMUtilis
         }
         catch
         {
-            throw LLMUtilsError.runtimeError("\(error)")
+            throw error
         }
         
         // [END text_gen_text_only_prompt_streaming]
@@ -203,7 +200,7 @@ class LLMUtilis
         }
         catch
         {
-            throw LLMUtilsError.runtimeError("\(error)")
+            throw error
         }
         
         if let punctualizedText = retVal
@@ -212,7 +209,7 @@ class LLMUtilis
         }
         else
         {
-            throw LLMUtilsError.runtimeError("Cannot insert punctualization to the text.")
+            throw Exception(exceptionName: "UnvalidGeminiResponse", exceptionMessage: "Cannot insert punctualization to the text. [punctualizedText is nil]") 
         }
     }
     
@@ -268,37 +265,30 @@ class LLMUtilis
     
     public static func evaluate(context: String, exposition: String) async throws -> Response
     {
+        // Let's build the query for GEMINI
         let query = EvaluationQuery(context: context, exposition: exposition)
+        
+        // Here we'll keep the GEMINI's response
         var responseData:String?
         
         do
         {
             responseData = try await LLMUtilis.geminiCall(query: query.toString(), systemInstruction: ModelContent(role: "system", parts: [.text(SYSTEM_INSTRUCTION[1]), .text("Valuta solo il contenuto. IGNORA LA PUNTEGGIATURA.")]))
-            
-            /*
-            print("Formatting the JSON in a better way...")
-            
-            responseData = try await LLMUtilis.geminiCall(
-                query: "Rendi ben formato questo JSON. Mi aspetto come tua risposta solo il JSON. Ecco quello su cui devi lavorare:\n\(responseData)",
-                systemInstruction: ModelContent(role: "system", 
-                                                parts: [
-                                                    .text("Sei il miglior formattatore JSON esistente.")
-                                                ]
-                                               )
-            )
-             */
         }
         catch
         {
-            throw LLMUtilsError.runtimeError("\(error)")
+            throw error
         }
         
+        // GEMINI returns unexpected chars sometimes, we don't want them.
         responseData = cleanUpTheJSONString(JSONString: responseData!)
         print(responseData!)
         
         var response: Response? = nil
         var i = 0
         var isCorrectJSON = false
+        
+        // The JSON decode may fail. Therefore, we will do it 5 times. The approch is simple: we'll try to decode it, if it fails, GEMINI will get the JSON and the associated error, with the request to adjust it. This way is a must, because GEMINI's response is not predictable and we cannot put too much effort in the JSON formatting. There's a function that tries to solve the issue in an algorithmyc way to keep the result reliable. It works so, no worries about it.
         while i < 5
         {
             if let data = responseData
@@ -329,19 +319,19 @@ class LLMUtilis
                 }
                 else
                 {
-                    throw LLMUtilsError.runtimeError("Error from data to utf8 error.")
+                    throw Exception(exceptionName: "DecodeData2UTF8", exceptionMessage: "Cannot decode from data to utf8.") 
                 }
             }
             else
             {
-                throw LLMUtilsError.runtimeError("Response data was nil.")
+                throw Exception(exceptionName: "UnvalidGeminiResponse", exceptionMessage: "Cannot insert punctualization to the text. [responseData is nil]") 
             }
         }
         
         
         if !isCorrectJSON
         {
-            throw LLMUtilsError.runtimeError("Too many attempts for JSON formatting. Try again later.")
+            throw Exception(exceptionName: "JsonTTL", exceptionMessage: "Too many attempts for JSON formatting. Try again.") 
         }
         
         return response!

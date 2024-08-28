@@ -1,5 +1,6 @@
 import SwiftUI
 import AVFoundation
+import Combine
 
 struct Player: View {
     @ObservedObject var recordingManager: RecordingManager

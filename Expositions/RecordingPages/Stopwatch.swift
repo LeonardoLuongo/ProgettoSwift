@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct Stopwatch: View {
     @ObservedObject var recordingManager: RecordingManager

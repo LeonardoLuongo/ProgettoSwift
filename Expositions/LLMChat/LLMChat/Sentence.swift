@@ -1,8 +1,5 @@
 import SwiftUI
 
-enum SentenceError: Error {
-    case runtimeError(String)
-}
 
 class Sentence: Identifiable, Codable {
     
@@ -10,7 +7,11 @@ class Sentence: Identifiable, Codable {
     private let status: SentenceStatus
     private let correction: String?
     private let reason: String?
+    
+    // Each sentence has a range in a text.
     private let range: [Int]
+    
+    // Each word of the sentence.
     private var words: [SingleWord] = []
     
     init(entireText: String, words: [SingleWord], status: SentenceStatus, correction: String? = nil, reason: String? = nil, range:Range<String.Index>? = nil) throws
@@ -45,7 +46,7 @@ class Sentence: Identifiable, Codable {
             }
             else
             {
-                throw SentenceError.runtimeError("The string <\(sentenceText)> was not found in <\(entireText)>")
+                throw Exception(exceptionName: "SentenceNotFound", exceptionMessage: "The string <\(sentenceText)> was not found in <\(entireText)>") 
             }
         }
         
@@ -77,7 +78,7 @@ class Sentence: Identifiable, Codable {
             }
             else
             {
-                throw SentenceError.runtimeError("The string <\(sentenceText)> was not found in <\(entireText)>")
+                throw Exception(exceptionName: "SentenceNotFound", exceptionMessage: "The string <\(sentenceText)> was not found in <\(entireText)>") 
             }
         }
         

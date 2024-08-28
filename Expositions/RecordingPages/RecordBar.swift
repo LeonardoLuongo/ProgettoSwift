@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct RecordBar: View {
     @ObservedObject var recordingManager: RecordingManager

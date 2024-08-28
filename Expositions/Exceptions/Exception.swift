@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Combine
 
-class Exception: ObservableObject{
+class Exception: ObservableObject, Error{
     @Published var exceptionName: String = ""
     @Published var exceptionMessage: String = ""
     @Published var hasException: Bool = false

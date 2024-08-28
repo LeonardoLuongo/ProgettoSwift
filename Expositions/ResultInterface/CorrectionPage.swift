@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 struct CorrectionPage: View {
     @ObservedObject var exposition: Exposition

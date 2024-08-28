@@ -24,6 +24,7 @@ class Evaluator: ObservableObject {
     var workItems: [DispatchWorkItem] = []
     
     private var evaluatedSpeech: EvaluatedSpeech?
+    
 
     init(exposition: Binding<Exposition>, expositions: Binding<[Int : [Exposition]]>, evaluationError: Binding<Bool>) {
         self._exposition = exposition
@@ -51,7 +52,7 @@ class Evaluator: ObservableObject {
                                     self!.evaluating = true
                                     
                                     // turn transcription into RawSpeech
-                                    let rawSpeech = RawSpeech(textInSingleWords: SingleWord.textToSingleWordArray(text: self!.exposition.recordingManager.transcription))
+                                    let rawSpeech = try RawSpeech(textInSingleWords: SingleWord.textToSingleWordArray(text: self!.exposition.recordingManager.transcription))
                                     
                                     // turn RawSpeech into PunctualizedSpeech through Gemini call
                                     let punctualizedSpeech = try await PunctualizedSpeech(rawSpeech: rawSpeech, context: text)
@@ -61,17 +62,29 @@ class Evaluator: ObservableObject {
                                     
                                     self?.taskCompleted()
                                 } catch {
+                                    print("Exception: \(error)")
                                     self?.evaluationError.toggle()
+                                    // QUI DOVRESTI CHIAMARE L'ALERT
+                                    // throw error
                                     return
                                 }
                             }
                         } else {
+                            
                             self?.evaluationError.toggle()
+                            
+                            // QUI DOVRESTI CHIAMARE L'ALERT
+                            //throw Exception(exceptionName: "AudioFileProcessError", exceptionMessage: "Cannot process the audio file.")
+                            
                             return
                         }
                     }
                 } else {
                     self?.evaluationError.toggle()
+                    
+                    // QUI DOVRESTI CHIAMARE L'ALERT
+                    // throw Exception(exceptionName: "AudioFileProcessError", exceptionMessage: "Cannot process the audio file.")
+                    
                     return
                 }
             }

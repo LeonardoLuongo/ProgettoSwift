@@ -5,8 +5,12 @@ class RawSpeech: Identifiable, Codable{
     private var textInString: String = ""
     private let textInSingleWords: [SingleWord]
     
-    init(textInSingleWords: [SingleWord])
+    init(textInSingleWords: [SingleWord]) throws
     {
+        if textInSingleWords.count == 0
+        {
+            throw Exception(exceptionName: "IllegalArgument", exceptionMessage: "Cannot create a RawSpeech from an empty text.") 
+        }
         self.textInSingleWords = textInSingleWords
         self.textInString = SingleWord.singleWordsToString(textInSingleWords: self.textInSingleWords)
     }

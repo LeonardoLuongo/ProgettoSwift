@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 struct GradeCard: View{
     var number: Int = 2
