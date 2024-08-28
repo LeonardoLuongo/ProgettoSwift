@@ -61,36 +61,34 @@ class Evaluator: ObservableObject {
                                     self!.evaluatedSpeech = try await EvaluatedSpeech(context: text, punctualizedText: punctualizedSpeech)
                                     
                                     self?.taskCompleted()
-                                } catch {
-                                    print("Exception: \(error)")
-                                    self?.evaluationError.toggle()
-                                    // QUI DOVRESTI CHIAMARE L'ALERT
-                                    // throw error
+                                } catch let error as Exception{
+                                    self?.handleError(message: "\(error.exceptionName): \(error.exceptionMessage)")
                                     return
                                 }
                             }
                         } else {
                             
-                            self?.evaluationError.toggle()
-                            
-                            // QUI DOVRESTI CHIAMARE L'ALERT
-                            //throw Exception(exceptionName: "AudioFileProcessError", exceptionMessage: "Cannot process the audio file.")
+                            self?.handleError(message: "AudioFileProcessError: Cannot process the audio file.")
                             
                             return
                         }
                     }
                 } else {
-                    self?.evaluationError.toggle()
-                    
-                    // QUI DOVRESTI CHIAMARE L'ALERT
-                    // throw Exception(exceptionName: "AudioFileProcessError", exceptionMessage: "Cannot process the audio file.")
-                    
+            
+                    self?.handleError(message: "EmptyDocument: Cannot extract any text from the document.")
+
                     return
                 }
             }
         }
 
         operationQueue.addOperation(operation)
+    }
+    
+    func handleError(message: String) {
+        self.exposition.recordingManager.errorMessage = message
+        self.exposition.recordingManager.showErrorAlert = true
+        self.stopTask()
     }
 
     func stopTask() {
