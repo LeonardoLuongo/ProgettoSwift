@@ -5,11 +5,20 @@ class SingleWord: Identifiable, Codable{
     internal var id = UUID()
     private let text: String
     private var sentenceId: UUID?
+    private var timestamp: Double? = nil
+    private var isTimestampCaptured: Bool
     
     init(id: UUID = UUID(), text: String, sentenceId: UUID? = nil, timestamp: Double? = nil, isTimestampCaptured:Bool = true) {
         self.id = id
         self.text = text
         self.sentenceId = sentenceId
+        self.timestamp = timestamp
+        self.isTimestampCaptured = isTimestampCaptured
+    }
+    
+    public func getTimestamp() -> Double?
+    {
+        return timestamp
     }
     
     public func getText() -> String
@@ -49,7 +58,6 @@ class SingleWord: Identifiable, Codable{
         return textInString
     }
     
-    // To Do: Check if the commented code is obsolete
     public static func textToSingleWordArray(text: String) -> [SingleWord]
     {
         let words = text.split(separator: " ")
@@ -58,13 +66,6 @@ class SingleWord: Identifiable, Codable{
         {
             singleWords.append(SingleWord(text: String(word)))
         }
-        
-        /*
-        if var lastStr = singleWords.last
-        {
-            singleWords.removeLast()
-        }
-        */
         
         return singleWords
     }
