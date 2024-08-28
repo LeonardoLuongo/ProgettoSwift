@@ -19,7 +19,7 @@ class PunctualizedSpeech: Codable
         catch
         {
             writeDebugLog("Error from Gemini call: \(error)")
-            throw error
+            throw Exception(exceptionName: "GeminiCallError", exceptionMessage: error.self.localizedDescription)
         }
         
         punctualizedText = punctualizedText.replacingOccurrences(of: "\"", with: "\\\"")
