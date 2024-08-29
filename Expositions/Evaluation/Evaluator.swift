@@ -71,11 +71,11 @@ class Evaluator: ObservableObject {
                                     return
                                 }
                                 catch{
-                                    
+                                    self?.handleError(message: "\(error)")
+                                    return
                                 }
                             }
                         } else {
-                            
                             self?.handleError(message: "AudioFileProcessError: Cannot process the audio file.")
                             return
                         }
