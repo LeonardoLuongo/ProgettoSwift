@@ -25,6 +25,7 @@ class Evaluator: ObservableObject {
     
     private var evaluatedSpeech: EvaluatedSpeech?
     
+    private var timers: [DispatchSourceTimer] = []
 
     init(exposition: Binding<Exposition>, expositions: Binding<[Int : [Exposition]]>, evaluationError: Binding<Bool>) {
         self._exposition = exposition
@@ -40,16 +41,16 @@ class Evaluator: ObservableObject {
 
         let operation = BlockOperation { [weak self] in
             DispatchQueue.main.async {
-                self?.documentText = DocumentManager.extractTextFromPDF(fileName: (self?.exposition.recordingManager.docFilename)!)
+                self?.documentText = DocumentManager.extractTextFromPDF(docPath: self!.exposition.recordingManager.docPath!.absoluteString)
                 if let text = self?.documentText{
                     self?.exposition.recordingManager.requestTranscribePermissions()
                     
                     if text.isEmpty
                     {
-                        self?.handleError(message: "EmptyDocument: Cannot extract any text from the document. The Evaluation process can continue anyway, but it'll use the LLM knownledge", killTheEvaluation: false)
+                        self?.handleError(message: "Empty Document: Cannot extract any text from the document. The Evaluation process can continue anyway, but it'll use the LLM knownledge", killTheEvaluation: false)
                     }
 
-                    self?.exposition.recordingManager.processAudioFile(fileName: (self?.exposition.recordingManager.recordFilename)!, evaluator: self!) { success in
+                    self?.exposition.recordingManager.processAudioFile(audioPath: self!.exposition.recordingManager.audioPath!.absoluteString, evaluator: self!) { success in
                         if success {
                             Task { [weak self] in
                                 do {
@@ -76,12 +77,11 @@ class Evaluator: ObservableObject {
                                 }
                             }
                         } else {
-                            self?.handleError(message: "AudioFileProcessError: Cannot process the audio file.")
                             return
                         }
                     }
                 } else {
-                    self?.handleError(message: "EmptyDocument: Cannot extract any text from the document. The Evaluation process can continue anyway, but it'll use the LLM knownledge", killTheEvaluation: false)
+                    self?.handleError(message: "Empty Document: Cannot extract any text from the document. The Evaluation process can continue anyway, but it'll use the LLM knownledge", killTheEvaluation: false)
                     return
                 }
             }
@@ -117,11 +117,21 @@ class Evaluator: ObservableObject {
             exposition.insertFinalEvaluation()
             exposition.evaluated = true
             self.completed = true
+            exposition.recordingManager.deleteDocument()
             Exposition.saveDictionary(expositions: expositions)
         }
     }
 
     func addWorkItem(_ workItem: DispatchWorkItem) {
         self.workItems.append(workItem)
+    }
+    
+    func addTimer(_ timer: DispatchSourceTimer) {
+        timers.append(timer)
+    }
+
+    func invalidateTimers() {
+        timers.forEach { $0.cancel() }
+        timers.removeAll()
     }
 }

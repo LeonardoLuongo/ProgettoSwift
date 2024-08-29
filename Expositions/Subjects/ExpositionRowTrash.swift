@@ -26,6 +26,8 @@ struct ExpositionRowTrash: View {
         .listRowBackground(ExpositionRowTrash.backgroundColor[i % ExpositionRowTrash.backgroundColor.count])
         .swipeActions {
             Button(action: {
+                exposition.recordingManager.deleteRecordedAudio()
+                exposition.recordingManager.deleteDocument()
                 expositions[exposition.secCode]?.removeAll(where: {$0.id == exposition.id})
                 Exposition.saveDictionary(expositions: expositions)
                 refreshID = UUID()

@@ -65,3 +65,6 @@
 "Final grade" = "Voto finale";
 "Final evaluation" = "Valutazione finale";
 "Warning" = "Imprecisione";
+"Empty Document: Cannot extract any text from the document. The Evaluation process can continue anyway, but it'll use the LLM knownledge" = "Documento vuoto: non è possibile estrarre testo dal documento. Il processo di valutazione può proseguire, ma si baserà sulla conoscenza del LLM";
+"Audio File Process Error: Cannot process the audio file." = "Errore di processazione del file audio: non è stato possibile processare il file audio.";
+

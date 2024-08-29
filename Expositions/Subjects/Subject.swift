@@ -81,26 +81,28 @@ struct Subject: View {
                 .id(refreshID)
                 .navigationTitle(LocalizedStringKey(section.name))
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: {
-                            showCreateExpView.toggle()
-                        }) {
-                            Image(systemName: "plus.app")
-                                .imageScale(.large)
-                        }
-                        .padding()
-                        .alert("Create new exposition", isPresented: $showCreateExpView) {
-                            Button("Cancel", role: .cancel) { text = "" }
-                            Button("Confirm", action: {
-                                if text != "" {
-                                    let recordingManager = RecordingManager()
-                                    recordingManager.recordName = text
-                                    expositions[section.secCode]?.append(Exposition(date: Date.now, recordingManager: recordingManager, secCode: section.secCode))
-                                    Exposition.saveDictionary(expositions: expositions)
-                                }
-                                text = ""
-                            })
-                            TextField("Insert name...", text: $text)
+                    if section.secCode != 1 {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button(action: {
+                                showCreateExpView.toggle()
+                            }) {
+                                Image(systemName: "plus.app")
+                                    .imageScale(.large)
+                            }
+                            .padding()
+                            .alert("Create new exposition", isPresented: $showCreateExpView) {
+                                Button("Cancel", role: .cancel) { text = "" }
+                                Button("Confirm", action: {
+                                    if text != "" {
+                                        let recordingManager = RecordingManager()
+                                        recordingManager.recordName = text
+                                        expositions[section.secCode]?.append(Exposition(date: Date.now, recordingManager: recordingManager, secCode: section.secCode))
+                                        Exposition.saveDictionary(expositions: expositions)
+                                    }
+                                    text = ""
+                                })
+                                TextField("Insert name...", text: $text)
+                            }
                         }
                     }
                 }
@@ -142,6 +144,8 @@ struct Subject: View {
                     Button("Cancel", role: .cancel) {}
                     Button("Confirm", action: {
                         for exposition in subjectExp() {
+                            exposition.recordingManager.deleteRecordedAudio()
+                            exposition.recordingManager.deleteDocument()
                             expositions[exposition.secCode]?.removeAll(where: { $0.id == exposition.id })
                             Exposition.saveDictionary(expositions: expositions)
                         }

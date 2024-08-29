@@ -209,7 +209,7 @@ class LLMUtilis
         }
         else
         {
-            throw Exception(exceptionName: "UnvalidGeminiResponse", exceptionMessage: "Cannot insert punctualization to the text. [punctualizedText is nil]") 
+            throw Exception(exceptionName: "InvalidGeminiResponse", exceptionMessage: "Cannot insert punctualization to the text. [punctualizedText is nil]")
         }
     }
     
@@ -324,7 +324,7 @@ class LLMUtilis
             }
             else
             {
-                throw Exception(exceptionName: "UnvalidGeminiResponse", exceptionMessage: "Cannot insert punctualization to the text. [responseData is nil]") 
+                throw Exception(exceptionName: "InvalidGeminiResponse", exceptionMessage: "Cannot insert punctualization to the text. [responseData is nil]")
             }
         }
         

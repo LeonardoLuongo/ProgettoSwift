@@ -9,6 +9,8 @@ struct RecordPage: View {
     @Binding var exposition: Exposition
     @ObservedObject var evaluator: Evaluator
     
+    @State private var isPlaying: Bool = true
+    
     @Binding var refreshID: UUID
     
     init(exposition: Binding<Exposition>, expositions: Binding<[Int:[Exposition]]>, refreshID: Binding<UUID>) {
@@ -71,8 +73,7 @@ struct RecordPage: View {
                                     .cornerRadius(15)
                                     .contextMenu(ContextMenu(menuItems: {
                                         Button(action: {
-                                            recordingManager.docFilename = ""
-                                            recordingManager.textLoaded = false
+                                            recordingManager.deleteDocument()
                                             Exposition.saveDictionary(expositions: expositions)
                                         }, label: {
                                             HStack {
@@ -98,6 +99,7 @@ struct RecordPage: View {
                                 /*  The doc name is obtained from the end of the path returned by the file importer */
                                 switch results {
                                 case .success(let fileurl):
+                                    recordingManager.deleteDocument()
                                     if fileurl[0].startAccessingSecurityScopedResource() {
                                         defer { fileurl[0].stopAccessingSecurityScopedResource() }
                                         var paths = "\(fileurl[0])".split(separator: "/")
@@ -107,14 +109,14 @@ struct RecordPage: View {
                                         
                                         // Copia il file nella directory dell'app
                                         let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-                                        let destinationURL = appDirectory.appendingPathComponent(recordingManager.docFilename)
+                                        recordingManager.docPath = URL(string: exposition.id.uuidString + recordingManager.docFilename)
+                                        let destinationURL = appDirectory.appendingPathComponent(recordingManager.docPath!.absoluteString)
                                         do {
                                             try FileManager.default.copyItem(at: fileurl[0], to: destinationURL)
                                         } catch {
                                             print("Errore nella copia del file: \(error)")
                                         }
                                         
-                                        recordingManager.docPath = destinationURL
                                         if let docPath = recordingManager.docPath {
                                             print("FilePath: \(docPath)")
                                         }
@@ -142,16 +144,23 @@ struct RecordPage: View {
                                             //.frame(height: 125)
                                                 .font(.system(size: metrics.size.height*0.03))
                                                 .foregroundColor(Color(hue: 0.58, saturation: 0.63, brightness: 0.96))
-                                            Player(recordingManager: recordingManager)
+                                            if isPlaying {
+                                                Player(recordingManager: recordingManager)
+                                            }
                                         }
+                                        .onChange(of: evaluator.progress) { newValue in
+                                                    if newValue >= 0 {
+                                                        isPlaying = false // Ferma il Player
+                                                    } else {
+                                                        isPlaying = true
+                                                    }
+                                                }
                                         .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
                                         .background(Color(.secondarySystemBackground))
                                         .cornerRadius(15)
                                         .contextMenu(ContextMenu(menuItems: {
                                             Button(action: {
-                                                recordingManager.recordFilename = ""
-                                                recordingManager.recorded = false
-                                                recordingManager.recLoaded = false
+                                                recordingManager.deleteRecordedAudio()
                                                 Exposition.saveDictionary(expositions: expositions)
                                             }, label: {
                                                 HStack {
@@ -163,8 +172,17 @@ struct RecordPage: View {
                                         /*  If the audio has been recorded the button will display the duration...  */
                                     } else {
                                         VStack {
-                                            Player(recordingManager: recordingManager)
+                                            if isPlaying {
+                                                Player(recordingManager: recordingManager)
+                                            }
                                         }
+                                        .onChange(of: evaluator.progress) { newValue in
+                                                    if newValue >= 0 {
+                                                        isPlaying = false // Ferma il Player
+                                                    } else {
+                                                        isPlaying = true
+                                                    }
+                                                }
                                         .frame(width: metrics.size.width*0.9, height: metrics.size.height*0.3)
                                         .background(Color(.secondarySystemBackground))
                                         .cornerRadius(15)
@@ -200,6 +218,7 @@ struct RecordPage: View {
                             .fileImporter(isPresented: $isLoadingAudio, allowedContentTypes: [.audio, .mp3, .wav, .mpeg4Audio], allowsMultipleSelection: false, onCompletion: { results in
                                 switch results {
                                 case .success(let fileurl):
+                                    recordingManager.deleteRecordedAudio()
                                     if fileurl[0].startAccessingSecurityScopedResource() {
                                         defer { fileurl[0].stopAccessingSecurityScopedResource() }
                                         var paths = "\(fileurl[0])".split(separator: "/")
@@ -209,19 +228,20 @@ struct RecordPage: View {
                                         
                                         // Copia il file nella directory dell'app
                                         let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-                                        let destinationURL = appDirectory.appendingPathComponent(recordingManager.recordFilename)
+                                        recordingManager.audioPath = URL(string: exposition.id.uuidString + recordingManager.recordFilename)
+                                        let destinationURL = appDirectory.appendingPathComponent(recordingManager.audioPath!.absoluteString)
                                         do {
                                             try FileManager.default.copyItem(at: fileurl[0], to: destinationURL)
                                         } catch {
                                             print("Errore nella copia del file: \(error)")
                                         }
                                         
-                                        recordingManager.audioPath = destinationURL
                                         if let audioPath = recordingManager.audioPath {
                                             print("FilePath: \(audioPath)")
                                         }
                                         recordingManager.recorded = true
                                         recordingManager.recLoaded = true
+                                        refreshID = UUID()
                                         Exposition.saveDictionary(expositions: expositions)
                                     }
                                 case .failure(let error):
@@ -256,6 +276,7 @@ struct RecordPage: View {
                     }
                 }
                 .navigationBarBackButtonHidden(evaluator.progress >= 0)
+                .id(refreshID)
             }
         } else {
             CorrectionPage(exposition: exposition, totalCardNumber: (exposition.evaluatedSpeech?.numberOfBadSentences())! + 1)

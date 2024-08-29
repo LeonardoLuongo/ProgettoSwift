@@ -22,6 +22,7 @@ struct Sections: View {
     @State private var showPhotoAlert = false
     
     @State private var showDeleteAlert = false
+    @State private var selectedSection: Section?
     
     @State private var selectedItem: PhotosPickerItem?
     @State private var selectedImage: UIImage?
@@ -33,7 +34,7 @@ struct Sections: View {
             List {
                 SwiftUI.Section(header: Text("General sections")) {
                     ForEach($sections.filter { $0.secCode.wrappedValue == 0 || $0.secCode.wrappedValue == 1 || $0.secCode.wrappedValue == 2 }) { $section in
-                        if searchText.isEmpty || section.name.lowercased().starts(with: searchText.lowercased()) {
+                        if searchText.isEmpty || NSLocalizedString(section.name, comment: "").lowercased().starts(with: searchText.lowercased()) {
                             NavigationLink(destination: Subject(section: $section, sections: $sections, expositions: $expositions)) {
                                 SectionSpecialRow(section: $section)
                             }
@@ -66,19 +67,20 @@ struct Sections: View {
                             ) {
                                 Button("Cancel", role: .cancel) {}
                                 Button("Delete", action: {
-                                    if let index = sections.firstIndex(where: { $0.secCode == section.secCode }) {
+                                    if let section = selectedSection {
                                         // Sposta le esposizioni nella sezione "Trash"
                                         if var expositionsForSection = expositions[section.secCode] {
                                             for exposition in expositionsForSection {
                                                 exposition.trash = true
+                                                exposition.trashDate = Date.now
                                                 exposition.secCode = 0
-                                                expositions[2]?.append(exposition)
+                                                expositions[0]?.append(exposition)
                                             }
                                             expositions.removeValue(forKey: section.secCode)
                                         }
                                         
                                         // Rimuovi la sezione
-                                        sections.remove(at: index)
+                                        sections.remove(at: section.secCode)
                                         
                                         // Aggiorna i secCode delle sezioni rimanenti e il dizionario delle esposizioni
                                         Section.updateSecCodes(sections: &sections, expositions: &expositions)
@@ -148,6 +150,7 @@ struct Sections: View {
     
     func deleteSection(section: Section) {
         if !expositions[section.secCode]!.isEmpty {
+            selectedSection = section
             showDeleteAlert.toggle()
         } else if let index = sections.firstIndex(where: { $0.id == section.id }) {
             expositions.removeValue(forKey: section.secCode)

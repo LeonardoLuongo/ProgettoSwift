@@ -61,9 +61,8 @@ struct Player: View {
             
             if let audioPath = recordingManager.audioPath {
                 let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-                let fileURL = appDirectory.appendingPathComponent(recordingManager.recordFilename)
-                
-                self.playerItem = AVPlayerItem(url: fileURL)
+                let destinationURL = appDirectory.appendingPathComponent(audioPath.absoluteString)
+                self.playerItem = AVPlayerItem(url: destinationURL)
                 self.player = AVPlayer(playerItem: playerItem)
                 
                 self.playerObserver = player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 600), queue: .main) { time in

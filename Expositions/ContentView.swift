@@ -17,7 +17,6 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             Sections(sections: $sections, expositions: $expositions)
-                .environment(\.locale, .init(identifier: "it"))
             if exception.hasException {
                 ExceptionView(exception: exception)
             }

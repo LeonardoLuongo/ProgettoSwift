@@ -10,9 +10,9 @@ import PDFKit
 
 class DocumentManager {
     
-    static func extractTextFromPDF(fileName: String) -> String? {
+    static func extractTextFromPDF(docPath: String) -> String? {
         let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let url = appDirectory.appendingPathComponent(fileName)
+        let url = appDirectory.appendingPathComponent(docPath)
         if let pdf = PDFDocument(url: url) {
             let pageCount = pdf.pageCount
             let documentContent = NSMutableAttributedString()

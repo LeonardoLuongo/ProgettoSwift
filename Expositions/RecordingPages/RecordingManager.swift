@@ -208,11 +208,33 @@ class RecordingManager: ObservableObject, Codable {
         }
         
         do {
-            try FileManager.default.removeItem(at: audioPath)
+            let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let destinationURL = appDirectory.appendingPathComponent(audioPath.absoluteString)
+            try FileManager.default.removeItem(at: destinationURL)
             print("Recorded audio file deleted successfully.")
             recorded = false // Reset the recorded flag after deletion
+            recLoaded = false
+            recordFilename = ""
         } catch {
             print("Failed to delete recorded audio file:", error.localizedDescription)
+        }
+    }
+    
+    func deleteDocument() {
+        guard let docPath = docPath else {
+            print("No document found.")
+            return
+        }
+        
+        do {
+            let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let destinationURL = appDirectory.appendingPathComponent(docPath.absoluteString)
+            try FileManager.default.removeItem(at: destinationURL)
+            print("Document deleted successfully.")
+            textLoaded = false
+            docFilename = ""
+        } catch {
+            print("Failed to delete document:", error)
         }
     }
     
@@ -228,9 +250,9 @@ class RecordingManager: ObservableObject, Codable {
         }
     }
     
-    func segmentAudio(fileName: String, segmentDuration: TimeInterval) -> [URL] {
+    func segmentAudio(audioPath: String, segmentDuration: TimeInterval) -> [URL] {
         let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let url = appDirectory.appendingPathComponent(fileName)
+        let url = appDirectory.appendingPathComponent(audioPath)
         
         let asset = AVAsset(url: url)
         let duration = CMTimeGetSeconds(asset.duration)
@@ -299,6 +321,8 @@ class RecordingManager: ObservableObject, Codable {
             if let error = error {
                 print("Recognition error: \(error.localizedDescription)")
                 completion(nil)
+            //} else if let result = result {
+            //   print(result.bestTranscription.formattedString)
             } else if let result = result, result.isFinal {
                 self.transcription += result.bestTranscription.formattedString
                 print(self.transcription ?? "No transcription available")
@@ -314,10 +338,10 @@ class RecordingManager: ObservableObject, Codable {
         }
     }
 
-    func processAudioFile(fileName: String, evaluator: Evaluator, completion: @escaping (Bool) -> Void) {
+    func processAudioFile(audioPath: String, evaluator: Evaluator, completion: @escaping (Bool) -> Void) {
         evaluator.progress = 0
 
-        let segments = segmentAudio(fileName: fileName, segmentDuration: self.segmentDuration)
+        let segments = segmentAudio(audioPath: audioPath, segmentDuration: self.segmentDuration)
         var recognizedText = ""
 
         let queue = DispatchQueue(label: "com.example.mySerialQueue")
@@ -343,25 +367,24 @@ class RecordingManager: ObservableObject, Codable {
                 let duration: TimeInterval = 0.09 * self.getSegDuration(segmentURL: segments[i].absoluteURL)
                 let increment: Float = targetValue / (Float(duration) * 10)
 
-                let timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+                let timer = DispatchSource.makeTimerSource()
+                timer.schedule(deadline: .now(), repeating: 0.1)
+                timer.setEventHandler {
                     DispatchQueue.main.async {
                         evaluator.progress += increment
 
                         if evaluator.progress >= targetValue || evaluator.progress >= 1.0 {
                             evaluator.progress = min(evaluator.progress, 1.0)
-                            timer.invalidate()
+                            timer.cancel()
                         }
 
                         if workItem?.isCancelled ?? false {
-                            timer.invalidate()
+                            timer.cancel()
                         }
                     }
                 }
-                RunLoop.current.run(until: Date().addingTimeInterval(duration + 1))
-
-                if evaluator.progress >= 1.0 {
-                    timer.invalidate()
-                }
+                timer.resume()
+                evaluator.addTimer(timer)
 
                 self.processAudioSegment(segmentURL: segmentURL) { text in
                     if let text = text {
