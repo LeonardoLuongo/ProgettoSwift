@@ -19,8 +19,6 @@
 		1F0195402C4163A9001E15B1 /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F01953F2C4163A9001E15B1 /* RecordingManager.swift */; };
 		1F0195422C4163F2001E15B1 /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0195412C4163F2001E15B1 /* Stopwatch.swift */; };
 		1F01C8CE2C57B8DA00E18EF7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1F01C8CC2C57B8DA00E18EF7 /* Localizable.strings */; };
-		1F191A492C7F7AF700845621 /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1F191A482C7F7AF700845621 /* GoogleGenerativeAI */; };
-		1F255CCB2C7F93EC0028AD5E /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1F255CCA2C7F93EC0028AD5E /* GoogleGenerativeAI */; };
 		1F3711302C4E60F1008ABFA6 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F37112F2C4E60F1008ABFA6 /* Player.swift */; };
 		1F3818042C4D2FAF00F7B659 /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3818032C4D2FAF00F7B659 /* IconView.swift */; };
 		1F3818232C4E465500F7B659 /* DocumentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3818222C4E465500F7B659 /* DocumentManager.swift */; };
@@ -36,6 +34,13 @@
 		1F4CB9E72C5C298C0052D5AB /* GradeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4CB9E62C5C298C0052D5AB /* GradeCard.swift */; };
 		1F597F922C75BA4200AC127C /* Exception.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F597F912C75BA4200AC127C /* Exception.swift */; };
 		1F597F942C75BACD00AC127C /* ExceptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F597F932C75BACD00AC127C /* ExceptionView.swift */; };
+		1F5BF45C2C81EA8400904CF4 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5BF45B2C81EA8400904CF4 /* Model.swift */; };
+		1F5BF45E2C81EAD300904CF4 /* ModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5BF45D2C81EAD300904CF4 /* ModelProtocol.swift */; };
+		1F5BF4602C81F18600904CF4 /* ModelImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5BF45F2C81F18600904CF4 /* ModelImplementation.swift */; };
+		1F5BF4622C81F2C800904CF4 /* ModelMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5BF4612C81F2C800904CF4 /* ModelMetadata.swift */; };
+		1F5BF4642C81FCDD00904CF4 /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1F5BF4632C81FCDD00904CF4 /* GoogleGenerativeAI */; };
+		1F5BF4662C8229FC00904CF4 /* PunctualizerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5BF4652C8229FC00904CF4 /* PunctualizerModel.swift */; };
+		1F5BF4682C8231D100904CF4 /* EvaluatorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5BF4672C8231D100904CF4 /* EvaluatorModel.swift */; };
 		1F6C0F932C46D86D007D03A0 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F922C46D86D007D03A0 /* Sections.swift */; };
 		1F6C0F952C46D877007D03A0 /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F942C46D877007D03A0 /* Subject.swift */; };
 		1F6C0F972C46D88C007D03A0 /* CreateSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F962C46D88C007D03A0 /* CreateSectionView.swift */; };
@@ -45,8 +50,7 @@
 		1F9309A42C70F49200C2EC38 /* PunctualizedSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9309952C70F49200C2EC38 /* PunctualizedSpeech.swift */; };
 		1F9309A52C70F49200C2EC38 /* RawSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9309962C70F49200C2EC38 /* RawSpeech.swift */; };
 		1F9309A62C70F49200C2EC38 /* EvaluationQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9309982C70F49200C2EC38 /* EvaluationQuery.swift */; };
-		1F9309A72C70F49200C2EC38 /* LLMChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9309992C70F49200C2EC38 /* LLMChatApp.swift */; };
-		1F9309A82C70F49200C2EC38 /* LLMUtilis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F93099A2C70F49200C2EC38 /* LLMUtilis.swift */; };
+		1F9309A82C70F49200C2EC38 /* LLMUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F93099A2C70F49200C2EC38 /* LLMUtilities.swift */; };
 		1F9309A92C70F49200C2EC38 /* PunctualizationQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F93099B2C70F49200C2EC38 /* PunctualizationQuery.swift */; };
 		1F9309AA2C70F49200C2EC38 /* Sentence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F93099C2C70F49200C2EC38 /* Sentence.swift */; };
 		1F9309AB2C70F49200C2EC38 /* SingleWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F93099D2C70F49200C2EC38 /* SingleWord.swift */; };
@@ -106,6 +110,12 @@
 		1F4CB9E62C5C298C0052D5AB /* GradeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeCard.swift; sourceTree = "<group>"; };
 		1F597F912C75BA4200AC127C /* Exception.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exception.swift; sourceTree = "<group>"; };
 		1F597F932C75BACD00AC127C /* ExceptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExceptionView.swift; sourceTree = "<group>"; };
+		1F5BF45B2C81EA8400904CF4 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		1F5BF45D2C81EAD300904CF4 /* ModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelProtocol.swift; sourceTree = "<group>"; };
+		1F5BF45F2C81F18600904CF4 /* ModelImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelImplementation.swift; sourceTree = "<group>"; };
+		1F5BF4612C81F2C800904CF4 /* ModelMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelMetadata.swift; sourceTree = "<group>"; };
+		1F5BF4652C8229FC00904CF4 /* PunctualizerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PunctualizerModel.swift; sourceTree = "<group>"; };
+		1F5BF4672C8231D100904CF4 /* EvaluatorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluatorModel.swift; sourceTree = "<group>"; };
 		1F65A5F72C4525A80085A7ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1F6C0F922C46D86D007D03A0 /* Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sections.swift; sourceTree = "<group>"; };
 		1F6C0F942C46D877007D03A0 /* Subject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subject.swift; sourceTree = "<group>"; };
@@ -116,8 +126,7 @@
 		1F9309952C70F49200C2EC38 /* PunctualizedSpeech.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PunctualizedSpeech.swift; sourceTree = "<group>"; };
 		1F9309962C70F49200C2EC38 /* RawSpeech.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawSpeech.swift; sourceTree = "<group>"; };
 		1F9309982C70F49200C2EC38 /* EvaluationQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationQuery.swift; sourceTree = "<group>"; };
-		1F9309992C70F49200C2EC38 /* LLMChatApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LLMChatApp.swift; sourceTree = "<group>"; };
-		1F93099A2C70F49200C2EC38 /* LLMUtilis.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LLMUtilis.swift; sourceTree = "<group>"; };
+		1F93099A2C70F49200C2EC38 /* LLMUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LLMUtilities.swift; sourceTree = "<group>"; };
 		1F93099B2C70F49200C2EC38 /* PunctualizationQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PunctualizationQuery.swift; sourceTree = "<group>"; };
 		1F93099C2C70F49200C2EC38 /* Sentence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sentence.swift; sourceTree = "<group>"; };
 		1F93099D2C70F49200C2EC38 /* SingleWord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleWord.swift; sourceTree = "<group>"; };
@@ -133,8 +142,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F191A492C7F7AF700845621 /* GoogleGenerativeAI in Frameworks */,
-				1F255CCB2C7F93EC0028AD5E /* GoogleGenerativeAI in Frameworks */,
+				1F5BF4642C81FCDD00904CF4 /* GoogleGenerativeAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +300,28 @@
 			path = ResultInterface;
 			sourceTree = "<group>";
 		};
+		1F5BF4592C81E97A00904CF4 /* Queries */ = {
+			isa = PBXGroup;
+			children = (
+				1F9309982C70F49200C2EC38 /* EvaluationQuery.swift */,
+				1F93099B2C70F49200C2EC38 /* PunctualizationQuery.swift */,
+			);
+			path = Queries;
+			sourceTree = "<group>";
+		};
+		1F5BF45A2C81E9DE00904CF4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1F5BF45B2C81EA8400904CF4 /* Model.swift */,
+				1F5BF45D2C81EAD300904CF4 /* ModelProtocol.swift */,
+				1F5BF45F2C81F18600904CF4 /* ModelImplementation.swift */,
+				1F5BF4612C81F2C800904CF4 /* ModelMetadata.swift */,
+				1F5BF4652C8229FC00904CF4 /* PunctualizerModel.swift */,
+				1F5BF4672C8231D100904CF4 /* EvaluatorModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		1F6C0F912C46D85B007D03A0 /* Sections */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,19 +360,18 @@
 			path = Speeches;
 			sourceTree = "<group>";
 		};
-		1F93099E2C70F49200C2EC38 /* LLMChat */ = {
+		1F93099E2C70F49200C2EC38 /* LLM */ = {
 			isa = PBXGroup;
 			children = (
+				1F5BF45A2C81E9DE00904CF4 /* Model */,
+				1F5BF4592C81E97A00904CF4 /* Queries */,
 				1F9309932C70F49200C2EC38 /* JSON */,
 				1F9309972C70F49200C2EC38 /* Speeches */,
-				1F9309982C70F49200C2EC38 /* EvaluationQuery.swift */,
-				1F9309992C70F49200C2EC38 /* LLMChatApp.swift */,
-				1F93099A2C70F49200C2EC38 /* LLMUtilis.swift */,
-				1F93099B2C70F49200C2EC38 /* PunctualizationQuery.swift */,
+				1F93099A2C70F49200C2EC38 /* LLMUtilities.swift */,
 				1F93099C2C70F49200C2EC38 /* Sentence.swift */,
 				1F93099D2C70F49200C2EC38 /* SingleWord.swift */,
 			);
-			path = LLMChat;
+			path = LLM;
 			sourceTree = "<group>";
 		};
 		1F9309A12C70F49200C2EC38 /* APIKey */ = {
@@ -358,7 +387,7 @@
 			isa = PBXGroup;
 			children = (
 				1F9309A12C70F49200C2EC38 /* APIKey */,
-				1F93099E2C70F49200C2EC38 /* LLMChat */,
+				1F93099E2C70F49200C2EC38 /* LLM */,
 			);
 			path = LLMChat;
 			sourceTree = "<group>";
@@ -381,8 +410,7 @@
 			);
 			name = Expositions;
 			packageProductDependencies = (
-				1F191A482C7F7AF700845621 /* GoogleGenerativeAI */,
-				1F255CCA2C7F93EC0028AD5E /* GoogleGenerativeAI */,
+				1F5BF4632C81FCDD00904CF4 /* GoogleGenerativeAI */,
 			);
 			productName = RecordingPages;
 			productReference = 1F01950C2C4162A4001E15B1 /* Expositions.app */;
@@ -506,31 +534,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F9309A72C70F49200C2EC38 /* LLMChatApp.swift in Sources */,
 				1F3711302C4E60F1008ABFA6 /* Player.swift in Sources */,
 				1F9309A32C70F49200C2EC38 /* EvaluatedSpeech.swift in Sources */,
 				1F3E3F0D2C4C23900098432E /* ExpositionStyleSpecialSubject.swift in Sources */,
 				1FE219932C49610400A9A159 /* SectionListView.swift in Sources */,
+				1F5BF4622C81F2C800904CF4 /* ModelMetadata.swift in Sources */,
 				1F9309AB2C70F49200C2EC38 /* SingleWord.swift in Sources */,
 				1F3E3F0B2C4C23620098432E /* ExpositionStyleSubject.swift in Sources */,
 				1F3818232C4E465500F7B659 /* DocumentManager.swift in Sources */,
 				1F9309A22C70F49200C2EC38 /* JSONResponse.swift in Sources */,
-				1F9309A82C70F49200C2EC38 /* LLMUtilis.swift in Sources */,
+				1F9309A82C70F49200C2EC38 /* LLMUtilities.swift in Sources */,
 				1F9309AA2C70F49200C2EC38 /* Sentence.swift in Sources */,
 				1F6C0F992C46D89D007D03A0 /* CreateIconView.swift in Sources */,
 				1F38182E2C4E962C00F7B659 /* Evaluator.swift in Sources */,
 				1F3818042C4D2FAF00F7B659 /* IconView.swift in Sources */,
 				1F6C0F972C46D88C007D03A0 /* CreateSectionView.swift in Sources */,
 				1F597F942C75BACD00AC127C /* ExceptionView.swift in Sources */,
+				1F5BF45E2C81EAD300904CF4 /* ModelProtocol.swift in Sources */,
 				1F3E3F172C4C29B30098432E /* Section.swift in Sources */,
 				1FAF4BE62C47FFFB00A18150 /* IconEditor.swift in Sources */,
+				1F5BF4682C8231D100904CF4 /* EvaluatorModel.swift in Sources */,
+				1F5BF4602C81F18600904CF4 /* ModelImplementation.swift in Sources */,
 				1F3E3F112C4C24050098432E /* ExpositionRowTrash.swift in Sources */,
 				1F6C0F932C46D86D007D03A0 /* Sections.swift in Sources */,
 				1F9309AC2C70F49200C2EC38 /* APIKey.swift in Sources */,
+				1F5BF4662C8229FC00904CF4 /* PunctualizerModel.swift in Sources */,
 				1F597F922C75BA4200AC127C /* Exception.swift in Sources */,
 				1F0195402C4163A9001E15B1 /* RecordingManager.swift in Sources */,
 				1F0195122C4162A4001E15B1 /* ContentView.swift in Sources */,
 				1F0195102C4162A4001E15B1 /* Expositions.swift in Sources */,
+				1F5BF45C2C81EA8400904CF4 /* Model.swift in Sources */,
 				1F9309A42C70F49200C2EC38 /* PunctualizedSpeech.swift in Sources */,
 				1FE504F22C516091000FFA53 /* TestFinalPage.swift in Sources */,
 				1F9309A92C70F49200C2EC38 /* PunctualizationQuery.swift in Sources */,
@@ -725,7 +758,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RecordingPages/Preview Content\"";
-				DEVELOPMENT_TEAM = RZHZCQW6K3;
+				DEVELOPMENT_TEAM = 6QD2DX3L9Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RecordingPages/Info.plist;
@@ -766,7 +799,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RecordingPages/Preview Content\"";
-				DEVELOPMENT_TEAM = RZHZCQW6K3;
+				DEVELOPMENT_TEAM = 6QD2DX3L9Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RecordingPages/Info.plist;
@@ -935,18 +968,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1F191A482C7F7AF700845621 /* GoogleGenerativeAI */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GoogleGenerativeAI;
-		};
-		1F255CCA2C7F93EC0028AD5E /* GoogleGenerativeAI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1F255CC92C7F93EC0028AD5E /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
-			productName = GoogleGenerativeAI;
-		};
 		1F5606872C5146530079EF4A /* GoogleGenerativeAI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1F5606842C51450A0079EF4A /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
+		};
+		1F5BF4632C81FCDD00904CF4 /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1F255CC92C7F93EC0028AD5E /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
 			productName = GoogleGenerativeAI;
 		};
 /* End XCSwiftPackageProductDependency section */

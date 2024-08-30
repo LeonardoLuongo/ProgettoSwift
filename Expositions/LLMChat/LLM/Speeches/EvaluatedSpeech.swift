@@ -48,15 +48,21 @@ class EvaluatedSpeech: Codable
         // Get the Gemini Response
         do
         {
-            writeDebugLog("Waiting for Gemini response...")
-            self.response = try await LLMUtilis.evaluate(context: context, exposition: punctualizedText.getText())
+            print("Waiting for Gemini response...")
+            
+            let model: EvaluatorModel = try EvaluatorModel()
+            
+            self.response = try await model.evaluate(context: context, exposition: punctualizedText.getText())
+            /*
+            self.response = try await LLMUtilitis.evaluate(context: context, exposition: punctualizedText.getText())
+             */
         }
         catch
         {
-            writeDebugLog("Got an error from Gemini call: \(error)")
+            print("Got an error from Gemini call: \(error)")
             throw Exception(exceptionName: "GeminiCallError", exceptionMessage: error.self.localizedDescription)
         }
-        writeDebugLog("From JSON to Sentence...")
+        print("From JSON to Sentence...")
         // From JSON format to Sentence
         
         var response = self.response!

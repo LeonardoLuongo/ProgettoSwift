@@ -1,31 +1,43 @@
 import Foundation
+import GoogleGenerativeAI
 
 class PunctualizedSpeech: Codable
 {
     internal var id = UUID()
     private let textInString: String
     private let textInSingleWords: [SingleWord]
-
+    
     init(rawSpeech: RawSpeech, context: String) async throws {
         var punctualizedText: String = ""
         
         do{
-            writeDebugLog("Waiting for Gemini response...")
+            print("Waiting for Gemini response...")
+            let query = PunctualizationQuery(text: rawSpeech.getText(), context: context)
             
             // Get the new punctualized text.
-            punctualizedText = try await LLMUtilis.addPuntuactionToText(rawSpeech.getText(), context: context)
+            let model: Model = Model(
+                systemInstruction: ModelContent(
+                    role: "system",
+                    parts: [.text("")]
+                )
+            )
+            let stringResponse: String? = try await model.getResponse(query: query.toString())
+            
+            let punctualizer = try PunctualizerModel()
+            
+            punctualizedText = try await punctualizer.punctualize(text: rawSpeech.getText(), context: context)
             
         }
         catch
         {
-            writeDebugLog("Error from Gemini call: \(error)")
+            print("Error from Gemini call: \(error)")
             throw Exception(exceptionName: "GeminiCallError", exceptionMessage: error.self.localizedDescription)
         }
         
         punctualizedText = punctualizedText.replacingOccurrences(of: "\"", with: "\\\"")
         punctualizedText = punctualizedText.replacingOccurrences(of: "\n", with: "")
         
-        writeDebugLog("Copying the timestamps...")
+        print("Copying the timestamps...")
         
         
         // From the entire punctualized text to array of words.
@@ -169,7 +181,7 @@ class PunctualizedSpeech: Codable
         
         if (size-1) < 0
         {
-            writeDebugLog("You should debug this thing. str1:>\(str1)<, str2:>\(str2)<")
+            print("You should debug this thing. str1:>\(str1)<, str2:>\(str2)<")
             return 0
         }
         
