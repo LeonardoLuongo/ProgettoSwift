@@ -3,15 +3,18 @@ import GoogleGenerativeAI
 
 class PunctualizerModel: Model
 {
-    let systemInstruction = """
+    private let systemInstruction = """
 Sei un professore di italiano e devi inserire la punteggiatura a questo testo senza alterarne il numero di parole e senza riassumerlo. Solo la punteggiatura. Senza asterischi.
 """
     
     init() throws {
-        super.init(systemInstruction: ModelContent(
+        
+        let metadata = ModelMetadata(systemInstruction: ModelContent(
             role: "system",
             parts: [.text(systemInstruction)])
         )
+        
+        super.init(modelMetadata: metadata)
     }
     
     public func punctualize(text: String, context: String) async throws -> String

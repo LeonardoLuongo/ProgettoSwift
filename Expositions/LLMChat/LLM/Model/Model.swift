@@ -1,22 +1,49 @@
-
 import GoogleGenerativeAI
 
-class Model
+class Model: ModelProtocol
 {
-    private let model: ModelImplementation
-    init(systemInstruction: ModelContent)
+    let generativeModel: GenerativeModel
+    
+    init(modelMetadata: ModelMetadata)
     {
-        let metadata = ModelMetadata(systemInstruction: systemInstruction)
-        self.model = ModelImplementation(modelMetadata: metadata)
+        self.generativeModel = GenerativeModel(
+          name: modelMetadata.name,
+          apiKey: modelMetadata.apiKey,
+          safetySettings: modelMetadata.safetySettings,
+          systemInstruction: modelMetadata.systemInstruction,
+          requestOptions: modelMetadata.requestOptions
+        )
     }
     
-    public func getResponse(query: String) async throws -> String?
+    func getResponse(query: String) async throws -> String?
     {
-        do {
-            return try await model.getResponse(query: query)
+        // [START text_gen_text_only_prompt_streaming]
+        var responseData:String? = nil
+        
+        // Use streaming with text-only input
+        do
+        {
+            
+            for try await response in self.generativeModel.generateContentStream(query) 
+            {
+              if let text = response.text {
+                  if responseData == nil
+                  {
+                      responseData = ""
+                  }
+                  responseData! += text
+                  print("Got a piece of the total response.")
+              }
+            }
         }
-        catch {
+        catch
+        {
             throw error
         }
+        
+        // [END text_gen_text_only_prompt_streaming]
+        
+        return responseData
     }
+    
 }

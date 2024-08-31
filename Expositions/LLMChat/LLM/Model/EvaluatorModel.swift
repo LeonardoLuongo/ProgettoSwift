@@ -4,7 +4,7 @@ import Foundation
 
 class EvaluatorModel: Model
 {
-    let systemInstructions = [ """
+    private let systemInstructions = [ """
     Uno studente vuole ripetere un argomento per una prova orale, dopo aver studiato da un documento di appunti.
     Voglio che tu valuti la sua interrogazione riportando in formato JSON errori(errors) e avvertenze(warnings), con relative correzioni e consigli migliorativi e voto finale. La tua valutazione deve basarsi quasi esclusivamente sul contesto che ti fornirò (ossia dagli appunti da cui lo studente ha studiato). Qualora il contesto non sia attinente con il contenuto dell'esposizione dello studente, valuta sulla base delle tue conoscenze.
 
@@ -132,10 +132,14 @@ Valuta solo il contenuto. IGNORA LA PUNTEGGIATURA.
 ]
     
     init() throws {
-        super.init(systemInstruction: ModelContent(
-            role: "system",
-            parts: [.text(systemInstructions[0]), .text(systemInstructions[1])])
+        let metadata = ModelMetadata(
+            systemInstruction: ModelContent(
+                role: "system",
+                parts: [.text(systemInstructions[0]), .text(systemInstructions[1])]
+            )
         )
+        
+        super.init(modelMetadata: metadata)
     }
     
     public func evaluate(context: String, exposition: String) async throws -> Response
@@ -184,7 +188,12 @@ Valuta solo il contenuto. IGNORA LA PUNTEGGIATURA.
                         print("(\(i)/5) Trying to get a correct JSON...")
                         print("JSON: \(responseData!)\nError: \(error)")
                         
-                        let model = Model(systemInstruction: ModelContent(role: "system", parts: [.text("You're the best JSON formatter."), .text("You must return the JSON only.")]))
+                        let metadata = ModelMetadata(
+                            systemInstruction:
+                                ModelContent(role: "system", parts: [.text("You're the best JSON formatter."), .text("You must return the JSON only.")])
+                        )
+                        let model = Model(modelMetadata: metadata)
+                        
                         responseData = try await model.getResponse(query: "I've got this JSON error: \(error) on this JSON data \(responseData!). Solve those problems.")
                         
                         responseData = LLMUtilitis.cleanUpTheJSONString(JSONString: responseData!)

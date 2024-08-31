@@ -16,11 +16,15 @@ class PunctualizedSpeech: Codable
             
             // Get the new punctualized text.
             let model: Model = Model(
-                systemInstruction: ModelContent(
-                    role: "system",
-                    parts: [.text("")]
+                modelMetadata: ModelMetadata(
+                    systemInstruction:
+                        ModelContent(
+                            role: "system",
+                            parts: [.text("")]
+                        )
                 )
             )
+            
             let stringResponse: String? = try await model.getResponse(query: query.toString())
             
             let punctualizer = try PunctualizerModel()
