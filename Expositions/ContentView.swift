@@ -15,13 +15,7 @@ struct ContentView: View {
     static var standardSections = [Section(name: "All expositions", symbol: "folder.fill", color: Color(red: 0.3568627450980392, green: 0.6627450980392157, blue: 0.9568627450980393), specialCode: 0), Section(name: "Favorites", symbol: "heart.fill", color: Color(red: 1, green: 0.27058823529411763, blue: 0.2235294117647059), specialCode: 1),Section(name: "Trash", symbol: "trash.fill", color: Color(red: 0.6784313725490196, green: 0.6784313725490196, blue: 0.6784313725490196), specialCode: 2)]
     
     var body: some View {
-        ZStack {
-            Sections(sections: $sections, expositions: $expositions)
-            if exception.hasException {
-                ExceptionView(exception: exception)
-            }
-            
-        }
+        Sections(sections: $sections, expositions: $expositions)
     }
     
     /* This method is used to load sections from UserDefaults */
