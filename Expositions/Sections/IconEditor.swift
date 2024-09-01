@@ -1,18 +1,12 @@
-//
-//  IconEditor.swift
-//  Expositions
-//
-//  Created by Studente on 17/07/24.
-//
-
 import SwiftUI
 
+// This view is used to change the icon of a section, enabling the user to create a new custom one
 struct IconEditor: View {
     @Environment(\.presentationMode) var presentationMode
     
     @Binding var sectionIndex: Int
     @Binding var sections: [Section]
-    @State var symbol: String = "LETTERATURA ITALIANA"
+    @State var symbol: String = "LETTERATURA ITALIANA" // default symbol
     @State var color: Color = Color(red: 0.6784313725490196, green: 0.6784313725490196, blue: 0.6784313725490196)
     
     var body: some View {

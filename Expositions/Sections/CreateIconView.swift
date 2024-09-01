@@ -1,12 +1,6 @@
-//
-//  CreateIconView.swift
-//  Expositions1
-//
-//  Created by Studente on 12/07/24.
-//
-
 import SwiftUI
 
+// this view is used to create new custom icons
 struct CreateIconView: View {
     @Environment(\.presentationMode) var presentationMode
     

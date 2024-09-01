@@ -1,13 +1,7 @@
-//
-//  ModalAdd.swift
-//  Expositions1
-//
-//  Created by Studente on 12/07/24.
-//
-
 import SwiftUI
 import PhotosUI
 
+// This view is used to create a new section
 struct CreateSectionView: View {
     @Environment(\.presentationMode) var presentationMode
     
@@ -23,6 +17,8 @@ struct CreateSectionView: View {
     @State private var showCreateIconView = false
     @State var color: Color
     @State var symbol: String
+    
+    @State private var showPhotoAlert = false
     
     var body: some View {
         VStack {
@@ -136,9 +132,12 @@ struct CreateSectionView: View {
                 if let loaded = try? await selectedItem?.loadTransferable(type: Data.self) {
                     selectedImage = UIImage(data: loaded)
                 } else {
-                    // gestire l'errore
+                    showPhotoAlert.toggle()
                 }
             }
+        }
+        .alert("Photo selection failed. Try again.", isPresented: $showPhotoAlert) {
+            Button("Ok", role: .cancel) {}
         }
         .sheet(isPresented: $showCreateIconView) {
             CreateIconView(selectedSymbol: $symbol, selectedColor: $color)

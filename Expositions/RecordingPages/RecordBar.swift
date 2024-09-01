@@ -65,9 +65,9 @@ struct RecordBar: View {
                             return
                         }
                         if recordingManager.isRecording {
-                            recordingManager.finishRecordingHandler()
+                            recordingManager.finishRecordingHandler(id: exposition.id)
                         } else {
-                            recordingManager.startRecording()
+                            recordingManager.startRecording(id: exposition.id)
                         }
                     }) {
                         /*  ... to finish recording... */

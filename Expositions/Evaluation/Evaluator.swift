@@ -1,10 +1,3 @@
-//
-//  Evaluator.swift
-//  Expositions
-//
-//  Created by Studente on 22/07/24.
-//
-
 import SwiftUI
 import Combine
 
@@ -50,12 +43,13 @@ class Evaluator: ObservableObject {
                         self?.handleError(message: "Empty Document: Cannot extract any text from the document. The Evaluation process can continue anyway, but it'll use the LLM knownledge", killTheEvaluation: false)
                     }
 
+                    // Starting with audio segmentation and transcription
                     self?.exposition.recordingManager.processAudioFile(audioPath: self!.exposition.recordingManager.audioPath!.absoluteString, evaluator: self!) { success in
-                        if success {
+                        if success { // when the transcription is done
                             Task { [weak self] in
                                 do {
                                     
-                                    self!.evaluating = true
+                                    self!.evaluating = true // "evaluating" process starts
                                     
                                     // turn transcription into RawSpeech
                                     let rawSpeech = try RawSpeech(textInSingleWords: SingleWord.textToSingleWordArray(text: self!.exposition.recordingManager.transcription))

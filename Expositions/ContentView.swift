@@ -63,7 +63,9 @@ struct ContentView: View {
         for exposition in expositions.flatMap({$0.value}).filter({$0.trash}) {
             if let expiryDate = calendar.date(byAdding: .day, value: 30, to: exposition.trashDate!) {
                 if calendar.isDateInToday(expiryDate) {
-                    expositions[2]?.removeAll(where: {$0.id == exposition.id})
+                    exposition.recordingManager.deleteRecordedAudio()
+                    exposition.recordingManager.deleteDocument()
+                    expositions[exposition.secCode]?.removeAll(where: { $0.id == exposition.id })
                     Exposition.saveDictionary(expositions: expositions)
                 }
             }

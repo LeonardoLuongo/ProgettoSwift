@@ -1,42 +1,39 @@
-//
-//  Subject.swift
-//  Expositions1
-//
-//  Created by Studente on 09/07/24.
-//
-
 import SwiftUI
 
+// This page is related to a single section
 struct Subject: View {
     
-    @Binding var section: Section
-    @Binding var sections: [Section]
+    @Binding var section: Section // this is the section related to this page
     
+    /* MAIN DATA STRUCTURES */
+    @Binding var sections: [Section]
     @Binding var expositions: [Int:[Exposition]]
     
+    // these properties are used to control alerts
     @State private var showCreateExpView = false
-    
     @State var showDeleteAlert = false
     @State var showRestoreAlert = false
     
     @State var text = ""
-    @State private var searchText = ""
+    @State private var searchText = "" // to implement searchable elements
     
+    // this ID is used to manually refresh the page when there are changes
     @State private var refreshID = UUID()
     
+    // this function returns an array of all the expositions contained in this section
     private func subjectExp() -> [Exposition] {
-        if section.secCode == 0 {
-            return expositions.flatMap {$0.value}.filter{!$0.trash}
-        } else if section.secCode == 1 {
+        if section.secCode == 0 { // "ALL EXPOSITIONS"
+            return expositions.flatMap {$0.value}.filter{!$0.trash} // except trashed ones
+        } else if section.secCode == 1 { // "FAVORITES"
             return expositions.flatMap{$0.value}.filter{($0.favorite && !$0.trash)}
-        } else if section.secCode == 2 {
+        } else if section.secCode == 2 { // "TRASH"
             return expositions.flatMap{$0.value}.filter{$0.trash}
         }
-        return expositions[section.secCode]?.filter{!$0.trash} ?? []
+        return expositions[section.secCode]?.filter{!$0.trash} ?? [] // "User-made section"
     }
     
     var body: some View {
-        if section.secCode != 2 {
+        if section.secCode != 2 { // not for "Trash" section
             NavigationStack {
                 List {
                     ForEach(subjectExp(), id: \.id) { exposition in
@@ -81,7 +78,7 @@ struct Subject: View {
                 .id(refreshID)
                 .navigationTitle(LocalizedStringKey(section.name))
                 .toolbar {
-                    if section.secCode != 1 {
+                    if section.secCode != 1 { // not for "Favorites" section
                         ToolbarItem(placement: .topBarTrailing) {
                             Button(action: {
                                 showCreateExpView.toggle()
@@ -108,7 +105,7 @@ struct Subject: View {
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             }
-        } else {
+        } else { // "Trash" section
             NavigationStack {
                 List {
                     ForEach(subjectExp(), id: \.id) { exposition in

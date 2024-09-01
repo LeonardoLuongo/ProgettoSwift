@@ -33,13 +33,13 @@
 		1F5BF45E2C81EAD300904CF4 /* ModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5BF45D2C81EAD300904CF4 /* ModelProtocol.swift */; };
 		1F5BF4602C81F18600904CF4 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5BF45F2C81F18600904CF4 /* Model.swift */; };
 		1F5BF4622C81F2C800904CF4 /* ModelMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5BF4612C81F2C800904CF4 /* ModelMetadata.swift */; };
-		1F5BF4642C81FCDD00904CF4 /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1F5BF4632C81FCDD00904CF4 /* GoogleGenerativeAI */; };
 		1F5BF4662C8229FC00904CF4 /* PunctualizerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5BF4652C8229FC00904CF4 /* PunctualizerModel.swift */; };
 		1F5BF4682C8231D100904CF4 /* EvaluatorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5BF4672C8231D100904CF4 /* EvaluatorModel.swift */; };
 		1F6C0F932C46D86D007D03A0 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F922C46D86D007D03A0 /* Sections.swift */; };
 		1F6C0F952C46D877007D03A0 /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F942C46D877007D03A0 /* Subject.swift */; };
 		1F6C0F972C46D88C007D03A0 /* CreateSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F962C46D88C007D03A0 /* CreateSectionView.swift */; };
 		1F6C0F992C46D89D007D03A0 /* CreateIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C0F982C46D89D007D03A0 /* CreateIconView.swift */; };
+		1F8AF7EA2C84E0110055BFD8 /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1F8AF7E92C84E0110055BFD8 /* GoogleGenerativeAI */; };
 		1F9309A22C70F49200C2EC38 /* JSONResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9309922C70F49200C2EC38 /* JSONResponse.swift */; };
 		1F9309A32C70F49200C2EC38 /* EvaluatedSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9309942C70F49200C2EC38 /* EvaluatedSpeech.swift */; };
 		1F9309A42C70F49200C2EC38 /* PunctualizedSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9309952C70F49200C2EC38 /* PunctualizedSpeech.swift */; };
@@ -53,7 +53,6 @@
 		1F9309AD2C70F49200C2EC38 /* GenerativeAI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1F9309A02C70F49200C2EC38 /* GenerativeAI-Info.plist */; };
 		1FAF4BE62C47FFFB00A18150 /* IconEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAF4BE52C47FFFB00A18150 /* IconEditor.swift */; };
 		1FE219932C49610400A9A159 /* SectionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE219922C49610400A9A159 /* SectionListView.swift */; };
-		1FE504F22C516091000FFA53 /* TestFinalPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE504F12C516091000FFA53 /* TestFinalPage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,7 +123,6 @@
 		1F9309A02C70F49200C2EC38 /* GenerativeAI-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GenerativeAI-Info.plist"; sourceTree = "<group>"; };
 		1FAF4BE52C47FFFB00A18150 /* IconEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconEditor.swift; sourceTree = "<group>"; };
 		1FE219922C49610400A9A159 /* SectionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionListView.swift; sourceTree = "<group>"; };
-		1FE504F12C516091000FFA53 /* TestFinalPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFinalPage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,7 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F5BF4642C81FCDD00904CF4 /* GoogleGenerativeAI in Frameworks */,
+				1F8AF7EA2C84E0110055BFD8 /* GoogleGenerativeAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,7 +224,6 @@
 			isa = PBXGroup;
 			children = (
 				1F38182D2C4E962C00F7B659 /* Evaluator.swift */,
-				1FE504F12C516091000FFA53 /* TestFinalPage.swift */,
 			);
 			path = Evaluation;
 			sourceTree = "<group>";
@@ -379,7 +376,7 @@
 			);
 			name = Expositions;
 			packageProductDependencies = (
-				1F5BF4632C81FCDD00904CF4 /* GoogleGenerativeAI */,
+				1F8AF7E92C84E0110055BFD8 /* GoogleGenerativeAI */,
 			);
 			productName = RecordingPages;
 			productReference = 1F01950C2C4162A4001E15B1 /* Expositions.app */;
@@ -457,7 +454,7 @@
 			);
 			mainGroup = 1F0195032C4162A4001E15B1;
 			packageReferences = (
-				1F255CC92C7F93EC0028AD5E /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
+				1F8AF7E82C84E0110055BFD8 /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
 			);
 			productRefGroup = 1F01950D2C4162A4001E15B1 /* Products */;
 			projectDirPath = "";
@@ -532,7 +529,6 @@
 				1F0195122C4162A4001E15B1 /* ContentView.swift in Sources */,
 				1F0195102C4162A4001E15B1 /* Expositions.swift in Sources */,
 				1F9309A42C70F49200C2EC38 /* PunctualizedSpeech.swift in Sources */,
-				1FE504F22C516091000FFA53 /* TestFinalPage.swift in Sources */,
 				1F9309A92C70F49200C2EC38 /* PunctualizationQuery.swift in Sources */,
 				1F4CB9E32C5C29580052D5AB /* CorrectionCard.swift in Sources */,
 				1F01953E2C41638E001E15B1 /* RecordBar.swift in Sources */,
@@ -722,7 +718,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RecordingPages/Preview Content\"";
-				DEVELOPMENT_TEAM = 6QD2DX3L9Y;
+				DEVELOPMENT_TEAM = RZHZCQW6K3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RecordingPages/Info.plist;
@@ -763,7 +759,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RecordingPages/Preview Content\"";
-				DEVELOPMENT_TEAM = 6QD2DX3L9Y;
+				DEVELOPMENT_TEAM = RZHZCQW6K3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RecordingPages/Info.plist;
@@ -913,20 +909,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1F255CC92C7F93EC0028AD5E /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/google/generative-ai-swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.5.6;
-			};
-		};
 		1F5606842C51450A0079EF4A /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/generative-ai-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.5.4;
+			};
+		};
+		1F8AF7E82C84E0110055BFD8 /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/generative-ai-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.6;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -937,9 +933,9 @@
 			package = 1F5606842C51450A0079EF4A /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
 			productName = GoogleGenerativeAI;
 		};
-		1F5BF4632C81FCDD00904CF4 /* GoogleGenerativeAI */ = {
+		1F8AF7E92C84E0110055BFD8 /* GoogleGenerativeAI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1F255CC92C7F93EC0028AD5E /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			package = 1F8AF7E82C84E0110055BFD8 /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
 			productName = GoogleGenerativeAI;
 		};
 /* End XCSwiftPackageProductDependency section */

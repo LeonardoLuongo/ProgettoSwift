@@ -1,12 +1,6 @@
-//
-//  ExpositionRowTrash.swift
-//  Expositions
-//
-//  Created by Studente on 20/07/24.
-//
-
 import SwiftUI
 
+// this view represents a single element of the list of expositions contained in the Trash page
 struct ExpositionRowTrash: View {
     @Binding var expositions: [Int:[Exposition]]
     @Binding var section: Section
@@ -16,6 +10,7 @@ struct ExpositionRowTrash: View {
     
     @Binding var refreshID: UUID
     
+    // used to color the background of all the elements of the list
     static let backgroundColor = [Color(red: 229/255, green: 247/255, blue: 255/255), Color(red: 233/255, green: 241/255, blue: 255/255), Color(red: 247/255, green: 229/255, blue: 255/255), Color(red: 252/255, green: 233/255, blue: 239/255), Color(red: 255/255, green: 241/255, blue: 235/255), Color(red: 255/255, green: 245/255, blue: 233/255), Color(red: 254/255, green: 253/255, blue: 238/255), Color(red: 239/255, green: 247/255, blue: 233/255)]
     
     var body: some View {

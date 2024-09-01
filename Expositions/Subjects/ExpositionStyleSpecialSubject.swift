@@ -1,12 +1,6 @@
-//
-//  ExpositionStyleSpecialSubject.swift
-//  Expositions
-//
-//  Created by Studente on 20/07/24.
-//
-
 import SwiftUI
 
+// This view defines the style of a single element in the list of expositions of special sections (Trash, Favorites, All expositions)
 struct ExpositionStyleSpecialSubject: View {
     @Binding var exposition: Exposition
     @Binding var expositions: [Int:[Exposition]]
@@ -94,7 +88,7 @@ struct ExpositionStyleSpecialSubject: View {
                     .font(.system(size: 25))
                     .bold()
                     .foregroundStyle(exposition.gradeStyle().textColor)
-                if exposition.grade == "10" {
+                if exposition.grade == "10" { // stars are added if the grade is 10
                     Image(systemName: "star.fill")
                         .foregroundStyle(Color(red: 254/255, green: 180/255, blue: 63/255))
                         .offset(CGSize(width: 18, height: 15))
@@ -112,6 +106,7 @@ struct ExpositionStyleSpecialSubject: View {
         }
     }
     
+    // This function is used to create the label an exposition (that shows the section of the exposition)
     func sectionColor() -> (shapeColor: Color, strokeColor: Color) {
         let strokeColor: Color
         if let icon = sourceSection?.icon {
@@ -127,6 +122,7 @@ struct ExpositionStyleSpecialSubject: View {
         return (shapeColor: shapeColor, strokeColor: strokeColor)
     }
     
+    // This function is used to calculate the time remaining for an exposition in the trash to be permantly deleted
     func timeRemaining(startDate: Date) -> String {
         let calendar = Calendar.current
         let now = Date()

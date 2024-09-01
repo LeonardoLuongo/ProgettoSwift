@@ -146,6 +146,10 @@ struct RecordPage: View {
                                                 .foregroundColor(Color(hue: 0.58, saturation: 0.63, brightness: 0.96))
                                             if isPlaying {
                                                 Player(recordingManager: recordingManager)
+                                            } else {
+                                                Image(systemName: "waveform")
+                                                    .font(.system(size: metrics.size.height*0.06))
+                                                    .foregroundColor(Color(hue: 0.58, saturation: 0.63, brightness: 0.96))
                                             }
                                         }
                                         .onChange(of: evaluator.progress) { newValue in
@@ -174,6 +178,10 @@ struct RecordPage: View {
                                         VStack {
                                             if isPlaying {
                                                 Player(recordingManager: recordingManager)
+                                            } else {
+                                                Image(systemName: "waveform")
+                                                    .font(.system(size: metrics.size.height*0.06))
+                                                    .foregroundColor(Color(hue: 0.58, saturation: 0.63, brightness: 0.96))
                                             }
                                         }
                                         .onChange(of: evaluator.progress) { newValue in
@@ -278,7 +286,7 @@ struct RecordPage: View {
                 .navigationBarBackButtonHidden(evaluator.progress >= 0)
                 .id(refreshID)
             }
-        } else {
+        } else { // if the exposition is evaluated, the CorrectionPage will be shown instead of the RecordPage
             CorrectionPage(exposition: exposition, totalCardNumber: (exposition.evaluatedSpeech?.numberOfBadSentences())! + 1)
                 .onAppear {
                     refreshID = UUID()

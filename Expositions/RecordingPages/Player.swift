@@ -78,7 +78,7 @@ struct Player: View {
                     self.currentTime = 0
                 }
                 
-                self.player?.volume = 1.0 // Imposta il volume al massimo
+                self.player?.volume = 1.0 // Set volume to maximum
             }
         }
         .onDisappear {

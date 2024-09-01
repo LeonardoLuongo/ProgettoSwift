@@ -37,6 +37,8 @@ class RecordingManager: ObservableObject, Codable {
     
     private var curSegStartTime = 0.0
     private var segmentDuration = 200.0
+    private var trancribingProcessEstimated = 0.09 // this var is used to predict how much time it takes to process an audio segment
+    // We observed that it takes 0.09 seconds to process a segment whose duration is 1 second
     
     init() {
         dateFormatter = DateFormatter()
@@ -47,6 +49,7 @@ class RecordingManager: ObservableObject, Codable {
         defaultRecordName = "Record \(dateFormatter.string(from: date))"
         recordFilename = "record\(dateFormatter.string(from: date)).m4a"
         recordFilename = "\(recordFilename.replacingOccurrences(of: " ", with: "").lowercased())"
+        recordFilename = "\(recordFilename.replacingOccurrences(of: ":", with: "_").lowercased())"
         setupRecordingSession()
     }
     
@@ -136,19 +139,28 @@ class RecordingManager: ObservableObject, Codable {
     
     
     
-    func getAudioPath(recordFilename: String) -> URL? {
-        let resourcePaths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let resourcePath = resourcePaths[0]
-        audioPath = resourcePath.appendingPathComponent(recordFilename)
-        return audioPath
+    func getAudioPath(recordFilename: inout String, id: UUID) -> URL? {
+        if recordFilename == "" {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .long
+            dateFormatter.timeStyle = .medium
+            self.recordFilename = "record\(dateFormatter.string(from: Date.now)).m4a"
+            self.recordFilename = "\(self.recordFilename.replacingOccurrences(of: " ", with: "").lowercased())"
+            self.recordFilename = "\(self.recordFilename.replacingOccurrences(of: ":", with: "_").lowercased())"
+            recordFilename = self.recordFilename
+        }
+        let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        self.audioPath = URL(string: (id.uuidString + recordFilename))
+        return appDirectory.appendingPathComponent(audioPath!.absoluteString)
     }
     
-    func startRecording() {
+    func startRecording(id: UUID) {
+        setupRecordingSession()
         isRecording = true
         
-        audioPath = getAudioPath(recordFilename: recordFilename)
+        let fullAudioPath = getAudioPath(recordFilename: &recordFilename, id: id)
         
-        if let audioPath = audioPath {
+        if let audioPath = fullAudioPath {
             if FileManager.default.fileExists(atPath: audioPath.path) {
                 errorMessage = "Something went wrong. Please delete this page and create a new one."
                 showErrorAlert = true
@@ -167,18 +179,17 @@ class RecordingManager: ObservableObject, Codable {
         ]
         
         do {
-            if let audioPath = audioPath {
+            if let audioPath = fullAudioPath {
                 audioRecorder = try AVAudioRecorder(url: audioPath, settings: settings)
                 audioRecorder?.record()
                 isRecording = true
             }
         } catch {
-            finishRecordingHandler()
+            finishRecordingHandler(id: id)
         }
     }
     
-    func finishRecordingHandler() {
-        audioPath = getAudioPath(recordFilename: recordFilename)
+    func finishRecordingHandler(id: UUID) {
         audioRecorder?.stop()
         audioRecorder = nil
         
@@ -215,6 +226,7 @@ class RecordingManager: ObservableObject, Codable {
             recorded = false // Reset the recorded flag after deletion
             recLoaded = false
             recordFilename = ""
+            self.audioPath = nil
         } catch {
             print("Failed to delete recorded audio file:", error.localizedDescription)
         }
@@ -251,15 +263,16 @@ class RecordingManager: ObservableObject, Codable {
     }
     
     func segmentAudio(audioPath: String, segmentDuration: TimeInterval) -> [URL] {
+        // access to the audio file
         let appDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let url = appDirectory.appendingPathComponent(audioPath)
         
         let asset = AVAsset(url: url)
-        let duration = CMTimeGetSeconds(asset.duration)
-        var segments: [URL] = []
+        let duration = CMTimeGetSeconds(asset.duration) // get audio duration
+        var segments: [URL] = [] // segments' urls array
         
         var currentStartTime: TimeInterval = 0
-        while currentStartTime < duration {
+        while currentStartTime < duration { // segment audio
             let endTime = min(currentStartTime + segmentDuration, duration)
             let timeRange = CMTimeRange(start: CMTime(seconds: currentStartTime, preferredTimescale: 600), end: CMTime(seconds: endTime, preferredTimescale: 600))
             
@@ -274,7 +287,7 @@ class RecordingManager: ObservableObject, Codable {
         return segments
     }
     
-    private func createTemporaryURL() -> URL? {
+    private func createTemporaryURL() -> URL? { // This directory will be used to store audio segments for a limited time
         let tempDirectory = NSTemporaryDirectory()
         let tempFile = UUID().uuidString + ".m4a"
         return URL(fileURLWithPath: tempDirectory).appendingPathComponent(tempFile)
@@ -284,12 +297,12 @@ class RecordingManager: ObservableObject, Codable {
         let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
         exportSession?.outputURL = outputURL
         exportSession?.outputFileType = .m4a
-        exportSession?.timeRange = timeRange
+        exportSession?.timeRange = timeRange // cut the audio
         
         let semaphore = DispatchSemaphore(value: 0)
         
         var success = false
-        exportSession?.exportAsynchronously {
+        exportSession?.exportAsynchronously { // export
             if exportSession?.status == .completed {
                 success = true
             } else {
@@ -302,6 +315,7 @@ class RecordingManager: ObservableObject, Codable {
         return success
     }
     
+    // Segment transcription operation
     func processAudioSegment(segmentURL: URL, completion: @escaping (String?) -> Void) {
         guard verifyAudioFile(url: segmentURL) else { return }
         
@@ -339,12 +353,12 @@ class RecordingManager: ObservableObject, Codable {
     }
 
     func processAudioFile(audioPath: String, evaluator: Evaluator, completion: @escaping (Bool) -> Void) {
-        evaluator.progress = 0
+        evaluator.progress = 0 // start transcription operation (a ProgressView will be shown)
 
-        let segments = segmentAudio(audioPath: audioPath, segmentDuration: self.segmentDuration)
+        let segments = segmentAudio(audioPath: audioPath, segmentDuration: self.segmentDuration) // audio segmentation
         var recognizedText = ""
 
-        let queue = DispatchQueue(label: "com.example.mySerialQueue")
+        let queue = DispatchQueue(label: "com.expositions.mySerialQueue")
         let semaphore = DispatchSemaphore(value: 1)
 
         let segmentCount = segments.count
@@ -356,29 +370,31 @@ class RecordingManager: ObservableObject, Codable {
             workItem = DispatchWorkItem { [weak self] in
                 guard let self = self else { return }
 
-                semaphore.wait()
+                semaphore.wait() // wait for the previous segment to be transcribed
 
-                if workItem?.isCancelled ?? false {
-                    semaphore.signal()
-                    return
+                if workItem?.isCancelled ?? false { // if the user stopped the evaluation, do not continue
+                    semaphore.signal() // signal the other threads to continue and stop the process
+                    return // stop
                 }
 
-                let targetValue: Float = 1 / Float(segmentCount) * Float(i + 1)
-                let duration: TimeInterval = 0.09 * self.getSegDuration(segmentURL: segments[i].absoluteURL)
+                // The following lines of code are used to modify the progress bar
+                let targetValue: Float = 1 / Float(segmentCount) * Float(i + 1) // depending on the number of segments
+                let duration: TimeInterval = trancribingProcessEstimated * self.getSegDuration(segmentURL: segments[i].absoluteURL) // estimated duration of transcribing process for this segment
                 let increment: Float = targetValue / (Float(duration) * 10)
 
                 let timer = DispatchSource.makeTimerSource()
-                timer.schedule(deadline: .now(), repeating: 0.1)
+                timer.schedule(deadline: .now(), repeating: 0.1) // increment evaluator's progress every 0.1 seconds
                 timer.setEventHandler {
                     DispatchQueue.main.async {
                         evaluator.progress += increment
 
+                        // do not surpass target value or 1.0 (maximum - 100%)
                         if evaluator.progress >= targetValue || evaluator.progress >= 1.0 {
                             evaluator.progress = min(evaluator.progress, 1.0)
                             timer.cancel()
                         }
 
-                        if workItem?.isCancelled ?? false {
+                        if workItem?.isCancelled ?? false { // if user stopped the evaluation, cancel the timer
                             timer.cancel()
                         }
                     }
@@ -388,16 +404,16 @@ class RecordingManager: ObservableObject, Codable {
 
                 self.processAudioSegment(segmentURL: segmentURL) { text in
                     if let text = text {
-                        recognizedText += text + " "
+                        recognizedText += text + " " // build recognizedText segment by segment
                     }
                     self.curSegStartTime += self.getSegDuration(segmentURL: segmentURL)
                     i += 1
                     semaphore.signal()
 
-                    if i == segmentCount {
+                    if i == segmentCount { // all segments have been processed
                         self.transcription = recognizedText
                         print("Transcription: \(recognizedText)")
-                        completion(true)
+                        completion(true) // complete
                     } else if workItem?.isCancelled ?? false {
                         completion(false)
                     } else {
@@ -412,28 +428,29 @@ class RecordingManager: ObservableObject, Codable {
             }
         }
     }
-
+    
+    /* UTILITY FUNCTIONS */
     func verifyAudioFile(url: URL) -> Bool {
         
         var audioPlayer: AVAudioPlayer?
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
         } catch {
-            print("Non è possibile riprodurre l'audio: \(error)")
+            print("Audio file can't be played: \(error)")
             return false
         }
         
         guard let player = audioPlayer else {
-            print("Non è stato possibile creare il lettore audio")
+            print("Player can't be created")
             return false
         }
         
         player.prepareToPlay()
         if player.duration > 0 {
-            print("L'audio è valido, durata: \(player.duration) secondi")
+            print("Valid audio. Duration: \(player.duration) seconds")
             return true
         } else {
-            print("L'audio non è valido")
+            print("Invalid audio")
             return false
         }
     }
@@ -444,7 +461,7 @@ class RecordingManager: ObservableObject, Codable {
             let audioPlayer = try AVAudioPlayer(contentsOf: segmentURL)
             duration = audioPlayer.duration
         } catch {
-            print("Errore nel caricamento del file audio: \(error)")
+            print("Audio file loading failed: \(error)")
         }
         return duration
     }

@@ -1,12 +1,7 @@
-//
-//  SectionListView.swift
-//  Expositions
-//
-//  Created by Studente on 18/07/24.
-//
-
 import SwiftUI
 
+// This view is used when the user wants to move an exposition to another section
+// It will show the list containing all the sections saved (except "Favorites" and "Trash")
 struct SectionListView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var destinationSection: Int?

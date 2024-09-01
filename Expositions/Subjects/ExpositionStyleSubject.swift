@@ -1,12 +1,6 @@
-//
-//  ExpositionStyleSubject.swift
-//  Expositions
-//
-//  Created by Studente on 20/07/24.
-//
-
 import SwiftUI
 
+// This view defines the style of a single element in the list of expositions of user-made sections
 struct ExpositionStyleSubject: View {
     @Binding var exposition: Exposition
     var dateFormatter: DateFormatter

@@ -1,10 +1,3 @@
-//
-//  IconView.swift
-//  Expositions
-//
-//  Created by Studente on 21/07/24.
-//
-
 import SwiftUI
 
 struct IconView: View {

@@ -1,38 +1,38 @@
-//
-//  Sections.swift
-//  Expositions1
-//
-//  Created by Studente on 05/07/24.
-//
-
 import SwiftUI
 import PhotosUI
 
+// This is the page that the user sees when they first open the app
 struct Sections: View {
+    
+    // MAIN DATA STRUCTURES
     @Binding var sections: [Section]
     @Binding var expositions: [Int:[Exposition]]
     
-    @State private var searchText = ""
+    @State private var searchText = "" // to implement searchable elements
     
+    // to control alerts
     @State private var showNewWindow = false
     @State private var showIconView = false
     @State private var showAlertIcon = false
     @State private var showRenameWindow = false
     @State private var showPhotosPicker = false
     @State private var showPhotoAlert = false
-    
     @State private var showDeleteAlert = false
-    @State private var selectedSection: Section?
     
-    @State private var selectedItem: PhotosPickerItem?
-    @State private var selectedImage: UIImage?
-    @State private var text: String = ""
-    @State private var selectedSectionIndex: Int = -1
+    @State private var selectedSection: Section? // "Change section" operation
+    
+    @State private var selectedItem: PhotosPickerItem? // "Upload photo" operation
+    @State private var selectedImage: UIImage? // "Upload photo" operation
+    
+    @State private var text: String = "" // "Insert name" operation
+    
+    @State private var selectedSectionIndex: Int = -1 // "Delete section" operation
     
     var body: some View {
         NavigationStack {
             List {
-                SwiftUI.Section(header: Text("General sections")) {
+                SwiftUI.Section(header: Text("General sections")) { // SPECIAL SECTIONS
+                    // "All expositions", "Favorites", "Trash"
                     ForEach($sections.filter { $0.secCode.wrappedValue == 0 || $0.secCode.wrappedValue == 1 || $0.secCode.wrappedValue == 2 }) { $section in
                         if searchText.isEmpty || NSLocalizedString(section.name, comment: "").lowercased().starts(with: searchText.lowercased()) {
                             NavigationLink(destination: Subject(section: $section, sections: $sections, expositions: $expositions)) {
@@ -41,12 +41,12 @@ struct Sections: View {
                         }
                     }
                 }
-                SwiftUI.Section(header: Text("Your sections")) {
+                SwiftUI.Section(header: Text("Your sections")) { // USER-MADE SECTIONS
                     ForEach($sections.filter { $0.secCode.wrappedValue > 2 }) { $section in
                         if searchText.isEmpty || section.name.lowercased().starts(with: searchText.lowercased()) {
                             NavigationLink(destination: Subject(section: $section, sections: $sections, expositions: $expositions)) {
                                 SectionRow(section: $section)
-                                    .swipeActions {
+                                    .swipeActions { // defined only for user-made sections
                                         Button(action: {
                                             deleteSection(section: section)
                                         }) {
@@ -55,7 +55,7 @@ struct Sections: View {
                                         .tint(.red)
                                     }
                             }
-                            .contextMenu {
+                            .contextMenu { // defined only for user-made sections
                                 renameButton(section: section)
                                 changeIconButton(section: section)
                                 changeImageButton(section: section)
@@ -68,7 +68,7 @@ struct Sections: View {
                                 Button("Cancel", role: .cancel) {}
                                 Button("Delete", action: {
                                     if let section = selectedSection {
-                                        // Sposta le esposizioni nella sezione "Trash"
+                                        // Move expositions to "Trash" section
                                         if var expositionsForSection = expositions[section.secCode] {
                                             for exposition in expositionsForSection {
                                                 exposition.trash = true
@@ -79,13 +79,13 @@ struct Sections: View {
                                             expositions.removeValue(forKey: section.secCode)
                                         }
                                         
-                                        // Rimuovi la sezione
+                                        // Remove the section
                                         sections.remove(at: section.secCode)
                                         
-                                        // Aggiorna i secCode delle sezioni rimanenti e il dizionario delle esposizioni
+                                        // Update secCodes in sections and expositions
                                         Section.updateSecCodes(sections: &sections, expositions: &expositions)
                                         
-                                        // Salva le sezioni e le esposizioni aggiornate
+                                        // Save updated data
                                         Section.save(sections: sections)
                                         Exposition.saveDictionary(expositions: expositions)
                                     }
@@ -104,7 +104,7 @@ struct Sections: View {
                     }) {
                         NewButton()
                     }
-                    .sheet(isPresented: self.$showNewWindow) {
+                    .sheet(isPresented: self.$showNewWindow) { // when "NewButton" is pressed
                         CreateSectionView(sections: $sections, expositions: $expositions, color: Color.gray.opacity(0.8), symbol: "")
                             .presentationDetents([.medium, .large])
                             .presentationCompactAdaptation(.none)
@@ -114,7 +114,7 @@ struct Sections: View {
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
         }
         .sheet(isPresented: $showIconView) {
-            IconEditor(sectionIndex: $selectedSectionIndex, sections: $sections)
+            IconEditor(sectionIndex: $selectedSectionIndex, sections: $sections) // When user wants to change the icon of a section and create a new custom one
         }
         .alert("Impossible to edit", isPresented: $showAlertIcon) {
             Button("Ok", role: .cancel) {}
@@ -172,7 +172,7 @@ struct Sections: View {
         Section.save(sections: sections)
     }
     
-    // Funzioni per i pulsanti del menu contestuale
+    // Functions for context menu buttons
     func renameButton(section: Section) -> some View {
         Button(action: {
             setSelectedSectionIndex(section: section)
@@ -230,7 +230,7 @@ struct Sections: View {
         }
     }
     
-    // Funzione per impostare l'indice della sezione selezionata
+    // Function to set the index of selected section
     func setSelectedSectionIndex(section: Section) {
         if let index = sections.firstIndex(where: {$0.id == section.id}) {
             selectedSectionIndex = index
@@ -238,6 +238,7 @@ struct Sections: View {
     }
 }
 
+// Single section row
 struct SectionRow: View {
     @Binding var section: Section
     
@@ -273,6 +274,7 @@ struct SectionRow: View {
     }
 }
 
+// Rows for special sections ("All expositions", "Favorites" and "Trash")
 struct SectionSpecialRow: View {
     @Binding var section: Section
     

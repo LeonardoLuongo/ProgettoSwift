@@ -1,10 +1,3 @@
-//
-//  DocumentManager.swift
-//  Expositions
-//
-//  Created by Studente on 22/07/24.
-//
-
 import Foundation
 import PDFKit
 
